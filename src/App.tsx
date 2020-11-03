@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import LoginPage from './pages/login/login.pages';
+import HomePage from './pages/hompage/homepage.components';
+import { connect } from 'react-redux';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+interface props {
+  currentAdmin: {};
 }
 
-export default App;
+const App: React.FC<props> = ({ currentAdmin }) => {
+  return (
+    <div className='App'>
+      <Switch>
+        <Route
+          exact
+          path='/'
+          render={() =>
+            currentAdmin ? <HomePage /> : <Redirect to='/login' />
+          }
+        />
+        <Route
+          exact
+          path='/login'
+          render={() => (currentAdmin ? <HomePage /> : <LoginPage />)}
+        />
+      </Switch>
+    </div>
+  );
+};
+const mapStateToProps = (state) => ({
+  currentAdmin: state.admin.currentAdmin,
+});
+export default connect(mapStateToProps)(App);
