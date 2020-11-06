@@ -1,11 +1,9 @@
 import React from 'react';
-import Container from '@material-ui/core/Container';
-import TextField from '@material-ui/core/TextField';
-
+import AppBarDrawer from '../../components/appbar-and-drawer/appbar-and-drawer.component';
 const HomePage: React.FC = () => {
   return (
     <div>
-      <TextField id='username' label='Username' variant='filled' />
+      <AppBarDrawer />
     </div>
   );
 };

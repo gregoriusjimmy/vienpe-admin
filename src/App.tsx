@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import LoginPage from './pages/login/login.pages';
+import LoginPage from './pages/login/loginPage.component';
 import HomePage from './pages/hompage/homepage.components';
 import { connect } from 'react-redux';
+import { GlobalStyle } from './global.styles';
 
 interface props {
   currentAdmin: {};
@@ -10,7 +11,8 @@ interface props {
 
 const App: React.FC<props> = ({ currentAdmin }) => {
   return (
-    <div className='App'>
+    <div>
+      <GlobalStyle />
       <Switch>
         <Route
           exact
@@ -22,7 +24,7 @@ const App: React.FC<props> = ({ currentAdmin }) => {
         <Route
           exact
           path='/login'
-          render={() => (currentAdmin ? <HomePage /> : <LoginPage />)}
+          render={() => (currentAdmin ? <Redirect to='/' /> : <LoginPage />)}
         />
       </Switch>
     </div>

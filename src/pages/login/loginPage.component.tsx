@@ -1,11 +1,12 @@
 import React from 'react';
 import Login from '../../components/login/login.component';
+import { LoginPageContainer } from './loginPage.styles';
 
 const LoginPage: React.FC = () => {
   return (
-    <div>
+    <LoginPageContainer>
       <Login />
-    </div>
+    </LoginPageContainer>
   );
 };
 

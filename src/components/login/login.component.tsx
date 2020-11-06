@@ -1,48 +1,65 @@
 import React, { useState } from 'react';
-import Container from '@material-ui/core/Container';
-import TextField from '@material-ui/core/TextField';
+
 import { connect } from 'react-redux';
 import { setCurrentAdmin } from '../../redux/admin/admin.actions';
+import { Button, Box } from '@material-ui/core';
+import { FormLoginContainer, LoginTitle, InputForm } from './login.styles';
+interface props {
+  setCurrentAdmin: (admin: {}) => void;
+}
 
-const Login: React.FC = () => {
+const Login: React.FC<props> = ({ setCurrentAdmin }) => {
   const [adminCredentials, setAdminCredentials] = useState({
     username: '',
     password: '',
   });
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(adminCredentials);
+    setCurrentAdmin({ id: 123, name: 'admin' });
+    console.log('done');
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    console.log('Fire');
     const { value, name } = e.target;
     setAdminCredentials({ ...adminCredentials, [name]: value });
-    console.log(adminCredentials);
   };
+
   const { username, password } = adminCredentials;
   return (
-    <Container maxWidth='sm'>
-      <form noValidate autoComplete='off' onSubmit={handleSubmit}>
-        <TextField
-          name='username'
-          id='username'
-          label='Username'
-          variant='filled'
-          onChange={handleChange}
-          value={username}
-        />
-        <TextField
-          name='password'
-          id='password'
-          label='Password'
-          type='password'
-          variant='filled'
-          onChange={handleChange}
-          value={password}
-        />
-      </form>
-    </Container>
+    <FormLoginContainer boxShadow='2'>
+      <LoginTitle> Admin Login </LoginTitle>
+      <Box mx='auto' width='80%' flexDirection='column' justifyContent='center'>
+        <form noValidate autoComplete='off' onSubmit={handleSubmit}>
+          <InputForm
+            margin='normal'
+            name='username'
+            id='username'
+            label='Username'
+            variant='standard'
+            onChange={handleChange}
+            value={username}
+            fullWidth
+          />
+
+          <InputForm
+            margin='normal'
+            name='password'
+            id='password'
+            label='Password'
+            type='password'
+            variant='standard'
+            onChange={handleChange}
+            value={password}
+            fullWidth
+          />
+          <Box mt='34px'>
+            <Button type='submit' variant='contained' color='primary' fullWidth>
+              Login
+            </Button>
+          </Box>
+        </form>
+      </Box>
+    </FormLoginContainer>
   );
 };
 const mapDispatchToProps = (dispatch) => ({
