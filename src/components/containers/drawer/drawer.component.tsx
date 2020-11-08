@@ -10,7 +10,10 @@ import { default as DrawerMUI } from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-
+import Collapse from '@material-ui/core/Collapse';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   makeStyles,
   useTheme,
@@ -37,6 +40,9 @@ const useStyles = makeStyles((theme: Theme) =>
       ...theme.mixins.toolbar,
       justifyContent: 'flex-end',
     },
+    nested: {
+      paddingLeft: theme.spacing(4),
+    },
   })
 );
 
@@ -48,6 +54,11 @@ interface Props {
 const Drawer: React.FC<Props> = ({ handleDrawerClose, open }) => {
   const classes = useStyles();
   const theme = useTheme();
+  const [openDropdown, setOpenDropdown] = React.useState(true);
+
+  const handleClick = () => {
+    setOpenDropdown(!openDropdown);
+  };
   return (
     <DrawerMUI
       className={classes.drawer}
@@ -68,7 +79,7 @@ const Drawer: React.FC<Props> = ({ handleDrawerClose, open }) => {
         </IconButton>
       </div>
       <Divider />
-      <List>
+      <List component='nav'>
         {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
           <ListItem button key={text}>
             <ListItemIcon>
@@ -77,17 +88,25 @@ const Drawer: React.FC<Props> = ({ handleDrawerClose, open }) => {
             <ListItemText primary={text} />
           </ListItem>
         ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
+        <ListItem button onClick={handleClick}>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary='Inbox' />
+          {openDropdown ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+        <Collapse in={openDropdown} timeout='auto' unmountOnExit>
+          <List component='div' disablePadding>
+            <ListItem button className={classes.nested}>
+              <ListItemIcon>
+                <MailIcon />
+              </ListItemIcon>
+              <ListItem button component={RouterLink} to={'/users/users'}>
+                <ListItemText primary='Users' />
+              </ListItem>
+            </ListItem>
+          </List>
+        </Collapse>
       </List>
     </DrawerMUI>
   );

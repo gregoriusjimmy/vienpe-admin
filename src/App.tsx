@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import LoginPage from './pages/login/loginPage.component';
-import HomePage from './pages/hompage/homepage.components';
+import LoginPage from './pages/login-page/loginPage.component';
 import { connect } from 'react-redux';
 import { GlobalStyle } from './global.styles';
-
+import Layout from './components/containers/layout/layout.component';
 interface props {
   currentAdmin: {};
 }
@@ -16,20 +15,20 @@ const App: React.FC<props> = ({ currentAdmin }) => {
       <Switch>
         <Route
           exact
-          path='/'
-          render={() =>
-            currentAdmin ? <HomePage /> : <Redirect to='/login' />
-          }
+          path='/login'
+          name='Login Page'
+          render={() => (currentAdmin ? <Redirect to='/' /> : <LoginPage />)}
         />
         <Route
-          exact
-          path='/login'
-          render={() => (currentAdmin ? <Redirect to='/' /> : <LoginPage />)}
+          path='/'
+          name='Home'
+          render={() => (currentAdmin ? <Layout /> : <Redirect to='/login' />)}
         />
       </Switch>
     </div>
   );
 };
+
 const mapStateToProps = (state) => ({
   currentAdmin: state.admin.currentAdmin,
 });

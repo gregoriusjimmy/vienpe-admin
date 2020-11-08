@@ -9,7 +9,6 @@ export const FormLoginContainer = styled(Box)`
   margin-top: 200px;
   border: px solid #64b5f6;
   border-radius: 9px;
-  text-align: center;
 `;
 
 export const LoginTitle = styled.h1`
