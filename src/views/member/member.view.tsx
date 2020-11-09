@@ -31,7 +31,7 @@ const rows = [
   createData('Cupcake', 305, 3.7, 67, 4.3),
   createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
-const Users: React.FC = () => {
+const Member: React.FC = () => {
   const classes = useStyles();
 
   return (
@@ -64,4 +64,4 @@ const Users: React.FC = () => {
   );
 };
 
-export default Users;
+export default Member;

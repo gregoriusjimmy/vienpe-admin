@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import routes from '../../../routes';
-import Users from '../../../views/users/users/users.view';
+
 const Content: React.FC = () => {
   return (
     <div>
