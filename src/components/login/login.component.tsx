@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 
 import { connect } from 'react-redux';
 import { setCurrentAdmin } from '../../redux/admin/admin.actions';
-import { Button, Box } from '@material-ui/core';
-import { FormLoginContainer, LoginTitle, InputForm } from './login.styles';
+
+import { Box, TextField, Button } from '@material-ui/core';
+import useStyles from './login.styles';
+
 interface props {
   setCurrentAdmin: (admin: {}) => void;
 }
 
 const Login: React.FC<props> = ({ setCurrentAdmin }) => {
+  const { formContainer, loginTitle } = useStyles();
   const [adminCredentials, setAdminCredentials] = useState({
     username: '',
     password: '',
@@ -26,11 +29,11 @@ const Login: React.FC<props> = ({ setCurrentAdmin }) => {
 
   const { username, password } = adminCredentials;
   return (
-    <FormLoginContainer boxShadow='2'>
-      <LoginTitle> Admin Login </LoginTitle>
+    <Box className={formContainer} boxShadow='2'>
+      <h1 className={loginTitle}> Admin Login </h1>
       <Box mx='auto' width='80%' flexDirection='column' justifyContent='center'>
         <form noValidate autoComplete='off' onSubmit={handleSubmit}>
-          <InputForm
+          <TextField
             margin='normal'
             name='username'
             id='username'
@@ -41,7 +44,7 @@ const Login: React.FC<props> = ({ setCurrentAdmin }) => {
             fullWidth
           />
 
-          <InputForm
+          <TextField
             margin='normal'
             name='password'
             id='password'
@@ -59,7 +62,7 @@ const Login: React.FC<props> = ({ setCurrentAdmin }) => {
           </Box>
         </form>
       </Box>
-    </FormLoginContainer>
+    </Box>
   );
 };
 const mapDispatchToProps = (dispatch) => ({

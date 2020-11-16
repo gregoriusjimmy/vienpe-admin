@@ -1,20 +1,21 @@
-import styled from 'styled-components';
-import { Box, TextField } from '@material-ui/core';
-export const FormLoginContainer = styled(Box)`
-  width: 40%;
-  padding: 18px 30px 50px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-top: 200px;
-  border: px solid #64b5f6;
-  border-radius: 9px;
-`;
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
-export const LoginTitle = styled.h1`
-  text-align: center;
-`;
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    formContainer: {
+      width: '40%',
+      padding: '18px 30px 50px',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      marginTop: '200px',
+      border: '0px solid #64b5f6',
+      borderRadius: '9px',
+    },
+    loginTitle: {
+      textAlign: 'center',
+    },
+  })
+);
 
-export const InputForm = styled(TextField)`
-  margin: auto;
-`;
+export default useStyles;

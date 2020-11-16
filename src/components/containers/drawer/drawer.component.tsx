@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
@@ -12,66 +13,46 @@ import IconButton from '@material-ui/core/IconButton';
 
 import { Link } from 'react-router-dom';
 import navigations from '../_nav';
-import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
-import classes from '*.module.css';
-
-const drawerWidth = 240;
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    drawer: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
-    drawerPaper: {
-      width: drawerWidth,
-    },
-    drawerHeader: {
-      display: 'flex',
-      alignItems: 'center',
-      padding: theme.spacing(0, 1),
-      // necessary for content to be below app bar
-      ...theme.mixins.toolbar,
-      justifyContent: 'flex-end',
-    },
-    divider: {
-      margin: '8px 0px',
-    },
-  })
-);
+import { useTheme } from '@material-ui/core/styles';
+import useStyles from './drawer.styles';
 
 interface Props {
   handleDrawerClose: () => void;
   open: boolean;
+  location: {
+    pathname: String;
+  };
 }
 
-const Drawer: React.FC<Props> = ({ handleDrawerClose, open }) => {
-  const classes = useStyles();
+const Drawer: React.FC<Props> = ({ handleDrawerClose, open, location }) => {
+  console.log(location);
+
+  const { drawer, drawerPaper, drawerHeader, divider, currentNavStyled } = useStyles();
   const theme = useTheme();
+
   const createElement = (nav, index) => {
-    console.log(nav);
     if (nav.tag === 'nav') {
-      console.log(nav);
+      const currentNav = nav.to === location.pathname ? true : false;
       return (
-        <ListItem button key={index} component={Link} to={nav.to}>
+        <ListItem className={currentNav ? currentNavStyled : ''} button key={index} component={Link} to={nav.to}>
           <ListItemIcon> {React.createElement(nav.icon)} </ListItemIcon>
           <ListItemText primary={nav.name} />
         </ListItem>
       );
     }
-    return <Divider className={classes.divider} />;
+    return <Divider className={divider} />;
   };
   return (
     <DrawerMUI
-      className={classes.drawer}
+      className={drawer}
       variant='persistent'
       anchor='left'
       open={open}
       classes={{
-        paper: classes.drawerPaper,
+        paper: drawerPaper,
       }}
     >
-      <div className={classes.drawerHeader}>
+      <div className={drawerHeader}>
         <IconButton onClick={handleDrawerClose}>
           {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
         </IconButton>
@@ -82,4 +63,4 @@ const Drawer: React.FC<Props> = ({ handleDrawerClose, open }) => {
   );
 };
 
-export default Drawer;
+export default withRouter(Drawer);
