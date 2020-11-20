@@ -27,15 +27,15 @@ interface Props {
 const Drawer: React.FC<Props> = ({ handleDrawerClose, open, location }) => {
   console.log(location);
 
-  const { drawer, drawerPaper, drawerHeader, divider, currentNavStyled } = useStyles();
+  const { drawer, drawerPaper, drawerHeader, divider, currentNavColor } = useStyles();
   const theme = useTheme();
 
   const createElement = (nav, index) => {
     if (nav.tag === 'nav') {
       const currentNav = nav.to === location.pathname ? true : false;
       return (
-        <ListItem className={currentNav ? currentNavStyled : ''} button key={index} component={Link} to={nav.to}>
-          <ListItemIcon> {React.createElement(nav.icon)} </ListItemIcon>
+        <ListItem className={currentNav ? currentNavColor : ''} button key={index} component={Link} to={nav.to}>
+          <ListItemIcon>{React.createElement(nav.icon, { className: currentNav ? currentNavColor : '' })}</ListItemIcon>
           <ListItemText primary={nav.name} />
         </ListItem>
       );

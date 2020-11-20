@@ -5,6 +5,12 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 export default [
   {
     tag: 'nav',
+    name: 'Absensi',
+    to: '/absensi',
+    icon: CardMembershipIcon,
+  },
+  {
+    tag: 'nav',
     name: 'Member',
     to: '/member',
     icon: PeopleIcon,
@@ -16,12 +22,25 @@ export default [
     icon: CardMembershipIcon,
   },
   {
+    tag: 'nav',
+    name: 'Instruktur',
+    to: '/instruktur',
+    icon: CardMembershipIcon,
+  },
+  {
+    tag: 'nav',
+    name: 'Kelas',
+    to: '/kelas',
+    icon: CardMembershipIcon,
+  },
+
+  {
     tag: 'divider',
   },
   {
     tag: 'nav',
     name: 'Daftar',
-    to: '/daftar-member',
+    to: '/daftar',
     icon: PersonAddIcon,
   },
 ];

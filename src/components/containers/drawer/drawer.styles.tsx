@@ -19,11 +19,15 @@ const useStyles = makeStyles((theme: Theme) =>
       ...theme.mixins.toolbar,
       justifyContent: 'flex-end',
     },
+
     divider: {
       margin: '8px 0px',
     },
-    currentNavStyled: {
-      backgroundColor: 'red',
+    currentNavColor: {
+      color: theme.palette.primary.main,
+    },
+    currentIconColor: {
+      color: theme.palette.primary.main,
     },
   })
 );

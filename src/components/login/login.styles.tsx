@@ -8,12 +8,12 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
-      marginTop: '200px',
-      border: '0px solid #64b5f6',
+      marginTop: '180px',
       borderRadius: '9px',
     },
     loginTitle: {
       textAlign: 'center',
+      color: theme.palette.primary.dark,
     },
   })
 );

@@ -1,12 +1,13 @@
 import React from 'react';
 import Login from '../../components/login/login.component';
-import { LoginPageContainer } from './loginPage.styles';
-
+import useStyles from './loginPage.styles';
+import { Box } from '@material-ui/core';
 const LoginPage: React.FC = () => {
+  const { root } = useStyles();
   return (
-    <LoginPageContainer>
+    <Box height='100%' className={root}>
       <Login />
-    </LoginPageContainer>
+    </Box>
   );
 };
 

@@ -5,16 +5,19 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { HashRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-
+import { ThemeProvider } from '@material-ui/core/styles';
+import theme from './theme';
 import store from './redux/store';
 
 ReactDOM.render(
   <Provider store={store}>
-    <HashRouter>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    </HashRouter>
+    <ThemeProvider theme={theme}>
+      <HashRouter>
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      </HashRouter>
+    </ThemeProvider>
   </Provider>,
   document.getElementById('root')
 );

@@ -7,7 +7,6 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       display: 'flex',
     },
-
     drawerHeader: {
       display: 'flex',
       alignItems: 'center',

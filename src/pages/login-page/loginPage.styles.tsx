@@ -1,14 +1,27 @@
-import styled from 'styled-components';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
-export const LoginPageContainer = styled.div`
-  height: 100%;
-  width: 90%;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  @media screen and (max-width: 768px) {
-    width: 95%;
-  }
-`;
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      height: '100%',
+      width: '100%',
+      margin: 'auto',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      [theme.breakpoints.down('xs')]: {
+        width: '95%',
+      },
+    },
+    // backgroundSpan: {
+    //   position: 'absolute',
+    //   height: '100%',
+    //   width: '100%',
+    //   zIndex: -100,
+    //   backgroundColor: theme.palette.primary.dark,
+    // },
+  })
+);
+
+export default useStyles;
