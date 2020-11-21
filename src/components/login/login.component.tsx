@@ -1,33 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
-import { connect } from 'react-redux';
-import { setCurrentAdmin } from '../../redux/admin/admin.actions';
+import { connect } from 'react-redux'
+import { setCurrentAdmin } from '../../redux/admin/admin.actions'
 
-import { Box, TextField, Button } from '@material-ui/core';
-import useStyles from './login.styles';
+import { Box, TextField, Button } from '@material-ui/core'
+import useStyles from './login.styles'
 
-interface props {
-  setCurrentAdmin: (admin: {}) => void;
+interface Props {
+  setCurrentAdmin: (admin: {}) => void
 }
 
-const Login: React.FC<props> = ({ setCurrentAdmin }) => {
-  const { formContainer, loginTitle } = useStyles();
+const Login: React.FC<Props> = ({ setCurrentAdmin }) => {
+  const { formContainer, loginTitle } = useStyles()
   const [adminCredentials, setAdminCredentials] = useState({
     username: '',
     password: '',
-  });
+  })
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setCurrentAdmin({ id: 123, name: 'admin' });
-    console.log('done');
-  };
+    e.preventDefault()
+    setCurrentAdmin({ id: 123, name: 'admin' })
+    console.log('done')
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const { value, name } = e.target;
-    setAdminCredentials({ ...adminCredentials, [name]: value });
-  };
+    const { value, name } = e.target
+    setAdminCredentials({ ...adminCredentials, [name]: value })
+  }
 
-  const { username, password } = adminCredentials;
+  const { username, password } = adminCredentials
   return (
     <Box className={formContainer} boxShadow='2'>
       <h1 className={loginTitle}> Admin Login </h1>
@@ -63,9 +63,9 @@ const Login: React.FC<props> = ({ setCurrentAdmin }) => {
         </form>
       </Box>
     </Box>
-  );
-};
+  )
+}
 const mapDispatchToProps = (dispatch) => ({
   setCurrentAdmin: (admin) => dispatch(setCurrentAdmin(admin)),
-});
-export default connect(null, mapDispatchToProps)(Login);
+})
+export default connect(null, mapDispatchToProps)(Login)
