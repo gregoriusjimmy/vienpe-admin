@@ -34,13 +34,21 @@ const Drawer: React.FC<Props> = ({ handleDrawerClose, open, location }) => {
     if (nav.tag === 'nav') {
       const currentNav = nav.to === location.pathname ? true : false
       return (
-        <ListItem className={currentNav ? currentNavColor : ''} button key={index} component={Link} to={nav.to}>
-          <ListItemIcon>{React.createElement(nav.icon, { className: currentNav ? currentNavColor : '' })}</ListItemIcon>
+        <ListItem
+          className={currentNav ? currentNavColor : ''}
+          button
+          key={index}
+          component={Link}
+          to={nav.to}
+        >
+          <ListItemIcon>
+            {React.createElement(nav.icon, { className: currentNav ? currentNavColor : '' })}
+          </ListItemIcon>
           <ListItemText primary={nav.name} />
         </ListItem>
       )
     }
-    return <Divider className={divider} />
+    return <Divider key={index} className={divider} />
   }
   return (
     <DrawerMUI

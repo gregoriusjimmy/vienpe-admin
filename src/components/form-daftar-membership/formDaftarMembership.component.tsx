@@ -1,31 +1,23 @@
 import React, { useState } from 'react'
 import { TextField, Button, Grid } from '@material-ui/core'
 import FormCard from '../form-card/form-card.component'
-import useStyles from './formDaftarMember.styles'
-import { fetchAdd } from '../../fetch/fetch'
-const FormDaftarMember: React.FC = () => {
+import useStyles from './formDaftarMembership.styles'
+
+const FormDaftarMembership: React.FC = () => {
   const { root, submitBtn } = useStyles()
-  const [formValues, setFormValues] = useState({
-    nama: '',
-    email: '' || undefined,
-    no_telp: '',
-    tgl_lahir: '' || undefined,
-  })
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!formValues.tgl_lahir) setFormValues({ ...formValues, tgl_lahir: undefined })
-    const status = await fetchAdd(process.env.REACT_APP_MEMBER_POST_URL, formValues)
-    console.log(status)
   }
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value, name } = e.target
-    setFormValues({ ...formValues, [name]: value })
+
+    // setFormValues({ ...formValues, [name]: value })
+    // console.log(formValues)
   }
-  const { nama, email, no_telp, tgl_lahir } = formValues
   return (
-    <FormCard title='Daftar Member'>
+    <FormCard title='Daftar Membership'>
       <form className={root} noValidate autoComplete='off' onSubmit={handleSubmit}>
-        <Grid container spacing={1}>
+        {/* <Grid container spacing={1}>
           <Grid item xs={12}>
             <TextField
               name='nama'
@@ -41,7 +33,7 @@ const FormDaftarMember: React.FC = () => {
             <TextField
               name='email'
               id='email'
-              value={email || ''}
+              value={email}
               fullWidth
               label='Email'
               type='email'
@@ -62,7 +54,7 @@ const FormDaftarMember: React.FC = () => {
             <TextField
               name='tgl_lahir'
               id='tgl_lahir'
-              value={tgl_lahir || ''}
+              value={tgl_lahir}
               label='Tanggal lahir'
               type='date'
               InputLabelProps={{ shrink: true }}
@@ -74,10 +66,10 @@ const FormDaftarMember: React.FC = () => {
               Submit
             </Button>
           </Grid>
-        </Grid>
+        </Grid> */}
       </form>
     </FormCard>
   )
 }
 
-export default FormDaftarMember
+export default FormDaftarMembership

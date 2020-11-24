@@ -15,10 +15,6 @@ const useStyles = makeStyles((theme: Theme) =>
       float: 'right',
       margin: theme.spacing(2, 0),
     },
-    // submitBtn: {
-
-    //   margin: theme.spacing(3, 3),
-    // },
   })
 )
 
