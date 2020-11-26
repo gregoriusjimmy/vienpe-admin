@@ -27,11 +27,12 @@ export const fetchAdd = async (source, dataSend) => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(dataSend),
   })
-
   if (response.status === 400) {
-    alert('Failed to add')
+    alert('Daftar gagal')
+    return false
   }
-  return response.status
+  alert('Daftar berhasil')
+  return true
 }
 
 export const fetchUpdate = async (source, dataSend) => {

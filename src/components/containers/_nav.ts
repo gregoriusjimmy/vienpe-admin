@@ -1,8 +1,8 @@
-import PeopleIcon from '@material-ui/icons/People';
-import CardMembershipIcon from '@material-ui/icons/CardMembership';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import PeopleIcon from '@material-ui/icons/People'
+import CardMembershipIcon from '@material-ui/icons/CardMembership'
+import PersonAddIcon from '@material-ui/icons/PersonAdd'
 
-export default [
+const navigations = [
   {
     tag: 'nav',
     name: 'Absensi',
@@ -43,4 +43,6 @@ export default [
     to: '/daftar',
     icon: PersonAddIcon,
   },
-];
+]
+
+export default navigations

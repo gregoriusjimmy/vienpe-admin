@@ -1,19 +1,19 @@
 import React, { useState } from 'react'
 import { TextField, Button, Grid } from '@material-ui/core'
 import FormCard from '../form-card/form-card.component'
-import useStyles from './formDaftarMember.styles'
+import useStyles from './formDaftarInstruktur.styles'
 import { fetchAdd } from '../../fetch/fetch'
 
 const INITIAL_FORM = { nama: '', email: '' || undefined, no_telp: '', tgl_lahir: '' || undefined }
 
-const FormDaftarMember: React.FC = () => {
+const FormDaftarInstruktur: React.FC = () => {
   const { root, submitBtn } = useStyles()
   const [formValues, setFormValues] = useState(INITIAL_FORM)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!formValues.tgl_lahir) setFormValues({ ...formValues, tgl_lahir: undefined })
-    const isSucces = await fetchAdd(process.env.REACT_APP_MEMBER_URL, formValues)
+    const isSucces = await fetchAdd(process.env.REACT_APP_INSTRUKTUR_URL, formValues)
     if (isSucces) setFormValues(INITIAL_FORM)
   }
 
@@ -24,7 +24,7 @@ const FormDaftarMember: React.FC = () => {
 
   const { nama, email, no_telp, tgl_lahir } = formValues
   return (
-    <FormCard title='Daftar Member'>
+    <FormCard title='Daftar Instruktur'>
       <form className={root} noValidate autoComplete='off' onSubmit={handleSubmit}>
         <Grid container spacing={1}>
           <Grid item xs={12}>
@@ -81,4 +81,4 @@ const FormDaftarMember: React.FC = () => {
   )
 }
 
-export default FormDaftarMember
+export default FormDaftarInstruktur
