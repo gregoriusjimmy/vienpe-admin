@@ -1,4 +1,6 @@
+import { AdminActionTypes } from './admin.types'
+
 export const setCurrentAdmin = (admin) => ({
-  type: 'SET_CURRENT_ADMIN',
+  type: AdminActionTypes.SET_CURRENT_ADMIN,
   payload: admin,
-});
+})

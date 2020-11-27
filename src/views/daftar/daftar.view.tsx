@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Grid from '@material-ui/core/Grid'
 // import { Grid } from '@material-ui/core';
 import FormDaftarMember from '../../components/form-daftar-member/formDaftarMember.component'
 import FormDaftarInstruktur from '../../components/form-daftar-instruktur/formDaftarInstruktur.component'
 import FormDaftarTipeMembership from '../../components/form-daftar-tipe-membership/formDaftarTipeMembership.component'
+
 const Daftar: React.FC = () => {
   return (
     <Grid container spacing={3}>
