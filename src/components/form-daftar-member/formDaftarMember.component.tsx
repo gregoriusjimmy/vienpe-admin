@@ -1,73 +1,85 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { TextField, Button, Grid } from '@material-ui/core'
 import FormCard from '../form-card/form-card.component'
 import useStyles from './formDaftarMember.styles'
 import { fetchAdd } from '../../fetch/fetch'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 
-const INITIAL_FORM = { nama: '', email: '' || undefined, no_telp: '', tgl_lahir: '' || undefined }
+type FORM_DATA = {
+  nama: ''
+  email: '' | undefined
+  no_telp: ''
+  tgl_lahir: '' | undefined
+}
 
 const FormDaftarMember: React.FC = () => {
   const { root, submitBtn } = useStyles()
-  const [formValues, setFormValues] = useState(INITIAL_FORM)
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    if (!formValues.tgl_lahir) setFormValues({ ...formValues, tgl_lahir: undefined })
-    const isSucces = await fetchAdd(process.env.REACT_APP_MEMBER_URL, formValues)
-    if (isSucces) setFormValues(INITIAL_FORM)
+  const schema = yup.object().shape({
+    nama: yup.string().required(),
+    email: yup.string().email().nullable().default(undefined),
+    no_telp: yup.string().required().max(14).min(10),
+    tgl_lahir: yup.string().nullable().default(undefined),
+  })
+
+  const { register, errors, handleSubmit, reset } = useForm<FORM_DATA>({
+    resolver: yupResolver(schema),
+  })
+
+  const onSubmit = async (formValues) => {
+    console.log(formValues)
+
+    if (!formValues.email) formValues.email = undefined
+    if (!formValues.tgl_lahir) formValues.tgl_lahir = undefined
+    const isSuccess = await fetchAdd(process.env.REACT_APP_MEMBER_URL, formValues)
+    if (isSuccess) reset()
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const { value, name } = e.target
-    setFormValues({ ...formValues, [name]: value })
-  }
-
-  const { nama, email, no_telp, tgl_lahir } = formValues
   return (
     <FormCard title='Daftar Member'>
-      <form className={root} noValidate autoComplete='off' onSubmit={handleSubmit}>
+      <form className={root} noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={1}>
           <Grid item xs={12}>
             <TextField
+              inputRef={register}
+              error={!!errors.nama}
               name='nama'
-              id='nama'
-              value={nama}
               fullWidth
               label='Nama'
-              required
-              onChange={handleChange}
+              helperText={errors.nama?.message}
             />
           </Grid>
           <Grid item xs={12}>
             <TextField
+              inputRef={register}
+              error={!!errors.email}
               name='email'
-              id='email'
-              value={email || ''}
               fullWidth
               label='Email'
               type='email'
-              onChange={handleChange}
+              helperText={errors.email?.message}
             />
           </Grid>
           <Grid item xs={6}>
             <TextField
+              inputRef={register}
+              error={!!errors.no_telp}
               name='no_telp'
-              id='no_telp'
-              value={no_telp}
               label='No Telp'
-              required
-              onChange={handleChange}
+              helperText={errors.no_telp?.message}
             />
           </Grid>
           <Grid item xs={6}>
             <TextField
+              inputRef={register}
+              error={!!errors.tgl_lahir}
               name='tgl_lahir'
-              id='tgl_lahir'
-              value={tgl_lahir || ''}
               label='Tanggal lahir'
               type='date'
               InputLabelProps={{ shrink: true }}
-              onChange={handleChange}
+              helperText={errors.tgl_lahir?.message}
             />
           </Grid>
           <Grid item xs={12}>

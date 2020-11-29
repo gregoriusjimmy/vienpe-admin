@@ -1,11 +1,15 @@
-import { MembershipActionTypes } from './membership.types'
+import MembershipActionTypes from './membership.types'
 
-export const setAllMembershipData = (allMembershipData) => ({
-  type: MembershipActionTypes.SET_ALL_MEMBERSHIP_DATA,
-  payload: allMembershipData,
+export const fetchAllMembershipStart = () => ({
+  type: MembershipActionTypes.FETCH_ALL_MEMBERSHIP_START,
 })
 
-export const setAllTipeMembershipData = (allTipeMembershipData) => ({
-  type: MembershipActionTypes.SET_ALL_TIPE_MEMBERSHIP_DATA,
-  payload: allTipeMembershipData,
+export const fetchAllMembershipSuccess = (allMembership) => ({
+  type: MembershipActionTypes.FETCH_ALL_MEMBERSHIP_SUCCESS,
+  payload: allMembership,
+})
+
+export const fetchAllMembershipFailure = (errorMessage) => ({
+  type: MembershipActionTypes.FETCH_ALL_MEMBERSHIP_FAILURE,
+  payload: errorMessage,
 })

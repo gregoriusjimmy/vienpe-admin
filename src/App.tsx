@@ -4,7 +4,7 @@ import LoginPage from './pages/login-page/loginPage.component'
 import { connect } from 'react-redux'
 import { GlobalStyle } from './global.styles'
 import Layout from './components/containers/layout/layout.component'
-interface Props {
+type Props = {
   currentAdmin: {}
 }
 
@@ -19,7 +19,11 @@ const App: React.FC<Props> = ({ currentAdmin }) => {
           name='Login Page'
           render={() => (currentAdmin ? <Redirect to='/' /> : <LoginPage />)}
         />
-        <Route path='/' name='Home' render={() => (currentAdmin ? <Layout /> : <Redirect to='/login' />)} />
+        <Route
+          path='/'
+          name='Home'
+          render={() => (currentAdmin ? <Layout /> : <Redirect to='/login' />)}
+        />
       </Switch>
     </div>
   )

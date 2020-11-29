@@ -6,7 +6,7 @@ import { setCurrentAdmin } from '../../redux/admin/admin.actions'
 import { Box, TextField, Button } from '@material-ui/core'
 import useStyles from './login.styles'
 
-interface Props {
+type Props = {
   setCurrentAdmin: (admin: {}) => void
 }
 

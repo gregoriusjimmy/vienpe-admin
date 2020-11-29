@@ -16,7 +16,7 @@ import navigations from '../_nav'
 import { useTheme } from '@material-ui/core/styles'
 import useStyles from './drawer.styles'
 
-interface Props {
+type Props = {
   handleDrawerClose: () => void
   open: boolean
   location: {

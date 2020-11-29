@@ -1,24 +1,24 @@
-import React from 'react';
-import AppBar from '../appbar/appbar.component';
-import Drawer from '../drawer/drawer.component';
-import clsx from 'clsx';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import React from 'react'
+import AppBar from '../appbar/appbar.component'
+import Drawer from '../drawer/drawer.component'
+import clsx from 'clsx'
+import CssBaseline from '@material-ui/core/CssBaseline'
 
-import Content from '../content/content.component';
-import useStyles from './layout.styles';
+import Content from '../content/content.component'
+import useStyles from './layout.styles'
 
 const Layout: React.FC = () => {
-  const { root, content, contentShift, drawerHeader } = useStyles();
+  const { root, content, contentShift, drawerHeader } = useStyles()
 
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(true)
 
   const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleDrawerClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   return (
     <div className={root}>
@@ -34,7 +34,7 @@ const Layout: React.FC = () => {
         <Content />
       </main>
     </div>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout

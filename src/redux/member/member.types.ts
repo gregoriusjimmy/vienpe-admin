@@ -1,3 +1,7 @@
-export const MemberActionTypes = {
-  SET_ALL_MEMBER_DATA: 'SET_ALL_MEMBER_DATA',
+const MemberActionTypes = {
+  FETCH_ALL_MEMBER_START: 'FETCH_ALL_MEMBER_START',
+  FETCH_ALL_MEMBER_SUCCESS: 'FETCH_ALL_MEMBER_SUCCESS',
+  FETCH_ALL_MEMBER_FAILURE: 'FETCH_ALL_MEMBER_FAILURE',
 }
+
+export default MemberActionTypes

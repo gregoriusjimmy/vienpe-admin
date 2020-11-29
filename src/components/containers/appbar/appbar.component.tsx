@@ -9,7 +9,7 @@ import { default as AppBarMUI } from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button'
 
-interface Props {
+type Props = {
   handleDrawerOpen: () => void
   setCurrentAdmin: (admin: null) => void
   open: boolean

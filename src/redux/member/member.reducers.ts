@@ -1,16 +1,33 @@
-import { MemberActionTypes } from './member.types'
+import MemberActionTypes from './member.types'
 
 const INITIAL_STATE = {
-  allMemberData: null,
+  allMember: null,
+  isFetching: false,
+  errorMessage: undefined,
 }
 
 const memberReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case MemberActionTypes.SET_ALL_MEMBER_DATA:
+    case MemberActionTypes.FETCH_ALL_MEMBER_START:
       return {
         ...state,
-        allMemberData: action.payload,
+        isFetching: true,
       }
+
+    case MemberActionTypes.FETCH_ALL_MEMBER_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        allMember: action.payload,
+      }
+
+    case MemberActionTypes.FETCH_ALL_MEMBER_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        errorMessage: action.payload,
+      }
+
     default:
       return state
   }

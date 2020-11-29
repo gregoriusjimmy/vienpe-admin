@@ -1,5 +1,5 @@
-export const fetchRead = async (source) => {
-  const response = await fetch(source)
+export const fetchRead = async (url) => {
+  const response = await fetch(url)
   if (response.status === 400) {
     alert('Failed to fetch')
     return null
@@ -9,8 +9,8 @@ export const fetchRead = async (source) => {
   return data
 }
 
-export const fetchDelete = async (source, dataSend) => {
-  const response = await fetch(source, {
+export const fetchDelete = async (url, dataSend) => {
+  const response = await fetch(url, {
     method: 'delete',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(dataSend),
@@ -21,8 +21,8 @@ export const fetchDelete = async (source, dataSend) => {
   return response.status
 }
 
-export const fetchAdd = async (source, dataSend) => {
-  const response = await fetch(source, {
+export const fetchAdd = async (url, dataSend) => {
+  const response = await fetch(url, {
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(dataSend),
@@ -35,8 +35,8 @@ export const fetchAdd = async (source, dataSend) => {
   return true
 }
 
-export const fetchUpdate = async (source, dataSend) => {
-  const response = await fetch(source, {
+export const fetchUpdate = async (url, dataSend) => {
+  const response = await fetch(url, {
     method: 'put',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(dataSend),

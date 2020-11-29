@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, CardContent, Typography } from '@material-ui/core'
 import useStyles from './form-card.styles'
-interface Props {
+type Props = {
   title: String
   children: JSX.Element
 }

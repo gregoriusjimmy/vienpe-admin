@@ -4,55 +4,68 @@ import FormCard from '../form-card/form-card.component'
 import useStyles from './formDaftarTipeMembership.styles'
 import { fetchAdd } from '../../fetch/fetch'
 
-const INITIAL_FORM = { tipe: '', keterangan: '' }
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+import { connect } from 'react-redux'
 
-const FormDaftarTipeMembership: React.FC = () => {
+import { createStructuredSelector } from 'reselect'
+import { selectAllTipeMembership } from '../../redux/tipe-membership/tipe-membership.selectors'
+
+type FORM_DATA = {
+  tipe: ''
+  keterangan: ''
+}
+
+type Props = {
+  allTipeMembership: []
+}
+
+const FormDaftarTipeMembership: React.FC<Props> = ({ allTipeMembership }) => {
   const { root, submitBtn } = useStyles()
-  const [formValues, setFormValues] = useState(INITIAL_FORM)
+  const [nextAvailableTipe, setNextAvailableTipe] = useState('')
+  const schema = yup.object().shape({
+    tipe: yup.string().required(),
+    keterangan: yup.string().required(),
+  })
 
-  const fetchData = async () => {
-    const response = await fetch(process.env.REACT_APP_TIPEMEMBERSHIP_URL!)
-    if (response.status === 400) {
-      alert('Failed to fetch')
-      return
-    }
-    const data: Array<{ tipe: String; keterangan: String }> = await response.json()
-    const ALPHABHET = 'ABCDEFGHIJKLMNOPQRSTYVWXYZ'
-    const nextAvailableTipe = ALPHABHET.charAt(data.length)
-    setFormValues({ tipe: nextAvailableTipe, keterangan: '' })
-  }
+  const { register, errors, handleSubmit, reset } = useForm<FORM_DATA>({
+    resolver: yupResolver(schema),
+  })
 
   useEffect(() => {
-    fetchData()
+    const ALPHABHET = 'ABCDEFGHIJKLMNOPQRSTYVWXYZ'
+    console.log(allTipeMembership)
+    // const nextAvailableTipe = ALPHABHET.charAt(allTipeMembership.length)
+    // setNextAvailableTipe(nextAvailableTipe)
   }, [])
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const isSucces = await fetchAdd(process.env.REACT_APP_TIPEMEMBERSHIP_URL, formValues)
-    if (isSucces) fetchData()
+  const onSubmit = async (formValues) => {
+    const isSuccess = await fetchAdd(process.env.REACT_APP_TIPEMEMBERSHIP_URL, formValues)
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const { value, name } = e.target
-    setFormValues({ ...formValues, [name]: value })
-  }
-
-  const { tipe, keterangan } = formValues
   return (
     <FormCard title='Daftar Tipe Membership'>
-      <form className={root} noValidate autoComplete='off' onSubmit={handleSubmit}>
+      <form className={root} noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={1}>
           <Grid item xs={2}>
-            <TextField name='tipe' id='tipe' value={tipe} fullWidth label='tipe' disabled />
+            <TextField
+              inputRef={register}
+              name='tipe'
+              value={nextAvailableTipe}
+              fullWidth
+              label='tipe'
+              disabled
+            />
           </Grid>
           <Grid item xs={10}>
             <TextField
+              inputRef={register}
+              error={!!errors.keterangan}
               name='keterangan'
-              id='keterangan'
-              value={keterangan}
               fullWidth
               label='keterangan'
-              onChange={handleChange}
+              helperText={errors.keterangan?.message}
             />
           </Grid>
           <Grid item xs={12}>
@@ -65,5 +78,8 @@ const FormDaftarTipeMembership: React.FC = () => {
     </FormCard>
   )
 }
+const mapStateToProps = createStructuredSelector({
+  allTipeMembership: selectAllTipeMembership,
+})
 
-export default FormDaftarTipeMembership
+export default connect(mapStateToProps)(FormDaftarTipeMembership)
