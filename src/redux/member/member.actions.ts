@@ -1,21 +1,21 @@
 import MemberActionTypes from './member.types'
 
-export const fetchAllMemberStart = () => ({
-  type: MemberActionTypes.FETCH_ALL_MEMBER_START,
+export const loadAllMemberStart = () => ({
+  type: MemberActionTypes.LOAD_ALL_MEMBER_START,
 })
 
-export const fetchAllMemberSuccess = (allMember) => ({
-  type: MemberActionTypes.FETCH_ALL_MEMBER_SUCCESS,
+export const loadAllMemberSuccess = (allMember) => ({
+  type: MemberActionTypes.LOAD_ALL_MEMBER_SUCCESS,
   payload: allMember,
 })
 
-export const fetchAllMemberFailure = (errorMessage) => ({
-  type: MemberActionTypes.FETCH_ALL_MEMBER_FAILURE,
+export const loadAllMemberFailure = (errorMessage) => ({
+  type: MemberActionTypes.LOAD_ALL_MEMBER_FAILURE,
   payload: errorMessage,
 })
 
-export const fetchAllMemberAsync = () => {
+export const loadAllMemberAsync = () => {
   return (dispatch) => {
-    dispatch(fetchAllMemberStart())
+    dispatch(loadAllMemberStart())
   }
 }

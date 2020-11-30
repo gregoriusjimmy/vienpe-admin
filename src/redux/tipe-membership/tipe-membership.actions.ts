@@ -1,24 +1,29 @@
 import TipeMembershipActionTypes from './tipe-membership.types'
 import { fetchRead } from '../../fetch/fetch'
-export const fetchAllTipeMembershipStart = () => ({
-  type: TipeMembershipActionTypes.FETCH_ALL_TIPE_MEMBERSHIP_START,
+export const loadAllTipeMembershipStart = () => ({
+  type: TipeMembershipActionTypes.LOAD_ALL_TIPE_MEMBERSHIP_START,
 })
 
-export const fetchAllTipeMembershipSuccess = (allTipeMembership) => ({
-  type: TipeMembershipActionTypes.FETCH_ALL_TIPE_MEMBERSHIP_SUCCESS,
+export const loadAllTipeMembershipSuccess = (allTipeMembership) => ({
+  type: TipeMembershipActionTypes.LOAD_ALL_TIPE_MEMBERSHIP_SUCCESS,
   payload: allTipeMembership,
 })
 
-export const fetchAllTipeMembershipFailure = (errorMessage) => ({
-  type: TipeMembershipActionTypes.FETCH_ALL_TIPE_MEMBERSHIP_FAILURE,
+export const loadAllTipeMembershipFailure = (errorMessage) => ({
+  type: TipeMembershipActionTypes.LOAD_ALL_TIPE_MEMBERSHIP_FAILURE,
   payload: errorMessage,
 })
 
-export const fetchAllTipeMembershipStartAsync = () => {
+export const loadAllTipeMembershipStartAsync = () => {
   return (dispatch) => {
-    dispatch(fetchAllTipeMembershipStart())
+    dispatch(loadAllTipeMembershipStart())
     fetchRead(process.env.REACT_APP_TIPE_MEMBERSHIP_URL)
-      .then((data) => dispatch(fetchAllTipeMembershipSuccess(data)))
-      .catch((error) => dispatch(fetchAllTipeMembershipFailure(error.message)))
+      .then((data) => dispatch(loadAllTipeMembershipSuccess(data)))
+      .catch((error) => dispatch(loadAllTipeMembershipFailure(error.message)))
   }
 }
+
+export const addTipeMembership = (tipeMembership) => ({
+  type: TipeMembershipActionTypes.ADD_TIPE_MEMBERSHIP,
+  payload: tipeMembership,
+})

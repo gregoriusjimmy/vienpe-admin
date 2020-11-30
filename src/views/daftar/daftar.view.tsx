@@ -1,22 +1,26 @@
 import React, { useEffect } from 'react'
 import Grid from '@material-ui/core/Grid'
-// import { Grid } from '@material-ui/core';
 import FormDaftarMember from '../../components/form-daftar-member/formDaftarMember.component'
 import FormDaftarInstruktur from '../../components/form-daftar-instruktur/formDaftarInstruktur.component'
 import FormDaftarTipeMembership from '../../components/form-daftar-tipe-membership/formDaftarTipeMembership.component'
+import CircularLoading from '../../components/circular-loading/circular-loading.component'
+import { loadAllTipeMembershipStartAsync } from '../../redux/tipe-membership/tipe-membership.actions'
+import { selectIsAllTipeMembershipLoaded } from '../../redux/tipe-membership/tipe-membership.selectors'
 import { connect } from 'react-redux'
-import { fetchAllTipeMembershipStartAsync } from '../../redux/tipe-membership/tipe-membership.actions'
 
 type Props = {
-  fetchAllTipeMembershipStartAsync: () => void
+  loadAllTipeMembershipStartAsync: () => void
+  isLoading: Boolean
 }
 
-const Daftar: React.FC<Props> = ({ fetchAllTipeMembershipStartAsync }) => {
+const Daftar: React.FC<Props> = ({ loadAllTipeMembershipStartAsync, isLoading }) => {
   useEffect(() => {
-    fetchAllTipeMembershipStartAsync()
-  }, [])
+    loadAllTipeMembershipStartAsync()
+  }, [loadAllTipeMembershipStartAsync])
 
-  return (
+  return isLoading ? (
+    <CircularLoading />
+  ) : (
     <Grid container spacing={3}>
       <Grid item xs={6}>
         <FormDaftarMember />
@@ -24,15 +28,18 @@ const Daftar: React.FC<Props> = ({ fetchAllTipeMembershipStartAsync }) => {
       <Grid item xs={6}>
         <FormDaftarInstruktur />
       </Grid>
-
       <Grid item xs={12}>
         <FormDaftarTipeMembership />
       </Grid>
     </Grid>
   )
 }
-const mapDispatchToProps = (dispatch) => ({
-  fetchAllTipeMembershipStartAsync: () => dispatch(fetchAllTipeMembershipStartAsync()),
+const mapStateToProps = (state) => ({
+  isLoading: !selectIsAllTipeMembershipLoaded(state),
 })
 
-export default connect(null, mapDispatchToProps)(Daftar)
+const mapDispatchToProps = (dispatch) => ({
+  loadAllTipeMembershipStartAsync: () => dispatch(loadAllTipeMembershipStartAsync()),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Daftar)
