@@ -10,16 +10,18 @@ import * as yup from 'yup'
 import { connect } from 'react-redux'
 
 import { addTipeMembership } from '../../redux/tipe-membership/tipe-membership.actions'
-import { createStructuredSelector } from 'reselect'
+
 import { selectAllTipeMembership } from '../../redux/tipe-membership/tipe-membership.selectors'
 
+import { RootState } from '../../redux/root-reducer'
+
 type FORM_DATA = {
-  tipe: ''
-  keterangan: ''
+  tipe: string
+  keterangan: string
 }
 
 type Props = {
-  allTipeMembership: []
+  allTipeMembership: [] | null
   addTipeMembership: (tipeMembership) => void
 }
 
@@ -31,22 +33,20 @@ const FormDaftarTipeMembership: React.FC<Props> = ({ allTipeMembership, addTipeM
     keterangan: yup.string().required(),
   })
 
-  const { register, errors, handleSubmit, reset, setValue } = useForm<FORM_DATA>({
+  const { register, errors, handleSubmit, reset } = useForm<FORM_DATA>({
     resolver: yupResolver(schema),
   })
 
-  const findNextAvailableTipe = () => {
-    const ALPHABHET = 'ABCDEFGHIJKLMNOPQRSTYVWXYZ'
-    const findAlphabetType = ALPHABHET.charAt(allTipeMembership.length)
-    setNextAvailableTipe(findAlphabetType)
-    setValue('tipe', findAlphabetType)
-  }
-
   useEffect(() => {
+    const findNextAvailableTipe = () => {
+      const ALPHABHET = 'ABCDEFGHIJKLMNOPQRSTYVWXYZ'
+      const findAlphabetType = ALPHABHET.charAt(allTipeMembership!.length)
+      setNextAvailableTipe(findAlphabetType)
+    }
     findNextAvailableTipe()
   }, [allTipeMembership])
 
-  const onSubmit = async (formValues) => {
+  const onSubmit = async (formValues: FORM_DATA) => {
     formValues.tipe = nextAvailableTipe
     const isSuccess = await fetchAdd(process.env.REACT_APP_TIPE_MEMBERSHIP_URL, formValues)
     if (isSuccess) {
@@ -59,7 +59,14 @@ const FormDaftarTipeMembership: React.FC<Props> = ({ allTipeMembership, addTipeM
       <form className={root} noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={1}>
           <Grid item xs={2}>
-            <TextField inputRef={register} name='tipe' disabled fullWidth label='tipe' />
+            <TextField
+              inputRef={register}
+              value={nextAvailableTipe}
+              name='tipe'
+              disabled
+              fullWidth
+              label='tipe'
+            />
           </Grid>
           <Grid item xs={10}>
             <TextField
@@ -81,8 +88,8 @@ const FormDaftarTipeMembership: React.FC<Props> = ({ allTipeMembership, addTipeM
     </FormCard>
   )
 }
-const mapStateToProps = createStructuredSelector({
-  allTipeMembership: selectAllTipeMembership,
+const mapStateToProps = (state: RootState) => ({
+  allTipeMembership: selectAllTipeMembership(state),
 })
 const mapDispatchToProps = (dispatch) => ({
   addTipeMembership: (tipeMembership) => dispatch(addTipeMembership(tipeMembership)),

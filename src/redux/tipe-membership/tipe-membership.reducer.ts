@@ -1,6 +1,6 @@
-import TipeMembershipActionTypes from './tipe-membership.types'
+import { TipeMembershipActionTypes, TipeMembershipState } from './tipe-membership.types'
 
-const INITIAL_STATE = {
+const INITIAL_STATE: TipeMembershipState = {
   allTipeMembership: null,
   isFetching: false,
   isLoaded: false,
@@ -12,6 +12,7 @@ const tipeMembershipReducer = (state = INITIAL_STATE, action) => {
     case TipeMembershipActionTypes.LOAD_ALL_TIPE_MEMBERSHIP_START:
       return {
         ...state,
+        errorMeesage: undefined,
         isFetching: true,
       }
     case TipeMembershipActionTypes.LOAD_ALL_TIPE_MEMBERSHIP_SUCCESS:

@@ -37,7 +37,6 @@ const Daftar: React.FC<Props> = ({ loadAllTipeMembershipStartAsync, isLoading })
 const mapStateToProps = (state) => ({
   isLoading: !selectIsAllTipeMembershipLoaded(state),
 })
-
 const mapDispatchToProps = (dispatch) => ({
   loadAllTipeMembershipStartAsync: () => dispatch(loadAllTipeMembershipStartAsync()),
 })

@@ -1,15 +1,15 @@
-import TipeMembershipActionTypes from './tipe-membership.types'
+import { TipeMembershipActionTypes } from './tipe-membership.types'
 import { fetchRead } from '../../fetch/fetch'
 export const loadAllTipeMembershipStart = () => ({
   type: TipeMembershipActionTypes.LOAD_ALL_TIPE_MEMBERSHIP_START,
 })
 
-export const loadAllTipeMembershipSuccess = (allTipeMembership) => ({
+export const loadAllTipeMembershipSuccess = (allTipeMembership: []) => ({
   type: TipeMembershipActionTypes.LOAD_ALL_TIPE_MEMBERSHIP_SUCCESS,
   payload: allTipeMembership,
 })
 
-export const loadAllTipeMembershipFailure = (errorMessage) => ({
+export const loadAllTipeMembershipFailure = (errorMessage: string) => ({
   type: TipeMembershipActionTypes.LOAD_ALL_TIPE_MEMBERSHIP_FAILURE,
   payload: errorMessage,
 })
@@ -23,7 +23,7 @@ export const loadAllTipeMembershipStartAsync = () => {
   }
 }
 
-export const addTipeMembership = (tipeMembership) => ({
+export const addTipeMembership = (tipeMembership: { tipe: string; keterangan: string }) => ({
   type: TipeMembershipActionTypes.ADD_TIPE_MEMBERSHIP,
   payload: tipeMembership,
 })
