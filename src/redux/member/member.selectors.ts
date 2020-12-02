@@ -1,5 +1,9 @@
 import { createSelector } from 'reselect'
+import { RootState } from '../root-reducer'
+import { MemberState } from './member.types'
 
-const selectMember = (state) => state.member
+const selectMember = (state: RootState): MemberState => state.member
 
-export const selectAllMember = createSelector([selectMember], (member) => member.allMemberData)
+export const selectAllMember = createSelector([selectMember], (member) => member.allMember)
+
+export const isMemberLoaded = createSelector([selectMember], (member) => member.isLoaded)

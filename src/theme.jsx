@@ -1,4 +1,5 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createMuiTheme } from '@material-ui/core/styles'
+// import '@material-ui/lab/themeAugmentation'
 
 const theme = createMuiTheme({
   palette: {
@@ -15,6 +16,6 @@ const theme = createMuiTheme({
       contrastText: '#000',
     },
   },
-});
+})
 
-export default theme;
+export default theme

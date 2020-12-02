@@ -1,6 +1,6 @@
-import MemberActionTypes from './member.types'
+import { MemberActionTypes, MemberState } from './member.types'
 
-const INITIAL_STATE = {
+const INITIAL_STATE: MemberState = {
   allMember: null,
   isFetching: false,
   isLoaded: false,
@@ -12,6 +12,7 @@ const memberReducer = (state = INITIAL_STATE, action) => {
     case MemberActionTypes.LOAD_ALL_MEMBER_START:
       return {
         ...state,
+        errorMessage: undefined,
         isFetching: true,
       }
 

@@ -11,6 +11,10 @@ const useStyles = makeStyles((theme: Theme) =>
         width: '100%',
       },
     },
+    formControl: {
+      margin: theme.spacing(1),
+      minWidth: 120,
+    },
     submitBtn: {
       float: 'right',
       margin: theme.spacing(2, 0),
