@@ -6,7 +6,7 @@ type Props = {
   name: string
   label: string
   control: any
-  defaultValue: any
+  defaultValue: any 
   children: React.ReactNode
   [otherProps: string]: any
 }
