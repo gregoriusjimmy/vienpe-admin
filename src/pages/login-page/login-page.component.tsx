@@ -1,6 +1,6 @@
 import React from 'react';
 import Login from '../../components/login/login.component';
-import useStyles from './loginPage.styles';
+import useStyles from './login-page.styles';
 import { Box } from '@material-ui/core';
 const LoginPage: React.FC = () => {
   const { root } = useStyles();

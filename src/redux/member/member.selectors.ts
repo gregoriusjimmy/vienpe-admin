@@ -6,4 +6,4 @@ const selectMember = (state: RootState): MemberState => state.member
 
 export const selectAllMember = createSelector([selectMember], (member) => member.allMember)
 
-export const isMemberLoaded = createSelector([selectMember], (member) => member.isLoaded)
+export const selectIsAllMemberLoaded = createSelector([selectMember], (member) => member.isLoaded)

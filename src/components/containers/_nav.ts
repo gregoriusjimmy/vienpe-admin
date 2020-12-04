@@ -1,7 +1,9 @@
 import PeopleIcon from '@material-ui/icons/People'
 import CardMembershipIcon from '@material-ui/icons/CardMembership'
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
-
+import BookIcon from '@material-ui/icons/Book'
+import DirectionsRunIcon from '@material-ui/icons/DirectionsRun'
+import StyleIcon from '@material-ui/icons/Style'
 const navigations = [
   {
     tag: 'nav',
@@ -19,13 +21,19 @@ const navigations = [
     tag: 'nav',
     name: 'Membership',
     to: '/membership',
-    icon: CardMembershipIcon,
+    icon: BookIcon,
   },
   {
     tag: 'nav',
     name: 'Instruktur',
     to: '/instruktur',
-    icon: CardMembershipIcon,
+    icon: DirectionsRunIcon,
+  },
+  {
+    tag: 'nav',
+    name: 'Tipe Membership',
+    to: '/tipe-membership',
+    icon: StyleIcon,
   },
   {
     tag: 'nav',
@@ -36,12 +44,6 @@ const navigations = [
 
   {
     tag: 'divider',
-  },
-  {
-    tag: 'nav',
-    name: 'Daftar',
-    to: '/daftar',
-    icon: PersonAddIcon,
   },
 ]
 

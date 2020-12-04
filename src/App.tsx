@@ -1,6 +1,6 @@
 import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
-import LoginPage from './pages/login-page/loginPage.component'
+import LoginPage from './pages/login-page/login-page.component'
 import { connect } from 'react-redux'
 import { GlobalStyle } from './global.styles'
 import Layout from './components/containers/layout/layout.component'

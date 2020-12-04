@@ -5,7 +5,6 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       display: 'flex',
       flexDirection: 'column',
-
       '& .MuiTextField-root': {
         margin: theme.spacing(1, 2, 1, 0),
         width: '100%',
@@ -15,10 +14,6 @@ const useStyles = makeStyles((theme: Theme) =>
       float: 'right',
       margin: theme.spacing(2, 0),
     },
-    // submitBtn: {
-
-    //   margin: theme.spacing(3, 3),
-    // },
   })
 )
 

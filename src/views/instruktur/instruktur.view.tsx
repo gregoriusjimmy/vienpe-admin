@@ -9,8 +9,8 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import AddButton from '../../components/add-button/add-button.component'
-import FormDaftarMember from '../../components/form-daftar-member/formDaftarMember.component'
 import Modal from '../../components/containers/modal/modal.component'
+import FormDaftarInstruktur from '../../components/form-daftar-instruktur/formDaftarInstruktur.component'
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
@@ -28,7 +28,7 @@ const rows = [
   createData('Cupcake', 305, 3.7, 67, 4.3),
   createData('Gingerbread', 356, 16.0, 49, 3.9),
 ]
-const Member: React.FC = () => {
+const Instruktur: React.FC = () => {
   const classes = useStyles()
   const [open, setOpen] = React.useState(false)
 
@@ -44,9 +44,9 @@ const Member: React.FC = () => {
       <Grid item xs={6}></Grid>
       <Grid container item justify='flex-end' xs={6}>
         <Box m={1}>
-          <AddButton text='Tambah Member' handleClick={handleOpen} />
+          <AddButton text='Tambah Instruktur' handleClick={handleOpen} />
           <Modal open={open} handleClose={handleClose} ariaLabel='modal-add'>
-            <FormDaftarMember />
+            <FormDaftarInstruktur />
           </Modal>
         </Box>
       </Grid>
@@ -80,4 +80,4 @@ const Member: React.FC = () => {
   )
 }
 
-export default Member
+export default Instruktur
