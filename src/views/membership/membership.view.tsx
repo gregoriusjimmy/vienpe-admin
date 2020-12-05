@@ -56,7 +56,6 @@ const Membership: React.FC<Props> = ({
     setOpen(true)
   }
   useEffect(() => {
-    console.log('membershio firing')
     loadAllTipeMembershipStartAsync()
     loadAllMemberStartAsync()
   }, [loadAllTipeMembershipStartAsync, loadAllMemberStartAsync])

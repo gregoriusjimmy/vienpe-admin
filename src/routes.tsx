@@ -1,7 +1,6 @@
 // const Usesr = React.lazy(() => import('./views/users/User'));
 import React from 'react'
 import Member from './views/member/member.view'
-
 import Membership from './views/membership/membership.view'
 import Instruktur from './views/instruktur/instruktur.view'
 import TipeMembership from './views/tipe-membership/tipe-membership.view'

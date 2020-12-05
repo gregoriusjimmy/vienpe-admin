@@ -39,6 +39,7 @@ const Instruktur: React.FC = () => {
   const handleClose = () => {
     setOpen(false)
   }
+
   return (
     <Grid container spacing={3}>
       <Grid item xs={6}></Grid>

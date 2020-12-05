@@ -4,6 +4,7 @@ import LoginPage from './pages/login-page/login-page.component'
 import { connect } from 'react-redux'
 import { GlobalStyle } from './global.styles'
 import Layout from './components/containers/layout/layout.component'
+import { RootState } from './redux/root-reducer'
 type Props = {
   currentAdmin: {}
 }
@@ -29,7 +30,7 @@ const App: React.FC<Props> = ({ currentAdmin }) => {
   )
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   currentAdmin: state.admin.currentAdmin,
 })
 export default connect(mapStateToProps)(App)
