@@ -23,8 +23,11 @@ const Member: React.FC<Props> = ({ allMember, isAllMemberLoaded, loadAllMemberSt
   const [open, setOpen] = React.useState(false)
 
   useEffect(() => {
-    loadAllMemberStartAsync()
-  }, [loadAllMemberStartAsync])
+    const fetchData = () => {
+      loadAllMemberStartAsync()
+    }
+    fetchData()
+  }, [])
 
   const handleOpen = () => {
     setOpen(true)

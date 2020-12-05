@@ -48,7 +48,7 @@ const TipeMembership: React.FC<Props> = ({
 
   useEffect(() => {
     loadAllTipeMembershipStartAsync()
-  }, [loadAllTipeMembershipStartAsync, allTipeMembership])
+  }, [loadAllTipeMembershipStartAsync])
 
   const handleOpen = () => {
     setOpen(true)
@@ -69,11 +69,13 @@ const TipeMembership: React.FC<Props> = ({
         </Box>
       </Grid>
       <Grid item xs={12}>
-        {/* <EnhancedTable
-          title='Tipe Membership'
-          data={allTipeMembership!}
-          arrayDataColumn={Object.keys(allTipeMembership![0])}
-        /> */}
+        {allTipeMembership ? (
+          <EnhancedTable
+            title='Tipe Membership'
+            data={allTipeMembership}
+            arrayDataColumn={['tipe', 'keterangan']}
+          />
+        ) : null}
       </Grid>
     </Grid>
   ) : (

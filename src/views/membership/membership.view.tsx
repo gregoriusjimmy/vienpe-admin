@@ -72,12 +72,7 @@ const Membership: React.FC<Props> = ({
     loadAllTipeMembershipStartAsync()
     loadAllMemberStartAsync()
     loadAllMembershipStartAsync()
-  }, [
-    loadAllTipeMembershipStartAsync,
-    loadAllMemberStartAsync,
-    loadAllMembershipStartAsync,
-    allMembership,
-  ])
+  }, [loadAllTipeMembershipStartAsync, loadAllMemberStartAsync, loadAllMembershipStartAsync])
 
   const handleClose = () => {
     setOpen(false)
@@ -97,11 +92,20 @@ const Membership: React.FC<Props> = ({
         </Box>
       </Grid>
       <Grid item xs={12}>
-        {/* <EnhancedTable
-          title='Membership'
-          data={allMembership!}
-          arrayDataColumn={Object.keys(allMembership![0])}
-        /> */}
+        {allMembership ? (
+          <EnhancedTable
+            title='Membership'
+            data={allMembership}
+            arrayDataColumn={[
+              'id',
+              'id_member',
+              'tipe_membership',
+              'tgl_mulai',
+              'tgl_selesai',
+              'sisa_point',
+            ]}
+          />
+        ) : null}
       </Grid>
     </Grid>
   ) : (

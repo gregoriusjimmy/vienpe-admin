@@ -50,7 +50,7 @@ const FormDaftarMember: React.FC<Props> = ({ addMember }) => {
         no_telp,
         email,
         tgl_lahir,
-        status_membership,
+        status_membership: 'false',
       })
     }
   }
