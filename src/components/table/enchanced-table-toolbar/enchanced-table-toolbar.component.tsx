@@ -14,13 +14,16 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-export const EnhancedTableToolbar = () => {
+type Props = {
+  title: string
+}
+export const EnhancedTableToolbar = ({ title }) => {
   const classes = useStyles()
 
   return (
     <Toolbar className={classes.root}>
       <Typography className={classes.title} variant='h6' id='tableTitle' component='div'>
-        Member
+        {title}
       </Typography>
       <Tooltip title='Filter list'>
         <IconButton aria-label='filter list'>

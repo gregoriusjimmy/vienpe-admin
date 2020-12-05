@@ -13,3 +13,8 @@ export type TipeMembershipState = {
   isLoaded: boolean
   errorMessage: undefined | string
 }
+
+export type TipeMembershipType = {
+  tipe: string
+  keterangan: string
+}

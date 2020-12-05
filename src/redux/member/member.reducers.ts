@@ -13,6 +13,7 @@ const memberReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         errorMessage: undefined,
+        isLoaded: false,
         isFetching: true,
       }
 
@@ -30,6 +31,13 @@ const memberReducer = (state = INITIAL_STATE, action) => {
         isFetching: false,
         isLoaded: false,
         errorMessage: action.payload,
+      }
+
+    case MemberActionTypes.ADD_MEMBER:
+      const id = state.allMember?.slice(-1)[0]['id']! + 1
+      return {
+        ...state,
+        allMember: [...state.allMember!, { id: id, ...action.payload }],
       }
 
     default:

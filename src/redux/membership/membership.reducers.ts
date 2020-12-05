@@ -1,4 +1,4 @@
-import MembershipActionTypes from './membership.types'
+import { MembershipActionTypes } from './membership.types'
 
 const INITIAL_STATE = {
   allMembership: null,

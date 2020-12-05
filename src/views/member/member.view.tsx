@@ -33,11 +33,12 @@ const Member: React.FC<Props> = ({ allMember, isAllMemberLoaded, loadAllMemberSt
   const handleClose = () => {
     setOpen(false)
   }
+
   return isAllMemberLoaded ? (
     <Grid container spacing={3}>
       <Grid item xs={6}></Grid>
       <Grid container item justify='flex-end' xs={6}>
-        <Box m={1}>
+        <Box m={2}>
           <AddButton text='Tambah Member' handleClick={handleOpen} />
           <Modal open={open} handleClose={handleClose} ariaLabel='modal-add'>
             <FormDaftarMember />
@@ -45,7 +46,14 @@ const Member: React.FC<Props> = ({ allMember, isAllMemberLoaded, loadAllMemberSt
         </Box>
       </Grid>
       <Grid item xs={12}>
-        <EnchancedTable data={allMember!} />
+        {console.log(allMember)}
+        {allMember ? (
+          <EnchancedTable
+            title='Member'
+            data={allMember}
+            arrayDataColumn={Object.keys(allMember[0])}
+          />
+        ) : null}
       </Grid>
     </Grid>
   ) : (

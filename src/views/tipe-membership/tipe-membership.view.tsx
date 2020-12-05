@@ -1,25 +1,20 @@
 import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Grid, Box } from '@material-ui/core'
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableContainer from '@material-ui/core/TableContainer'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
-import Paper from '@material-ui/core/Paper'
+
 import AddButton from '../../components/add-button/add-button.component'
 import Modal from '../../components/containers/modal/modal.component'
 import FormDaftarTipeMembership from '../../components/form-daftar-tipe-membership/formDaftarTipeMembership.component'
 import {
+  selectAllTipeMembership,
   selectIsAllTipeMembershipLoaded,
-  selectTipeMembership,
 } from '../../redux/tipe-membership/tipe-membership.selectors'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/root-reducer'
 import { loadAllTipeMembershipStartAsync } from '../../redux/tipe-membership/tipe-membership.actions'
-import { TipeMembershipState } from '../../redux/tipe-membership/tipe-membership.types'
+import { TipeMembershipType } from '../../redux/tipe-membership/tipe-membership.types'
 import CircularLoading from '../../components/circular-loading/circular-loading.component'
+import EnhancedTable from '../../components/table/enhanced-table/enhanced-table.component'
 
 const useStyles = makeStyles({
   table: {
@@ -40,20 +35,20 @@ const rows = [
 ]
 
 type Props = {
+  allTipeMembership: Array<TipeMembershipType> | null
   isTipeMembershipLoaded: boolean
   loadAllTipeMembershipStartAsync: () => void
 }
 const TipeMembership: React.FC<Props> = ({
   isTipeMembershipLoaded,
+  allTipeMembership,
   loadAllTipeMembershipStartAsync,
 }) => {
-  const classes = useStyles()
   const [open, setOpen] = React.useState(false)
 
   useEffect(() => {
-    console.log('tipe firing')
     loadAllTipeMembershipStartAsync()
-  }, [loadAllTipeMembershipStartAsync])
+  }, [loadAllTipeMembershipStartAsync, allTipeMembership])
 
   const handleOpen = () => {
     setOpen(true)
@@ -73,32 +68,13 @@ const TipeMembership: React.FC<Props> = ({
           </Modal>
         </Box>
       </Grid>
-      <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label='simple table'>
-          <TableHead>
-            <TableRow>
-              <TableCell>Dessert (100g serving)</TableCell>
-              <TableCell align='right'>Calories</TableCell>
-              <TableCell align='right'>Fat&nbsp;(g)</TableCell>
-              <TableCell align='right'>Carbs&nbsp;(g)</TableCell>
-              <TableCell align='right'>Protein&nbsp;(g)</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.name}>
-                <TableCell component='th' scope='row'>
-                  {row.name}
-                </TableCell>
-                <TableCell align='right'>{row.calories}</TableCell>
-                <TableCell align='right'>{row.fat}</TableCell>
-                <TableCell align='right'>{row.carbs}</TableCell>
-                <TableCell align='right'>{row.protein}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Grid item xs={12}>
+        {/* <EnhancedTable
+          title='Tipe Membership'
+          data={allTipeMembership!}
+          arrayDataColumn={Object.keys(allTipeMembership![0])}
+        /> */}
+      </Grid>
     </Grid>
   ) : (
     <CircularLoading />
@@ -106,6 +82,7 @@ const TipeMembership: React.FC<Props> = ({
 }
 
 const mapStateToProps = (state: RootState) => ({
+  allTipeMembership: selectAllTipeMembership(state),
   isTipeMembershipLoaded: selectIsAllTipeMembershipLoaded(state),
 })
 

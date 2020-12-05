@@ -48,10 +48,12 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: '100%',
+      padding: theme.spacing(0, 2),
     },
     paper: {
       width: '100%',
       marginBottom: theme.spacing(2),
+      padding: theme.spacing(3),
     },
     table: {
       minWidth: 750,
@@ -71,19 +73,21 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 type Data = {
-  id: string
+  id?: string
   [other: string]: any
 }
 type Props = {
   data: Array<Data>
+  arrayDataColumn: string[]
+  title: string
 }
 
-const EnhancedTable: React.FC<Props> = ({ data }) => {
+const EnhancedTable: React.FC<Props> = ({ data, arrayDataColumn, title }) => {
   const classes = useStyles()
   const [order, setOrder] = React.useState<Order>('asc')
-  const [orderBy, setOrderBy] = React.useState<keyof Data>(data.keys()[0])
+  const [orderBy, setOrderBy] = React.useState<keyof Data>('')
   const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(5)
+  const [rowsPerPage, setRowsPerPage] = React.useState(10)
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
     const isAsc = orderBy === property && order === 'asc'
@@ -102,14 +106,14 @@ const EnhancedTable: React.FC<Props> = ({ data }) => {
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 
-  return (
+  return data ? (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar />
+        <EnhancedTableToolbar title={title} />
         <TableContainer>
           <Table className={classes.table} aria-labelledby='tableTitle' aria-label='enhanced table'>
             <EnhancedTableHead
-              firstData={data[0]}
+              arrayDataColumn={arrayDataColumn}
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
@@ -119,13 +123,12 @@ const EnhancedTable: React.FC<Props> = ({ data }) => {
               {stableSort(data, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
+                  const id = Object.values(row)[0]
                   return (
-                    <TableRow hover>
-                      <TableCell>{row.name}</TableCell>
-                      <TableCell align='right'>{row.calories}</TableCell>
-                      <TableCell align='right'>{row.fat}</TableCell>
-                      <TableCell align='right'>{row.carbs}</TableCell>
-                      <TableCell align='right'>{row.protein}</TableCell>
+                    <TableRow key={id}>
+                      {Object.entries(row).map(([key, value]) => {
+                        return <TableCell key={`${id}-${key}`}>{value}</TableCell>
+                      })}
                     </TableRow>
                   )
                 })}
@@ -138,7 +141,7 @@ const EnhancedTable: React.FC<Props> = ({ data }) => {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[5, 10, 25, { label: 'All', value: data.length }]}
           component='div'
           count={data.length}
           rowsPerPage={rowsPerPage}
@@ -148,7 +151,7 @@ const EnhancedTable: React.FC<Props> = ({ data }) => {
         />
       </Paper>
     </div>
-  )
+  ) : null
 }
 
 export default EnhancedTable

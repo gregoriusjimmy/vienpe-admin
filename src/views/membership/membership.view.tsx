@@ -18,6 +18,13 @@ import { selectIsAllTipeMembershipLoaded } from '../../redux/tipe-membership/tip
 import { selectIsAllMemberLoaded } from '../../redux/member/member.selectors'
 import { RootState } from '../../redux/root-reducer'
 import CircularLoading from '../../components/circular-loading/circular-loading.component'
+import {
+  selectAllMembership,
+  selectIsAllMembershipLoaded,
+} from '../../redux/membership/membership.selectors'
+import { MembershipType } from '../../redux/membership/membership.types'
+import EnhancedTable from '../../components/table/enhanced-table/enhanced-table.component'
+import { loadAllMembershipStartAsync } from '../../redux/membership/membership.actions'
 
 const useStyles = makeStyles({
   table: {
@@ -38,16 +45,22 @@ const rows = [
 ]
 
 type Props = {
+  allMembership: Array<MembershipType> | null
   loadAllMemberStartAsync: () => void
   loadAllTipeMembershipStartAsync: () => void
+  loadAllMembershipStartAsync: () => void
   isAllTipeMembershipLoaded: boolean
   isAllMemberLoaded: boolean
+  isAllMembershipLoaded: boolean
 }
 const Membership: React.FC<Props> = ({
+  allMembership,
   loadAllMemberStartAsync,
   loadAllTipeMembershipStartAsync,
+  loadAllMembershipStartAsync,
   isAllTipeMembershipLoaded,
   isAllMemberLoaded,
+  isAllMembershipLoaded,
 }) => {
   const classes = useStyles()
   const [open, setOpen] = React.useState(false)
@@ -58,13 +71,19 @@ const Membership: React.FC<Props> = ({
   useEffect(() => {
     loadAllTipeMembershipStartAsync()
     loadAllMemberStartAsync()
-  }, [loadAllTipeMembershipStartAsync, loadAllMemberStartAsync])
+    loadAllMembershipStartAsync()
+  }, [
+    loadAllTipeMembershipStartAsync,
+    loadAllMemberStartAsync,
+    loadAllMembershipStartAsync,
+    allMembership,
+  ])
 
   const handleClose = () => {
     setOpen(false)
   }
   const isAllLoaded = () => {
-    return isAllMemberLoaded && isAllTipeMembershipLoaded
+    return isAllMemberLoaded && isAllTipeMembershipLoaded && isAllMembershipLoaded
   }
   return isAllLoaded() ? (
     <Grid container spacing={3}>
@@ -77,32 +96,13 @@ const Membership: React.FC<Props> = ({
           </Modal>
         </Box>
       </Grid>
-      <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label='simple table'>
-          <TableHead>
-            <TableRow>
-              <TableCell>Dessert (100g serving)</TableCell>
-              <TableCell align='right'>Calories</TableCell>
-              <TableCell align='right'>Fat&nbsp;(g)</TableCell>
-              <TableCell align='right'>Carbs&nbsp;(g)</TableCell>
-              <TableCell align='right'>Protein&nbsp;(g)</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.name}>
-                <TableCell component='th' scope='row'>
-                  {row.name}
-                </TableCell>
-                <TableCell align='right'>{row.calories}</TableCell>
-                <TableCell align='right'>{row.fat}</TableCell>
-                <TableCell align='right'>{row.carbs}</TableCell>
-                <TableCell align='right'>{row.protein}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Grid item xs={12}>
+        {/* <EnhancedTable
+          title='Membership'
+          data={allMembership!}
+          arrayDataColumn={Object.keys(allMembership![0])}
+        /> */}
+      </Grid>
     </Grid>
   ) : (
     <CircularLoading />
@@ -111,10 +111,13 @@ const Membership: React.FC<Props> = ({
 const mapStateToProps = (state: RootState) => ({
   isAllTipeMembershipLoaded: selectIsAllTipeMembershipLoaded(state),
   isAllMemberLoaded: selectIsAllMemberLoaded(state),
+  isAllMembershipLoaded: selectIsAllMembershipLoaded(state),
+  allMembership: selectAllMembership(state),
 })
 
 const mapDispatchToProps = (dispatch) => ({
   loadAllTipeMembershipStartAsync: () => dispatch(loadAllTipeMembershipStartAsync()),
   loadAllMemberStartAsync: () => dispatch(loadAllMemberStartAsync()),
+  loadAllMembershipStartAsync: () => dispatch(loadAllMembershipStartAsync()),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Membership)

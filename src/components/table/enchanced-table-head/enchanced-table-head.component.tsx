@@ -21,19 +21,10 @@ const useStyles = makeStyles((theme: Theme) =>
 interface HeadCell {
   id: string
   label: string
-  numeric: boolean
 }
 
-const headCells: Array<HeadCell> = [
-  { id: 'name', numeric: false, label: 'Dessert (100g serving)' },
-  { id: 'calories', numeric: true, label: 'Calories' },
-  { id: 'fat', numeric: true, label: 'Fat (g)' },
-  { id: 'carbs', numeric: true, label: 'Carbs (g)' },
-  { id: 'protein', numeric: true, label: 'Protein (g)' },
-]
-
 type Props = {
-  firstData: {}
+  arrayDataColumn: string[]
   onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void
   order: 'asc' | 'desc'
   orderBy: string | number
@@ -44,30 +35,25 @@ export const EnhancedTableHead: React.FC<Props> = ({
   order,
   orderBy,
   onRequestSort,
-  firstData,
+  arrayDataColumn,
 }) => {
   const classes = useStyles()
   const createSortHandler = (property: string) => (event: React.MouseEvent<unknown>) => {
     onRequestSort(event, property)
   }
   const generateHeadCells = () => {
-    const headCellsArray: Array<{ id: string; label: string; numeric: boolean }> = []
-    let isNumberic = false
-    for (const [key, value] of Object.entries(firstData)) {
-      typeof value === 'number' ? (isNumberic = true) : (isNumberic = false)
-      headCellsArray.push({ id: key, label: key, numeric: isNumberic })
+    const headCellsArray: Array<HeadCell> = []
+
+    for (const column of arrayDataColumn) {
+      headCellsArray.push({ id: column, label: column })
     }
     return headCellsArray
   }
   return (
     <TableHead>
       <TableRow>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
+        {generateHeadCells().map((headCell) => (
+          <TableCell key={headCell.id} sortDirection={orderBy === headCell.id ? order : false}>
             <TableSortLabel
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : 'asc'}

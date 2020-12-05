@@ -2,6 +2,7 @@ export const MemberActionTypes = {
   LOAD_ALL_MEMBER_START: 'LOAD_ALL_MEMBER_START',
   LOAD_ALL_MEMBER_SUCCESS: 'LOAD_ALL_MEMBER_SUCCESS',
   LOAD_ALL_MEMBER_FAILURE: 'LOAD_ALL_MEMBER_FAILURE',
+  ADD_MEMBER: 'ADD_MEMBER',
 }
 export type MemberState = {
   allMember: null | []
@@ -17,5 +18,4 @@ export type MemberType = {
   email: string | null
   tgl_lahir: string | null
   status_membership: boolean
-  created_at: string
 }
