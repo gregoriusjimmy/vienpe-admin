@@ -43,14 +43,14 @@ const FormDaftarMember: React.FC<Props> = ({ addMember }) => {
     if (!formValues.tgl_lahir) formValues.tgl_lahir = null
     const isSuccess = await fetchAdd(process.env.REACT_APP_MEMBER_URL, formValues)
     if (isSuccess) {
-      const { nama, no_telp, email, tgl_lahir, status_membership } = formValues
+      const { nama, no_telp, email, tgl_lahir } = formValues
       reset()
       addMember({
         nama,
         no_telp,
         email,
         tgl_lahir,
-        status_membership: 'false',
+        status_membership: false,
       })
     }
   }

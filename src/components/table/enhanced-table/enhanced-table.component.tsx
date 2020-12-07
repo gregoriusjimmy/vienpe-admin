@@ -80,6 +80,7 @@ type Props = {
   data: Array<Data>
   arrayDataColumn: string[]
   title: string
+  [other: string]: any
 }
 
 const EnhancedTable: React.FC<Props> = ({ data, arrayDataColumn, title }) => {
@@ -124,10 +125,15 @@ const EnhancedTable: React.FC<Props> = ({ data, arrayDataColumn, title }) => {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const id = Object.values(row)[0]
+                  console.log(id)
                   return (
                     <TableRow key={id}>
                       {Object.entries(row).map(([key, value]) => {
-                        return <TableCell key={`${id}-${key}`}>{value}</TableCell>
+                        return (
+                          <TableCell key={`${id}-${key}`}>
+                            {typeof value === 'boolean' ? `${value}` : value}
+                          </TableCell>
+                        )
                       })}
                     </TableRow>
                   )

@@ -14,6 +14,7 @@ import * as yup from 'yup'
 import { MemberType } from '../../redux/member/member.types'
 import ReactHookFormSelect from '../react-hook-form-select/reactHookFormSelect.component'
 import { selectAllTipeMembership } from '../../redux/tipe-membership/tipe-membership.selectors'
+import { addMembership } from '../../redux/membership/membership.actions'
 
 type FORM_DATA = {
   tipe_membership: string
@@ -25,8 +26,9 @@ type FORM_DATA = {
 type Props = {
   allMember: Array<MemberType> | null
   allTipeMembership: Array<{ tipe: string; keterangan: string }> | null
+  addMembership: (membership) => void
 }
-const FormDaftarMembership: React.FC<Props> = ({ allMember, allTipeMembership }) => {
+const FormDaftarMembership: React.FC<Props> = ({ allMember, allTipeMembership, addMembership }) => {
   const classes = useStyles()
   const [tglSelesai, setTglSelesai] = useState('')
   const [idMember, setIdMember] = useState('')
@@ -43,11 +45,14 @@ const FormDaftarMembership: React.FC<Props> = ({ allMember, allTipeMembership })
   })
 
   const onSubmit = async (formValues) => {
-    console.log(formValues)
     formValues.id_member = idMember
-    console.log(formValues)
-    const isSuccess = await fetchAdd(process.env.REACT_APP_MEMBERSHIP_URL, formValues)
-    if (isSuccess) reset()
+    const { id_member, tipe_membership, tgl_mulai, tgl_selesai, sisa_point } = formValues
+    const orderedFormValues = { id_member, tipe_membership, tgl_mulai, tgl_selesai, sisa_point }
+    const isSuccess = await fetchAdd(process.env.REACT_APP_MEMBERSHIP_URL, orderedFormValues)
+    if (isSuccess) {
+      reset()
+      addMembership(orderedFormValues)
+    }
   }
 
   const findMemberId = (event, inputedMemberName: string) => {
@@ -168,4 +173,8 @@ const mapStateToProps = (state: RootState) => ({
   allTipeMembership: selectAllTipeMembership(state),
 })
 
-export default connect(mapStateToProps)(FormDaftarMembership)
+const mapDispatchToProps = (dispatch) => ({
+  addMembership: (membership) => dispatch(addMembership(membership)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(FormDaftarMembership)

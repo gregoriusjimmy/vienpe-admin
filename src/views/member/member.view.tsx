@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { Grid, Box } from '@material-ui/core'
 
@@ -20,14 +20,11 @@ type Props = {
 }
 
 const Member: React.FC<Props> = ({ allMember, isAllMemberLoaded, loadAllMemberStartAsync }) => {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    const fetchData = () => {
-      loadAllMemberStartAsync()
-    }
-    fetchData()
-  }, [])
+    loadAllMemberStartAsync()
+  }, [loadAllMemberStartAsync])
 
   const handleOpen = () => {
     setOpen(true)

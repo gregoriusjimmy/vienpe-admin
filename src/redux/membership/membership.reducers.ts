@@ -1,6 +1,6 @@
-import { MembershipActionTypes } from './membership.types'
+import { MembershipActionTypes, MembershipState } from './membership.types'
 
-const INITIAL_STATE = {
+const INITIAL_STATE: MembershipState = {
   allMembership: null,
   isFetching: false,
   isLoaded: false,
@@ -30,6 +30,12 @@ const membershipReducer = (state = INITIAL_STATE, action) => {
         errorMessage: action.payload,
       }
 
+    case MembershipActionTypes.ADD_MEMBERSHIP:
+      const id = state.allMembership?.slice(-1)[0]['id']! + 1
+      return {
+        ...state,
+        allMembership: [...state.allMembership!, { id: id, ...action.payload }],
+      }
     default:
       return state
   }
