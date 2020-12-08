@@ -1,4 +1,4 @@
-import { MemberActionTypes, MemberType } from './member.types'
+import { MemberActionTypes } from './member.types'
 import { fetchRead } from '../../fetch/fetch'
 export const loadAllMemberStart = () => ({
   type: MemberActionTypes.LOAD_ALL_MEMBER_START,
@@ -27,3 +27,9 @@ export const addMember = (member) => ({
   type: MemberActionTypes.ADD_MEMBER,
   payload: member,
 })
+
+export const updateMemberStart = () => ({
+  type: MemberActionTypes.UPDATE_MEMBER_START,
+})
+
+// export const updateMemberSuccess=(idMember:string,)

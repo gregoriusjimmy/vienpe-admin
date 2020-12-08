@@ -2,12 +2,15 @@ export const MembershipActionTypes = {
   LOAD_ALL_MEMBERSHIP_START: 'LOAD_ALL_MEMBERSHIP_START',
   LOAD_ALL_MEMBERSHIP_SUCCESS: 'LOAD_ALL_MEMBERSHIP_SUCCESS',
   LOAD_ALL_MEMBERSHIP_FAILURE: 'LOAD_ALL_MEMBERSHIP_FAILURE',
-  ADD_MEMBERSHIP: 'ADD_MEMBERSHIP',
+  ADD_MEMBERSHIP_START: 'ADD_MEMBERSHIP_START',
+  ADD_MEMBERSHIP_SUCCESS: 'ADD_MEMBERSHIP_SUCCESS',
+  ADD_MEMBERSHIP_FAILURE: 'ADD_MEMBERSHIP_FAILURE',
 }
 export type MembershipState = {
   allMembership: null | []
   isFetching: boolean
   isLoaded: boolean
+  isAdding: boolean
   errorMessage: undefined | string
 }
 

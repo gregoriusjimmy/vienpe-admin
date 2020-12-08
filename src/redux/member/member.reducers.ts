@@ -4,6 +4,7 @@ const INITIAL_STATE: MemberState = {
   allMember: null,
   isFetching: false,
   isLoaded: false,
+  isUpdating: false,
   errorMessage: undefined,
 }
 
@@ -40,6 +41,18 @@ const memberReducer = (state = INITIAL_STATE, action) => {
         allMember: [...state.allMember!, { id: id, ...action.payload }],
       }
 
+    // case MemberActionTypes.UPDATE_MEMBER_START:
+    //   return{
+    //     ...state,
+    //     isUpdating: true
+    //   }
+
+    // case MemberActionTypes.UPDATE_MEMBER_SUCCESS:
+    //   return{
+    //     ...state,
+    //     isUpdating: false,
+    //     allMember:
+    //   }
     default:
       return state
   }

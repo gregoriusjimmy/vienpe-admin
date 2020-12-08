@@ -14,7 +14,7 @@ import * as yup from 'yup'
 import { MemberType } from '../../redux/member/member.types'
 import ReactHookFormSelect from '../react-hook-form-select/reactHookFormSelect.component'
 import { selectAllTipeMembership } from '../../redux/tipe-membership/tipe-membership.selectors'
-import { addMembership } from '../../redux/membership/membership.actions'
+import { addMembershipStartAsync } from '../../redux/membership/membership.actions'
 
 type FORM_DATA = {
   tipe_membership: string
@@ -26,12 +26,16 @@ type FORM_DATA = {
 type Props = {
   allMember: Array<MemberType> | null
   allTipeMembership: Array<{ tipe: string; keterangan: string }> | null
-  addMembership: (membership) => void
+  addMembershipStartAsync: (membershipForm, member) => void
 }
-const FormDaftarMembership: React.FC<Props> = ({ allMember, allTipeMembership, addMembership }) => {
+const FormDaftarMembership: React.FC<Props> = ({
+  allMember,
+  allTipeMembership,
+  addMembershipStartAsync,
+}) => {
   const classes = useStyles()
   const [tglSelesai, setTglSelesai] = useState('')
-  const [idMember, setIdMember] = useState('')
+  const [selectedMember, setSelectedMember] = useState<MemberType>()
 
   const schema = yup.object().shape({
     nama_member: yup.string().required(),
@@ -45,21 +49,22 @@ const FormDaftarMembership: React.FC<Props> = ({ allMember, allTipeMembership, a
   })
 
   const onSubmit = async (formValues) => {
-    formValues.id_member = idMember
+    if (!selectedMember) return alert('select member')
+    formValues.id_member = selectedMember.id
     const { id_member, tipe_membership, tgl_mulai, tgl_selesai, sisa_point } = formValues
     const orderedFormValues = { id_member, tipe_membership, tgl_mulai, tgl_selesai, sisa_point }
     const isSuccess = await fetchAdd(process.env.REACT_APP_MEMBERSHIP_URL, orderedFormValues)
     if (isSuccess) {
       reset()
-      addMembership(orderedFormValues)
+      addMembershipStartAsync(orderedFormValues, { ...selectedMember, status_membership: true })
     }
   }
 
   const findMemberId = (event, inputedMemberName: string) => {
-    const selectedMember = allMember!.find(
+    const findMember = allMember!.find(
       (member) => member.nama.toLowerCase() === inputedMemberName.toLowerCase()
     )
-    if (selectedMember) setIdMember(selectedMember.id)
+    if (findMember) setSelectedMember(findMember)
   }
   const calculateTglSelesai = (e: any) => {
     const convertedTglMulai: Date = new Date(e.target.value)
@@ -174,7 +179,8 @@ const mapStateToProps = (state: RootState) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  addMembership: (membership) => dispatch(addMembership(membership)),
+  addMembershipStartAsync: (membershipForm, member) =>
+    dispatch(addMembershipStartAsync(membershipForm, member)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormDaftarMembership)
