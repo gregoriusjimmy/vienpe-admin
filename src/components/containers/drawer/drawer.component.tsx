@@ -25,8 +25,6 @@ type Props = {
 }
 
 const Drawer: React.FC<Props> = ({ handleDrawerClose, open, location }) => {
-  console.log(location)
-
   const { drawer, drawerPaper, drawerHeader, divider, currentNavColor } = useStyles()
   const theme = useTheme()
 

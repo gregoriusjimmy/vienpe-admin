@@ -7,9 +7,8 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { connect } from 'react-redux'
-import { RootState } from '../../redux/root-reducer'
-import { addMember } from '../../redux/member/member.actions'
-import { MemberType } from '../../redux/member/member.types'
+
+import { addMemberStartAsync } from '../../redux/member/member.actions'
 
 type FORM_DATA = {
   nama: ''
@@ -19,10 +18,10 @@ type FORM_DATA = {
 }
 
 type Props = {
-  addMember: (member) => void
+  addMemberStartAsync: (member) => void
 }
 
-const FormDaftarMember: React.FC<Props> = ({ addMember }) => {
+const FormDaftarMember: React.FC<Props> = ({ addMemberStartAsync }) => {
   const { root, submitBtn } = useStyles()
 
   const schema = yup.object().shape({
@@ -37,15 +36,13 @@ const FormDaftarMember: React.FC<Props> = ({ addMember }) => {
   })
 
   const onSubmit = async (formValues) => {
-    console.log(formValues)
-
     if (!formValues.email) formValues.email = null
     if (!formValues.tgl_lahir) formValues.tgl_lahir = null
     const isSuccess = await fetchAdd(process.env.REACT_APP_MEMBER_URL, formValues)
     if (isSuccess) {
       const { nama, no_telp, email, tgl_lahir } = formValues
       reset()
-      addMember({
+      addMemberStartAsync({
         nama,
         no_telp,
         email,
@@ -112,6 +109,6 @@ const FormDaftarMember: React.FC<Props> = ({ addMember }) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  addMember: (member) => dispatch(addMember(member)),
+  addMemberStartAsync: (member) => dispatch(addMemberStartAsync(member)),
 })
 export default connect(null, mapDispatchToProps)(FormDaftarMember)

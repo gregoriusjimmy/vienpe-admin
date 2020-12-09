@@ -1,5 +1,5 @@
 import { MemberActionTypes } from './member.types'
-import { fetchRead } from '../../fetch/fetch'
+import { fetchAdd, fetchRead } from '../../fetch/fetch'
 export const loadAllMemberStart = () => ({
   type: MemberActionTypes.LOAD_ALL_MEMBER_START,
 })
@@ -23,13 +23,28 @@ export const loadAllMemberStartAsync = () => {
   }
 }
 
-export const addMember = (member) => ({
-  type: MemberActionTypes.ADD_MEMBER,
-  payload: member,
+export const addMemberStart = () => ({
+  type: MemberActionTypes.ADD_MEMBER_START,
 })
 
-export const updateMemberStart = () => ({
-  type: MemberActionTypes.UPDATE_MEMBER_START,
+export const addMemberSuccess = (newMember) => ({
+  type: MemberActionTypes.ADD_MEMBER_SUCCESS,
+  payload: newMember,
 })
 
-// export const updateMemberSuccess=(idMember:string,)
+export const addMemberFailure = (errorMessage) => ({
+  type: MemberActionTypes.ADD_MEMBER_FAILURE,
+  payload: errorMessage,
+})
+
+export const addMemberStartAsync = (memberForm: {}) => {
+  return (dispatch) => {
+    dispatch(addMemberStart())
+    fetchAdd(process.env.REACT_APP_MEMBERSHIP_URL, memberForm)
+      .then((response) => {
+        dispatch(addMemberSuccess(memberForm))
+        alert('success')
+      })
+      .catch((error) => dispatch(addMemberFailure(error.message)))
+  }
+}

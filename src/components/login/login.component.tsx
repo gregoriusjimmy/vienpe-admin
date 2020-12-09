@@ -19,7 +19,6 @@ const Login: React.FC<Props> = ({ setCurrentAdmin }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setCurrentAdmin({ id: 123, name: 'admin' })
-    console.log('done')
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

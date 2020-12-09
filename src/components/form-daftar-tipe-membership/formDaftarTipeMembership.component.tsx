@@ -39,7 +39,7 @@ const FormDaftarTipeMembership: React.FC<Props> = ({ allTipeMembership, addTipeM
 
   useEffect(() => {
     const findNextAvailableTipe = () => {
-      const ALPHABHET = 'ABCDEFGHIJKLMNOPQRSTYVWXYZ'
+      const ALPHABHET = 'ABCDEFGHIJKLMNOPQRSTVWXYZ'
       const findAlphabetType = ALPHABHET.charAt(allTipeMembership!.length)
       setNextAvailableTipe(findAlphabetType)
     }

@@ -125,7 +125,7 @@ const EnhancedTable: React.FC<Props> = ({ data, arrayDataColumn, title }) => {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const id = Object.values(row)[0]
-                  console.log(id)
+
                   return (
                     <TableRow key={id}>
                       {Object.entries(row).map(([key, value]) => {

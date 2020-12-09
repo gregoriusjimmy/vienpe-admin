@@ -46,7 +46,6 @@ const Member: React.FC<Props> = ({ allMember, isAllMemberLoaded, loadAllMemberSt
         </Box>
       </Grid>
       <Grid item xs={12}>
-        {console.log(allMember)}
         {allMember ? (
           <EnchancedTable
             title='Member'
