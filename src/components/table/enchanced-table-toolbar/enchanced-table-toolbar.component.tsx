@@ -14,9 +14,6 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-type Props = {
-  title: string
-}
 export const EnhancedTableToolbar = ({ title }) => {
   const classes = useStyles()
 

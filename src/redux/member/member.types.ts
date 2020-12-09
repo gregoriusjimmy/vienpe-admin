@@ -10,8 +10,6 @@ export const MemberActionTypes = {
   UPDATE_MEMBER_FAILURE: 'UPDATE_MEMBER_FAILURE',
 }
 
-export type LOAD_ALL_MEMBE_START = { isLoaded: false }
-
 export type MemberState = {
   allMember: null | []
   isFetching: boolean

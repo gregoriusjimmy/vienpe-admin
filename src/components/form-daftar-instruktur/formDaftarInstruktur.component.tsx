@@ -28,8 +28,6 @@ const FormDaftarInstruktur: React.FC = () => {
   })
 
   const onSubmit = async (formValues) => {
-    console.log(formValues)
-
     if (!formValues.email) formValues.email = undefined
     if (!formValues.tgl_lahir) formValues.tgl_lahir = undefined
     const isSuccess = await fetchAdd(process.env.REACT_APP_INSTRUKTUR_URL, formValues)

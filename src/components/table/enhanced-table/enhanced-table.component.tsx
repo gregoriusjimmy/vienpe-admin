@@ -77,7 +77,7 @@ type Data = {
   [other: string]: any
 }
 type Props = {
-  data: Array<Data>
+  data: Array<Data> | any
   arrayDataColumn: string[]
   title: string
   [other: string]: any
