@@ -9,11 +9,12 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { connect } from 'react-redux'
 
-import { addTipeMembership } from '../../redux/tipe-membership/tipe-membership.actions'
+import { addTipeMembershipStartAsync } from '../../redux/tipe-membership/tipe-membership.actions'
 
 import { selectAllTipeMembership } from '../../redux/tipe-membership/tipe-membership.selectors'
 
 import { RootState } from '../../redux/root-reducer'
+import { TipeMembershipType } from '../../redux/tipe-membership/tipe-membership.types'
 
 type FORM_DATA = {
   tipe: string
@@ -22,10 +23,13 @@ type FORM_DATA = {
 
 type Props = {
   allTipeMembership: [] | null
-  addTipeMembership: (tipeMembership) => void
+  addTipeMembershipStartAsync: (tipeMembership: FORM_DATA) => void
 }
 
-const FormDaftarTipeMembership: React.FC<Props> = ({ allTipeMembership, addTipeMembership }) => {
+const FormDaftarTipeMembership: React.FC<Props> = ({
+  allTipeMembership,
+  addTipeMembershipStartAsync,
+}) => {
   const { root, submitBtn } = useStyles()
   const [nextAvailableTipe, setNextAvailableTipe] = useState('')
 
@@ -48,11 +52,7 @@ const FormDaftarTipeMembership: React.FC<Props> = ({ allTipeMembership, addTipeM
 
   const onSubmit = async (formValues: FORM_DATA) => {
     formValues.tipe = nextAvailableTipe
-    const isSuccess = await fetchAdd(process.env.REACT_APP_TIPE_MEMBERSHIP_URL, formValues)
-    if (isSuccess) {
-      reset()
-      addTipeMembership(formValues)
-    }
+    addTipeMembershipStartAsync(formValues)
   }
   return (
     <FormCard title='Daftar Tipe Membership'>
@@ -92,7 +92,8 @@ const mapStateToProps = (state: RootState) => ({
   allTipeMembership: selectAllTipeMembership(state),
 })
 const mapDispatchToProps = (dispatch) => ({
-  addTipeMembership: (tipeMembership) => dispatch(addTipeMembership(tipeMembership)),
+  addTipeMembershipStartAsync: (tipeMembership: TipeMembershipType) =>
+    dispatch(addTipeMembershipStartAsync(tipeMembership)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormDaftarTipeMembership)

@@ -9,6 +9,7 @@ import * as yup from 'yup'
 import { connect } from 'react-redux'
 
 import { addMemberStartAsync } from '../../redux/member/member.actions'
+import { MemberType } from '../../redux/member/member.types'
 
 type FORM_DATA = {
   nama: ''
@@ -18,7 +19,7 @@ type FORM_DATA = {
 }
 
 type Props = {
-  addMemberStartAsync: (member) => void
+  addMemberStartAsync: (member: FORM_DATA) => void
 }
 
 const FormDaftarMember: React.FC<Props> = ({ addMemberStartAsync }) => {
@@ -39,17 +40,10 @@ const FormDaftarMember: React.FC<Props> = ({ addMemberStartAsync }) => {
     if (!formValues.email) formValues.email = null
     if (!formValues.tgl_lahir) formValues.tgl_lahir = null
     const isSuccess = await fetchAdd(process.env.REACT_APP_MEMBER_URL, formValues)
-    if (isSuccess) {
-      const { nama, no_telp, email, tgl_lahir } = formValues
-      reset()
-      addMemberStartAsync({
-        nama,
-        no_telp,
-        email,
-        tgl_lahir,
-        status_membership: false,
-      })
-    }
+
+    const { nama, no_telp, email, tgl_lahir } = formValues
+    const orderedFormValues = { nama, no_telp, email, tgl_lahir, status_membership: false }
+    addMemberStartAsync(orderedFormValues)
   }
 
   return (
