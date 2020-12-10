@@ -31,7 +31,14 @@ const Member: React.FC<Props> = ({ allMember, isAllMemberLoaded, loadAllMemberSt
   const handleClose = () => {
     setOpen(false)
   }
-
+  const headData: Array<{ id: string; label: string }> = [
+    { id: 'id', label: 'ID' },
+    { id: 'nama', label: 'Nama' },
+    { id: 'no_telp', label: 'No. Telp' },
+    { id: 'email', label: 'Email' },
+    { id: 'tgl_lahir', label: 'Tgl Lahir' },
+    { id: 'status_membership', label: 'Membership?' },
+  ]
   return isAllMemberLoaded ? (
     <Grid container spacing={3}>
       <Grid item xs={6}></Grid>
@@ -45,11 +52,7 @@ const Member: React.FC<Props> = ({ allMember, isAllMemberLoaded, loadAllMemberSt
       </Grid>
       <Grid item xs={12}>
         {allMember ? (
-          <EnchancedTable
-            title='Member'
-            data={allMember}
-            arrayDataColumn={Object.keys(allMember[0])}
-          />
+          <EnchancedTable title='Member' data={allMember} arrayDataColumn={headData} />
         ) : null}
       </Grid>
     </Grid>

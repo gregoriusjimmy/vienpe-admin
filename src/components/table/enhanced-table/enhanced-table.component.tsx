@@ -78,7 +78,7 @@ type Data = {
 }
 type Props = {
   data: Array<Data> | any
-  arrayDataColumn: string[]
+  arrayDataColumn: Array<{ id: string; label: string }>
   title: string
   [other: string]: any
 }

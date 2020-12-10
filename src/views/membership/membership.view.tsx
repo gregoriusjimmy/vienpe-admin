@@ -75,6 +75,15 @@ const Membership: React.FC<Props> = ({
       return orderedData
     })
   }
+  const headData: Array<{ id: string; label: string }> = [
+    { id: 'id', label: 'ID' },
+    { id: 'id_member', label: 'ID Member' },
+    { id: 'nama', label: 'Nama' },
+    { id: 'tipe_membership', label: 'Tipe Memberhsip' },
+    { id: 'tgl_mulai', label: 'Tgl Mulai' },
+    { id: 'tgl_selesai', label: 'Tgl Selesai?' },
+    { id: 'sisa_point', label: 'Sisa Point' },
+  ]
   return isAllLoaded() ? (
     <Grid container spacing={3}>
       <Grid item xs={6}></Grid>
@@ -91,15 +100,7 @@ const Membership: React.FC<Props> = ({
           <EnhancedTable
             title='Membership'
             data={mapAllMembershipWithMemberName()}
-            arrayDataColumn={[
-              'id',
-              'id_member',
-              'nama',
-              'tipe_membership',
-              'tgl_mulai',
-              'tgl_selesai',
-              'sisa_point',
-            ]}
+            arrayDataColumn={headData}
           />
         ) : null}
       </Grid>

@@ -37,6 +37,10 @@ const TipeMembership: React.FC<Props> = ({
   const handleClose = () => {
     setOpen(false)
   }
+  const headData: Array<{ id: string; label: string }> = [
+    { id: 'tipe', label: 'Tipe' },
+    { id: 'keterangan', label: 'Keterangan' },
+  ]
   return isTipeMembershipLoaded ? (
     <Grid container spacing={3}>
       <Grid item xs={6}></Grid>
@@ -53,7 +57,7 @@ const TipeMembership: React.FC<Props> = ({
           <EnhancedTable
             title='Tipe Membership'
             data={allTipeMembership}
-            arrayDataColumn={['tipe', 'keterangan']}
+            arrayDataColumn={headData}
           />
         ) : null}
       </Grid>

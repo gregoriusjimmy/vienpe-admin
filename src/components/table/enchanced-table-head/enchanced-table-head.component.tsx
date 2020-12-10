@@ -18,13 +18,13 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-interface HeadCell {
+type HeadCell = {
   id: string
   label: string
 }
 
 type Props = {
-  arrayDataColumn: string[]
+  arrayDataColumn: Array<HeadCell>
   onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void
   order: 'asc' | 'desc'
   orderBy: string | number
@@ -41,18 +41,11 @@ export const EnhancedTableHead: React.FC<Props> = ({
   const createSortHandler = (property: string) => (event: React.MouseEvent<unknown>) => {
     onRequestSort(event, property)
   }
-  const generateHeadCells = () => {
-    const headCellsArray: Array<HeadCell> = []
 
-    for (const column of arrayDataColumn) {
-      headCellsArray.push({ id: column, label: column })
-    }
-    return headCellsArray
-  }
   return (
     <TableHead>
       <TableRow>
-        {generateHeadCells().map((headCell) => (
+        {arrayDataColumn.map((headCell) => (
           <TableCell key={headCell.id} sortDirection={orderBy === headCell.id ? order : false}>
             <TableSortLabel
               active={orderBy === headCell.id}
