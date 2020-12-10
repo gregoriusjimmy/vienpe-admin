@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import { Grid, Box } from '@material-ui/core'
-
 import AddButton from '../../components/add-button/add-button.component'
 import Modal from '../../components/containers/modal/modal.component'
+import CircularLoading from '../../components/circular-loading/circular-loading.component'
+import EnhancedTable from '../../components/table/enhanced-table/enhanced-table.component'
 import FormDaftarTipeMembership from '../../components/form-daftar-tipe-membership/formDaftarTipeMembership.component'
 import {
   selectAllTipeMembership,
@@ -13,8 +13,6 @@ import { connect } from 'react-redux'
 import { RootState } from '../../redux/root-reducer'
 import { loadAllTipeMembershipStartAsync } from '../../redux/tipe-membership/tipe-membership.actions'
 import { TipeMembershipType } from '../../redux/tipe-membership/tipe-membership.types'
-import CircularLoading from '../../components/circular-loading/circular-loading.component'
-import EnhancedTable from '../../components/table/enhanced-table/enhanced-table.component'
 
 type Props = {
   allTipeMembership: Array<TipeMembershipType> | null

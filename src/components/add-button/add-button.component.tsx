@@ -1,8 +1,9 @@
 import React from 'react'
 import { Button } from '@material-ui/core'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
-import AddIcon from '@material-ui/icons/Add'
 import { green } from '@material-ui/core/colors'
+import AddIcon from '@material-ui/icons/Add'
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {

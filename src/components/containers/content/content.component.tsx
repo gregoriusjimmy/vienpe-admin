@@ -1,6 +1,7 @@
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
-import routes from '../../../routes';
+import React from 'react'
+import routes from '../../../routes'
+import { Route, Switch } from 'react-router-dom'
+import { Fade } from '@material-ui/core'
 
 const Content: React.FC = () => {
   return (
@@ -15,19 +16,19 @@ const Content: React.FC = () => {
                 exact={route.exact}
                 name={route.name}
                 render={(props) => (
-                  // <CFade>
-                  <route.component {...props} />
-                  // </CFade>
+                  <Fade>
+                    <route.component {...props} />
+                  </Fade>
                 )}
               />
             )
-          );
+          )
         })}
 
         {/* <Redirect from="/" to="/dashboard" /> */}
       </Switch>
     </div>
-  );
-};
+  )
+}
 
-export default React.memo(Content);
+export default React.memo(Content)

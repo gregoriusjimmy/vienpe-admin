@@ -3,6 +3,8 @@ import { Grid, Box } from '@material-ui/core'
 import AddButton from '../../components/add-button/add-button.component'
 import Modal from '../../components/containers/modal/modal.component'
 import FormDaftarMembership from '../../components/form-daftar-membership/formDaftarMembership.component'
+import CircularLoading from '../../components/circular-loading/circular-loading.component'
+import EnhancedTable from '../../components/table/enhanced-table/enhanced-table.component'
 import { connect } from 'react-redux'
 import { loadAllTipeMembershipStartAsync } from '../../redux/tipe-membership/tipe-membership.actions'
 import { loadAllMemberStartAsync } from '../../redux/member/member.actions'
@@ -12,13 +14,11 @@ import {
   selectIsAllMemberLoaded,
 } from '../../redux/member/member.selectors'
 import { RootState } from '../../redux/root-reducer'
-import CircularLoading from '../../components/circular-loading/circular-loading.component'
 import {
   selectAllMembership,
   selectIsAllMembershipLoaded,
 } from '../../redux/membership/membership.selectors'
 import { MembershipType } from '../../redux/membership/membership.types'
-import EnhancedTable from '../../components/table/enhanced-table/enhanced-table.component'
 import { loadAllMembershipStartAsync } from '../../redux/membership/membership.actions'
 
 type Props = {
@@ -86,7 +86,6 @@ const Membership: React.FC<Props> = ({
           </Modal>
         </Box>
       </Grid>
-      {console.log(mapAllMembershipWithMemberName())}
       <Grid item xs={12}>
         {allMembership ? (
           <EnhancedTable

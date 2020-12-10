@@ -6,10 +6,10 @@ type Props = {
   children: JSX.Element
 }
 const FormCard: React.FC<Props> = ({ title, children }) => {
-  const { content } = useStyles()
+  const classes = useStyles()
   return (
     <Card>
-      <CardContent className={content}>
+      <CardContent className={classes.content}>
         <Typography variant='h5'>{title}</Typography>
         {children}
       </CardContent>

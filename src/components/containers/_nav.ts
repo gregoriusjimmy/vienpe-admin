@@ -4,7 +4,16 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd'
 import BookIcon from '@material-ui/icons/Book'
 import DirectionsRunIcon from '@material-ui/icons/DirectionsRun'
 import StyleIcon from '@material-ui/icons/Style'
-const navigations = [
+import { ReactNode } from 'react'
+
+export type NavType = {
+  tag: string
+  name?: string
+  to?: string
+  icon?: React.FC
+}
+
+const navigations: Array<NavType | { tag: 'divider' }> = [
   {
     tag: 'nav',
     name: 'Absensi',

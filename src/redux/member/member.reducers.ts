@@ -9,7 +9,7 @@ const INITIAL_STATE: MemberState = {
   errorMessage: undefined,
 }
 
-const memberReducer = (state = INITIAL_STATE, action) => {
+const memberReducer = (state = INITIAL_STATE, action: { type: string; payload: any }) => {
   switch (action.type) {
     case MemberActionTypes.LOAD_ALL_MEMBER_START:
       return {

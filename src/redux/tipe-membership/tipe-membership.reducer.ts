@@ -7,7 +7,7 @@ const INITIAL_STATE: TipeMembershipState = {
   errorMessage: undefined,
 }
 
-const tipeMembershipReducer = (state = INITIAL_STATE, action) => {
+const tipeMembershipReducer = (state = INITIAL_STATE, action: { type: string; payload: any }) => {
   switch (action.type) {
     case TipeMembershipActionTypes.LOAD_ALL_TIPE_MEMBERSHIP_START:
       return {

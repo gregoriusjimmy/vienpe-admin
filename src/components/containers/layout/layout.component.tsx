@@ -8,7 +8,7 @@ import Content from '../content/content.component'
 import useStyles from './layout.styles'
 
 const Layout: React.FC = () => {
-  const { root, content, contentShift, drawerHeader } = useStyles()
+  const classes = useStyles()
 
   const [open, setOpen] = React.useState(true)
 
@@ -21,16 +21,16 @@ const Layout: React.FC = () => {
   }
 
   return (
-    <div className={root}>
+    <div className={classes.root}>
       <CssBaseline />
       <AppBar handleDrawerOpen={handleDrawerOpen} open={open} />
       <Drawer handleDrawerClose={handleDrawerClose} open={open} />
       <main
-        className={clsx(content, {
-          [contentShift]: open,
+        className={clsx(classes.content, {
+          [classes.contentShift]: open,
         })}
       >
-        <div className={drawerHeader} />
+        <div className={classes.drawerHeader} />
         <Content />
       </main>
     </div>

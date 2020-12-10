@@ -8,7 +8,7 @@ const INITIAL_STATE: MembershipState = {
   errorMessage: undefined,
 }
 
-const membershipReducer = (state = INITIAL_STATE, action) => {
+const membershipReducer = (state = INITIAL_STATE, action: { type: string; payload: any }) => {
   switch (action.type) {
     case MembershipActionTypes.LOAD_ALL_MEMBERSHIP_START:
       return {

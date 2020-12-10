@@ -13,13 +13,9 @@ interface View {
 }
 
 const routes: Array<View> = [
-  //   { path: '/', exact: true, name: 'Home' },
   { path: '/member', name: 'Member', component: Member },
   { path: '/membership', name: 'Membership', component: Membership },
   { path: '/instruktur', name: 'Instruktur', component: Instruktur },
   { path: '/tipe-membership', name: 'Tipe Membership', component: TipeMembership },
-
-  //   { path: '/theme', name: 'Theme', component: Colors, exact: true },
-  //   { path: '/theme/colors', name: 'Colors', component: Colors },
 ]
 export default routes
