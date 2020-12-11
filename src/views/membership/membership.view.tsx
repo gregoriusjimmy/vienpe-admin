@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Grid, Box } from '@material-ui/core'
 import AddButton from '../../components/add-button/add-button.component'
 import Modal from '../../components/containers/modal/modal.component'
@@ -41,7 +41,8 @@ const Membership: React.FC<Props> = ({
   isAllMembershipLoaded,
   allMemberNameWithId,
 }) => {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
+  const [searchField, setSearchField] = useState('')
 
   const handleOpen = () => {
     setOpen(true)
@@ -75,6 +76,9 @@ const Membership: React.FC<Props> = ({
       return orderedData
     })
   }
+  const handleSearchFieldChange = (e) => {
+    setSearchField(e.target.value)
+  }
   const headData: Array<{ id: string; label: string }> = [
     { id: 'id', label: 'ID' },
     { id: 'id_member', label: 'ID Member' },
@@ -98,9 +102,13 @@ const Membership: React.FC<Props> = ({
       <Grid item xs={12}>
         {allMembership ? (
           <EnhancedTable
+            inputSearch={searchField}
+            onSearchFieldChange={handleSearchFieldChange}
+            searchBasedOnId='nama'
             title='Membership'
             data={mapAllMembershipWithMemberName()}
             arrayDataColumn={headData}
+            placeholder='Search nama...'
           />
         ) : null}
       </Grid>

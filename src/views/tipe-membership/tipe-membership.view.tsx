@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Grid, Box } from '@material-ui/core'
 import AddButton from '../../components/add-button/add-button.component'
 import Modal from '../../components/containers/modal/modal.component'
@@ -24,7 +24,8 @@ const TipeMembership: React.FC<Props> = ({
   allTipeMembership,
   loadAllTipeMembershipStartAsync,
 }) => {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
+  const [searchField, setSearchField] = useState('')
 
   useEffect(() => {
     loadAllTipeMembershipStartAsync()
@@ -41,6 +42,10 @@ const TipeMembership: React.FC<Props> = ({
     { id: 'tipe', label: 'Tipe' },
     { id: 'keterangan', label: 'Keterangan' },
   ]
+
+  const handleSearchFieldChange = (e) => {
+    setSearchField(e.target.value)
+  }
   return isTipeMembershipLoaded ? (
     <Grid container spacing={3}>
       <Grid item xs={6}></Grid>
@@ -55,6 +60,10 @@ const TipeMembership: React.FC<Props> = ({
       <Grid item xs={12}>
         {allTipeMembership ? (
           <EnhancedTable
+            inputSearch={searchField}
+            onSearchFieldChange={handleSearchFieldChange}
+            searchBasedOnId='keterangan'
+            placeholder='Search keterangan...'
             title='Tipe Membership'
             data={allTipeMembership}
             arrayDataColumn={headData}

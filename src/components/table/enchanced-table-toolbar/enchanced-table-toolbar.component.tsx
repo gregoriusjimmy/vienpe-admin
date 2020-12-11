@@ -1,7 +1,7 @@
 import React from 'react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import { Toolbar, Typography, Tooltip, IconButton } from '@material-ui/core'
-import FilterListIcon from '@material-ui/icons/FilterList'
+import { Toolbar, Typography } from '@material-ui/core'
+import SearchBox from '../../search-box/search-box.component'
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -14,7 +14,17 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-export const EnhancedTableToolbar = ({ title }) => {
+type Props = {
+  title: string
+  placeholder: string
+  handleSearchChange: (e) => void
+}
+
+export const EnhancedTableToolbar: React.FC<Props> = ({
+  title,
+  placeholder,
+  handleSearchChange,
+}) => {
   const classes = useStyles()
 
   return (
@@ -22,11 +32,7 @@ export const EnhancedTableToolbar = ({ title }) => {
       <Typography className={classes.title} variant='h6' id='tableTitle' component='div'>
         {title}
       </Typography>
-      <Tooltip title='Filter list'>
-        <IconButton aria-label='filter list'>
-          <FilterListIcon />
-        </IconButton>
-      </Tooltip>
+      <SearchBox onChange={handleSearchChange} placeholder={placeholder} />
     </Toolbar>
   )
 }

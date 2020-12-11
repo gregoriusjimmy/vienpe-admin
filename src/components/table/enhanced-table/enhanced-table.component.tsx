@@ -80,10 +80,22 @@ type Props = {
   data: Array<Data> | any
   arrayDataColumn: Array<{ id: string; label: string }>
   title: string
+  placeholder: string
+  inputSearch: string
+  searchBasedOnId: string
+  onSearchFieldChange: (e) => void
   [other: string]: any
 }
 
-const EnhancedTable: React.FC<Props> = ({ data, arrayDataColumn, title }) => {
+const EnhancedTable: React.FC<Props> = ({
+  data,
+  arrayDataColumn,
+  title,
+  placeholder,
+  inputSearch,
+  searchBasedOnId,
+  onSearchFieldChange,
+}) => {
   const classes = useStyles()
   const [order, setOrder] = React.useState<Order>('asc')
   const [orderBy, setOrderBy] = React.useState<keyof Data>('')
@@ -105,12 +117,25 @@ const EnhancedTable: React.FC<Props> = ({ data, arrayDataColumn, title }) => {
     setPage(0)
   }
 
+  const filterItemBySearch = (input: string, data: Array<Data>) => {
+    if (input)
+      return data.filter((element) =>
+        element[searchBasedOnId].toUpperCase().includes(input.toUpperCase())
+      )
+    return data
+  }
+
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 
   return data ? (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar title={title} />
+        <EnhancedTableToolbar
+          title={title}
+          placeholder={placeholder}
+          handleSearchChange={onSearchFieldChange}
+        />
+
         <TableContainer>
           <Table className={classes.table} aria-labelledby='tableTitle' aria-label='enhanced table'>
             <EnhancedTableHead
@@ -121,11 +146,10 @@ const EnhancedTable: React.FC<Props> = ({ data, arrayDataColumn, title }) => {
               rowCount={data.length}
             />
             <TableBody>
-              {stableSort(data, getComparator(order, orderBy))
+              {stableSort(filterItemBySearch(inputSearch, data), getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const id = Object.values(row)[0]
-
                   return (
                     <TableRow key={id}>
                       {Object.entries(row).map(([key, value]) => {

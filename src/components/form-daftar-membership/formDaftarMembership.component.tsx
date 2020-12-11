@@ -53,7 +53,6 @@ const FormDaftarMembership: React.FC<Props> = ({
     formValues.id_member = selectedMember.id
     const { id_member, tipe_membership, tgl_mulai, tgl_selesai, sisa_point } = formValues
     const orderedFormValues = { id_member, tipe_membership, tgl_mulai, tgl_selesai, sisa_point }
-
     addMembershipStartAsync(orderedFormValues, { ...selectedMember, status_membership: true })
   }
 

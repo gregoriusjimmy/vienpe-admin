@@ -19,6 +19,7 @@ type Props = {
 
 const Member: React.FC<Props> = ({ allMember, isAllMemberLoaded, loadAllMemberStartAsync }) => {
   const [open, setOpen] = useState(false)
+  const [searchField, setSearchField] = useState('')
 
   useEffect(() => {
     loadAllMemberStartAsync()
@@ -31,6 +32,10 @@ const Member: React.FC<Props> = ({ allMember, isAllMemberLoaded, loadAllMemberSt
   const handleClose = () => {
     setOpen(false)
   }
+  const handleSearchFieldChange = (e) => {
+    setSearchField(e.target.value)
+  }
+
   const headData: Array<{ id: string; label: string }> = [
     { id: 'id', label: 'ID' },
     { id: 'nama', label: 'Nama' },
@@ -39,6 +44,7 @@ const Member: React.FC<Props> = ({ allMember, isAllMemberLoaded, loadAllMemberSt
     { id: 'tgl_lahir', label: 'Tgl Lahir' },
     { id: 'status_membership', label: 'Membership?' },
   ]
+
   return isAllMemberLoaded ? (
     <Grid container spacing={3}>
       <Grid item xs={6}></Grid>
@@ -52,7 +58,15 @@ const Member: React.FC<Props> = ({ allMember, isAllMemberLoaded, loadAllMemberSt
       </Grid>
       <Grid item xs={12}>
         {allMember ? (
-          <EnchancedTable title='Member' data={allMember} arrayDataColumn={headData} />
+          <EnchancedTable
+            searchBasedOnId='nama'
+            inputSearch={searchField}
+            onSearchFieldChange={handleSearchFieldChange}
+            title='Member'
+            data={allMember}
+            arrayDataColumn={headData}
+            placeholder='Search nama...'
+          />
         ) : null}
       </Grid>
     </Grid>
