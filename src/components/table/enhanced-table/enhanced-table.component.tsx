@@ -1,17 +1,21 @@
 import React from 'react'
 
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableContainer from '@material-ui/core/TableContainer'
 
-import TablePagination from '@material-ui/core/TablePagination'
-import TableRow from '@material-ui/core/TableRow'
-
-import Paper from '@material-ui/core/Paper'
+import {
+  Paper,
+  Table,
+  TableContainer,
+  TableCell,
+  TablePagination,
+  TableRow,
+  TableBody,
+  IconButton,
+} from '@material-ui/core'
+import { green } from '@material-ui/core/colors'
 import EnhancedTableToolbar from '../enchanced-table-toolbar/enchanced-table-toolbar.component'
 import EnhancedTableHead from '../enchanced-table-head/enchanced-table-head.component'
+import EditAttributesIcon from '@material-ui/icons/EditAttributes'
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -84,6 +88,7 @@ type Props = {
   inputSearch: string
   searchBasedOnId: string
   onSearchFieldChange: (e) => void
+  handleAction: (member) => void
   [other: string]: any
 }
 
@@ -95,6 +100,7 @@ const EnhancedTable: React.FC<Props> = ({
   inputSearch,
   searchBasedOnId,
   onSearchFieldChange,
+  handleAction,
 }) => {
   const classes = useStyles()
   const [order, setOrder] = React.useState<Order>('asc')
@@ -159,6 +165,15 @@ const EnhancedTable: React.FC<Props> = ({
                           </TableCell>
                         )
                       })}
+                      <TableCell key={`edit-${Object.values(row)[0]}`}>
+                        <IconButton
+                          aria-label='edit'
+                          size='small'
+                          onClick={(e) => handleAction(row)}
+                        >
+                          <EditAttributesIcon style={{ color: green[500] }} />
+                        </IconButton>
+                      </TableCell>
                     </TableRow>
                   )
                 })}

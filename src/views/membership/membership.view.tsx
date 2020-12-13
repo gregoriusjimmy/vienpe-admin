@@ -90,7 +90,7 @@ const Membership: React.FC<Props> = ({
   ]
   return isAllLoaded() ? (
     <Grid container spacing={3}>
-      <Grid item xs={6}></Grid>
+      {/* <Grid item xs={6}></Grid>
       <Grid container item justify='flex-end' xs={6}>
         <Box m={1}>
           <AddButton text='Tambah membership' handleClick={handleOpen} />
@@ -111,7 +111,7 @@ const Membership: React.FC<Props> = ({
             placeholder='Search nama...'
           />
         ) : null}
-      </Grid>
+      </Grid> */}
     </Grid>
   ) : (
     <CircularLoading />

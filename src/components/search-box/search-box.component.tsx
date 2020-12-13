@@ -52,14 +52,13 @@ type Props = {
 
 const SearchBox: React.FC<Props> = ({ placeholder, onChange }) => {
   const classes = useStyles()
-  const [searchField, setSearchField] = useState('')
   return (
     <div className={classes.searchBox}>
       <div className={classes.searchIcon}>
         <SearchIcon />
       </div>
       <InputBase
-        onChange={onChange}
+        onChange={(e) => onChange(e)}
         placeholder={placeholder}
         classes={{
           root: classes.inputRoot,

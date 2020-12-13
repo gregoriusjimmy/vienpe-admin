@@ -41,11 +41,11 @@ export const EnhancedTableHead: React.FC<Props> = ({
   const createSortHandler = (property: string) => (event: React.MouseEvent<unknown>) => {
     onRequestSort(event, property)
   }
-
+  const headCells = arrayDataColumn.concat([{ id: 'action', label: 'Action' }])
   return (
     <TableHead>
       <TableRow>
-        {arrayDataColumn.map((headCell) => (
+        {headCells.map((headCell) => (
           <TableCell key={headCell.id} sortDirection={orderBy === headCell.id ? order : false}>
             <TableSortLabel
               active={orderBy === headCell.id}

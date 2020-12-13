@@ -1,5 +1,6 @@
+import { handdleErrors } from './../../fetch/fetch'
 import { MemberActionTypes, MemberType } from './member.types'
-import { fetchAdd, fetchRead } from '../../fetch/fetch'
+import { fetchAdd, fetchRead, fetchUpdate } from '../../fetch/fetch'
 export const loadAllMemberStart = () => ({
   type: MemberActionTypes.LOAD_ALL_MEMBER_START,
 })
@@ -40,11 +41,39 @@ export const addMemberFailure = (errorMessage: string) => ({
 export const addMemberStartAsync = (memberForm: MemberType) => {
   return (dispatch) => {
     dispatch(addMemberStart())
-    fetchAdd(process.env.REACT_APP_MEMBERSHIP_URL, memberForm)
+    fetchAdd(process.env.REACT_APP_MEMBER_URL, memberForm)
+      .then(handdleErrors)
       .then((response) => {
         dispatch(addMemberSuccess(memberForm))
         alert('success')
       })
       .catch((error) => dispatch(addMemberFailure(error.message)))
+  }
+}
+
+export const updateMemberStart = () => ({
+  type: MemberActionTypes.UPDATE_MEMBER_START,
+})
+
+export const updateMemberSuccess = (updatedMember: MemberType) => ({
+  type: MemberActionTypes.UPDATE_MEMBER_SUCCESS,
+  payload: updatedMember,
+})
+
+export const updateMemberFailure = (errorMessage: string) => ({
+  type: MemberActionTypes.UPDATE_MEMBER_FAILURE,
+  payload: errorMessage,
+})
+
+export const updateMemberStartAsync = (updatedMember: MemberType) => {
+  return (dispatch) => {
+    dispatch(updateMemberStart())
+    fetchUpdate(process.env.REACT_APP_MEMBER_URL, updatedMember)
+      .then(handdleErrors)
+      .then((response) => {
+        dispatch(updateMemberSuccess(updatedMember))
+        alert('succes')
+      })
+      .catch((error) => dispatch(updateMemberFailure(error.message)))
   }
 }

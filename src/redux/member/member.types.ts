@@ -25,5 +25,5 @@ export type MemberType = {
   no_telp: string
   email: string | null
   tgl_lahir: string | null
-  status_membership: boolean
+  status_membership: boolean | string
 }

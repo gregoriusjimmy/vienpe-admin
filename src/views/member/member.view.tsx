@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Grid, Box } from '@material-ui/core'
 import AddButton from '../../components/add-button/add-button.component'
-import FormDaftarMember from '../../components/form-daftar-member/formDaftarMember.component'
+import MemberForm from '../../components/member-form/member-form.component'
 import Modal from '../../components/containers/modal/modal.component'
 import EnchancedTable from '../../components/table/enhanced-table/enhanced-table.component'
 import CircularLoading from '../../components/circular-loading/circular-loading.component'
@@ -18,22 +18,21 @@ type Props = {
 }
 
 const Member: React.FC<Props> = ({ allMember, isAllMemberLoaded, loadAllMemberStartAsync }) => {
-  const [open, setOpen] = useState(false)
+  const [openAdd, setOpenAdd] = useState(false)
+  const [openEdit, setOpenEdit] = useState(false)
   const [searchField, setSearchField] = useState('')
+  const [selectedMember, setSelectedMember] = useState<MemberType | null>(null)
 
   useEffect(() => {
     loadAllMemberStartAsync()
   }, [loadAllMemberStartAsync])
 
-  const handleOpen = () => {
-    setOpen(true)
-  }
-
-  const handleClose = () => {
-    setOpen(false)
-  }
   const handleSearchFieldChange = (e) => {
     setSearchField(e.target.value)
+  }
+  const handleAction = (member: MemberType) => {
+    setSelectedMember(member)
+    setOpenEdit(true)
   }
 
   const headData: Array<{ id: string; label: string }> = [
@@ -50,9 +49,12 @@ const Member: React.FC<Props> = ({ allMember, isAllMemberLoaded, loadAllMemberSt
       <Grid item xs={6}></Grid>
       <Grid container item justify='flex-end' xs={6}>
         <Box m={2}>
-          <AddButton text='Tambah Member' handleClick={handleOpen} />
-          <Modal open={open} handleClose={handleClose} ariaLabel='modal-add'>
-            <FormDaftarMember />
+          <AddButton text='Tambah Member' handleClick={() => setOpenAdd(true)} />
+          <Modal open={openAdd} handleClose={() => setOpenAdd(false)} ariaLabel='modal-add'>
+            <MemberForm />
+          </Modal>
+          <Modal open={openEdit} handleClose={() => setOpenEdit(false)} ariaLabel='modal-edit'>
+            <MemberForm edit selectedMember={selectedMember} />
           </Modal>
         </Box>
       </Grid>
@@ -66,6 +68,7 @@ const Member: React.FC<Props> = ({ allMember, isAllMemberLoaded, loadAllMemberSt
             data={allMember}
             arrayDataColumn={headData}
             placeholder='Search nama...'
+            handleAction={handleAction}
           />
         ) : null}
       </Grid>

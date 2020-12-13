@@ -48,7 +48,7 @@ const TipeMembership: React.FC<Props> = ({
   }
   return isTipeMembershipLoaded ? (
     <Grid container spacing={3}>
-      <Grid item xs={6}></Grid>
+      {/* <Grid item xs={6}></Grid>
       <Grid container item justify='flex-end' xs={6}>
         <Box m={1}>
           <AddButton text='Tambah tipe' handleClick={handleOpen} />
@@ -69,7 +69,7 @@ const TipeMembership: React.FC<Props> = ({
             arrayDataColumn={headData}
           />
         ) : null}
-      </Grid>
+      </Grid> */}
     </Grid>
   ) : (
     <CircularLoading />

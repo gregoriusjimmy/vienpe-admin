@@ -1,6 +1,6 @@
 export const fetchRead = async (url) => {
   const response = await fetch(url)
-  if (response.status === 400) {
+  if (!response.ok) {
     alert('Failed to fetch')
     return null
   }
@@ -37,5 +37,12 @@ export const fetchUpdate = async (url, dataSend) => {
     body: JSON.stringify(dataSend),
   })
 
+  return response
+}
+
+export const handdleErrors = (response) => {
+  if (!response.ok) {
+    throw Error(response.statusText)
+  }
   return response
 }
