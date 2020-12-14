@@ -3,11 +3,10 @@ import { TextField, Button, Grid, MenuItem } from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 
 import FormCard from '../form-card/form-card.component'
-import useStyles from './formDaftarMembership.styles'
+import useStyles from './membership-form.styles'
 import { connect } from 'react-redux'
 import { selectAllMember } from '../../redux/member/member.selectors'
 import { RootState } from '../../redux/root-reducer'
-import { fetchAdd } from '../../fetch/fetch'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -15,6 +14,7 @@ import { MemberType } from '../../redux/member/member.types'
 import ReactHookFormSelect from '../react-hook-form-select/reactHookFormSelect.component'
 import { selectAllTipeMembership } from '../../redux/tipe-membership/tipe-membership.selectors'
 import { addMembershipStartAsync } from '../../redux/membership/membership.actions'
+import { MembershipType } from '../../redux/membership/membership.types'
 
 type FORM_DATA = {
   tipe_membership: string
@@ -27,10 +27,14 @@ type Props = {
   allMember: Array<MemberType> | null
   allTipeMembership: Array<{ tipe: string; keterangan: string }> | null
   addMembershipStartAsync: (membershipForm, member) => void
+  edit?: true
+  selectedMembership?: MembershipType | null
 }
-const FormDaftarMembership: React.FC<Props> = ({
+const MembershipForm: React.FC<Props> = ({
   allMember,
   allTipeMembership,
+  edit,
+  selectedMembership,
   addMembershipStartAsync,
 }) => {
   const classes = useStyles()
@@ -44,6 +48,7 @@ const FormDaftarMembership: React.FC<Props> = ({
     tgl_selesai: yup.string().required(),
     sisa_point: yup.number().required(),
   })
+
   const { register, errors, handleSubmit, control, reset } = useForm<FORM_DATA>({
     resolver: yupResolver(schema),
   })
@@ -53,6 +58,15 @@ const FormDaftarMembership: React.FC<Props> = ({
     formValues.id_member = selectedMember.id
     const { id_member, tipe_membership, tgl_mulai, tgl_selesai, sisa_point } = formValues
     const orderedFormValues = { id_member, tipe_membership, tgl_mulai, tgl_selesai, sisa_point }
+    // if (edit) {
+    //   updateMemberStartAsync({
+    //     id: selectedMember!.id,
+    //     ...orderedFormValues,
+    //     status_membership: statusMembership,
+    //   })
+    // } else {
+    //   addMemberStartAsync(orderedFormValues)
+    // }
     addMembershipStartAsync(orderedFormValues, { ...selectedMember, status_membership: true })
   }
 
@@ -70,6 +84,7 @@ const FormDaftarMembership: React.FC<Props> = ({
     const isoStringTglSelesai = convertedTglMulai.toISOString().split(/[T ]/i, 1)[0]
     setTglSelesai(isoStringTglSelesai)
   }
+
   const getNamaMemberOptions = {
     options: allMember!,
     getOptionLabel: (option: MemberType) => option.nama,
@@ -179,4 +194,4 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(addMembershipStartAsync(membershipForm, member)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(FormDaftarMembership)
+export default connect(mapStateToProps, mapDispatchToProps)(MembershipForm)

@@ -5,12 +5,16 @@ export const MembershipActionTypes = {
   ADD_MEMBERSHIP_START: 'ADD_MEMBERSHIP_START',
   ADD_MEMBERSHIP_SUCCESS: 'ADD_MEMBERSHIP_SUCCESS',
   ADD_MEMBERSHIP_FAILURE: 'ADD_MEMBERSHIP_FAILURE',
+  UPDATE_MEMBERSHIP_START: 'UPDATE_MEMBERSHIP_START',
+  UPDATE_MEMBERSHIP_SUCCESS: 'UPDATE_MEMBERSHIP_SUCCESS',
+  UPDATE_MEMBERSHIP_FAILURE: 'UPDATE_MEMBERSHIP_FAILURE',
 }
 export type MembershipState = {
   allMembership: null | []
   isFetching: boolean
   isLoaded: boolean
   isAdding: boolean
+  isUpdating: boolean
   errorMessage: undefined | string
 }
 

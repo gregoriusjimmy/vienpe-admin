@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { TextField, Button, Grid } from '@material-ui/core'
 import FormCard from '../form-card/form-card.component'
-import useStyles from './formDaftarTipeMembership.styles'
-import { fetchAdd } from '../../fetch/fetch'
+import useStyles from './tipe-membership-form.styles'
 
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -26,7 +25,7 @@ type Props = {
   addTipeMembershipStartAsync: (tipeMembership: FORM_DATA) => void
 }
 
-const FormDaftarTipeMembership: React.FC<Props> = ({
+const TipeMembershipForm: React.FC<Props> = ({
   allTipeMembership,
   addTipeMembershipStartAsync,
 }) => {
@@ -96,4 +95,4 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(addTipeMembershipStartAsync(tipeMembership)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(FormDaftarTipeMembership)
+export default connect(mapStateToProps, mapDispatchToProps)(TipeMembershipForm)

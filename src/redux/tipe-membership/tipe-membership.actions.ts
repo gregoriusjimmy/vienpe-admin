@@ -1,5 +1,6 @@
 import { TipeMembershipActionTypes, TipeMembershipType } from './tipe-membership.types'
-import { fetchAdd, fetchRead } from '../../fetch/fetch'
+import { fetchAdd, fetchRead, handdleErrors } from '../../fetch/fetch'
+
 export const loadAllTipeMembershipStart = () => ({
   type: TipeMembershipActionTypes.LOAD_ALL_TIPE_MEMBERSHIP_START,
 })
@@ -40,7 +41,8 @@ export const addTipeMembershipFailure = (errorMessage: string) => ({
 export const addTipeMembershipStartAsync = (tipeMembershipForm: TipeMembershipType) => {
   return (dispatch) => {
     dispatch(addTipeMembershipStart())
-    fetchAdd(process.env.REACT_APP_MEMBERSHIP_URL, tipeMembershipForm)
+    fetchAdd(process.env.REACT_APP_TIPE_MEMBERSHIP_URL, tipeMembershipForm)
+      .then(handdleErrors)
       .then((response) => {
         dispatch(addTipeMembershipSuccess(tipeMembershipForm))
         alert('success')

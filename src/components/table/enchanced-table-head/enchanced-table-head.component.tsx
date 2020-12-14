@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 import { TableHead, TableRow, TableCell, TableSortLabel } from '@material-ui/core'
 
@@ -29,19 +29,28 @@ type Props = {
   order: 'asc' | 'desc'
   orderBy: string | number
   rowCount: number
+  action?: boolean
 }
 
 export const EnhancedTableHead: React.FC<Props> = ({
   order,
   orderBy,
+  action,
   onRequestSort,
   arrayDataColumn,
 }) => {
   const classes = useStyles()
+  const [headCells, setHeadCells] = useState<HeadCell[]>([])
+
+  useEffect(() => {
+    if (action) setHeadCells([...arrayDataColumn, { id: 'action', label: 'Action' }])
+    else setHeadCells(arrayDataColumn)
+  }, [])
+
   const createSortHandler = (property: string) => (event: React.MouseEvent<unknown>) => {
     onRequestSort(event, property)
   }
-  const headCells = arrayDataColumn.concat([{ id: 'action', label: 'Action' }])
+
   return (
     <TableHead>
       <TableRow>

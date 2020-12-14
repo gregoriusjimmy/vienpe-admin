@@ -1,10 +1,11 @@
-import { MembershipActionTypes, MembershipState } from './membership.types'
+import { MembershipActionTypes, MembershipState, MembershipType } from './membership.types'
 
 const INITIAL_STATE: MembershipState = {
   allMembership: null,
   isFetching: false,
   isLoaded: false,
   isAdding: false,
+  isUpdating: false,
   errorMessage: undefined,
 }
 
@@ -50,6 +51,32 @@ const membershipReducer = (state = INITIAL_STATE, action: { type: string; payloa
         isAdding: false,
         errorMessage: action.payload,
       }
+
+    case MembershipActionTypes.UPDATE_MEMBERSHIP_START:
+      return {
+        ...state,
+        isUpdating: true,
+      }
+
+    case MembershipActionTypes.UPDATE_MEMBERSHIP_SUCCESS:
+      const index = state.allMembership?.findIndex(
+        (membership: MembershipType) => membership.id === action.payload.id
+      )
+      const allNewMembership: Array<MembershipType> = [...state.allMembership!]
+      allNewMembership[index!] = action.payload
+      return {
+        ...state,
+        isUpdating: false,
+        allMember: [...allNewMembership],
+      }
+
+    case MembershipActionTypes.UPDATE_MEMBERSHIP_FAILURE:
+      return {
+        ...state,
+        isUpdating: false,
+        errorMessage: action.payload,
+      }
+
     default:
       return state
   }

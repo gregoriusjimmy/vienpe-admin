@@ -88,7 +88,7 @@ type Props = {
   inputSearch: string
   searchBasedOnId: string
   onSearchFieldChange: (e) => void
-  handleAction: (member) => void
+  handleAction?: (data) => void
   [other: string]: any
 }
 
@@ -145,6 +145,7 @@ const EnhancedTable: React.FC<Props> = ({
         <TableContainer>
           <Table className={classes.table} aria-labelledby='tableTitle' aria-label='enhanced table'>
             <EnhancedTableHead
+              action={handleAction ? true : false}
               arrayDataColumn={arrayDataColumn}
               order={order}
               orderBy={orderBy}
@@ -165,15 +166,17 @@ const EnhancedTable: React.FC<Props> = ({
                           </TableCell>
                         )
                       })}
-                      <TableCell key={`edit-${Object.values(row)[0]}`}>
-                        <IconButton
-                          aria-label='edit'
-                          size='small'
-                          onClick={(e) => handleAction(row)}
-                        >
-                          <EditAttributesIcon style={{ color: green[500] }} />
-                        </IconButton>
-                      </TableCell>
+                      {handleAction ? (
+                        <TableCell key={`edit-${Object.values(row)[0]}`}>
+                          <IconButton
+                            aria-label='edit'
+                            size='small'
+                            onClick={(e) => handleAction(row)}
+                          >
+                            <EditAttributesIcon style={{ color: green[500] }} />
+                          </IconButton>
+                        </TableCell>
+                      ) : null}
                     </TableRow>
                   )
                 })}

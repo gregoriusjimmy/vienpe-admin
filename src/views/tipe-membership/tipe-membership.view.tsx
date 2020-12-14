@@ -4,7 +4,7 @@ import AddButton from '../../components/add-button/add-button.component'
 import Modal from '../../components/containers/modal/modal.component'
 import CircularLoading from '../../components/circular-loading/circular-loading.component'
 import EnhancedTable from '../../components/table/enhanced-table/enhanced-table.component'
-import FormDaftarTipeMembership from '../../components/form-daftar-tipe-membership/formDaftarTipeMembership.component'
+import TipeMembershipForm from '../../components/tipe-membership-form/tipe-membership-form.component'
 import {
   selectAllTipeMembership,
   selectIsAllTipeMembershipLoaded,
@@ -48,12 +48,12 @@ const TipeMembership: React.FC<Props> = ({
   }
   return isTipeMembershipLoaded ? (
     <Grid container spacing={3}>
-      {/* <Grid item xs={6}></Grid>
+      <Grid item xs={6}></Grid>
       <Grid container item justify='flex-end' xs={6}>
         <Box m={1}>
           <AddButton text='Tambah tipe' handleClick={handleOpen} />
           <Modal open={open} handleClose={handleClose} ariaLabel='modal-add'>
-            <FormDaftarTipeMembership />
+            <TipeMembershipForm />
           </Modal>
         </Box>
       </Grid>
@@ -69,7 +69,7 @@ const TipeMembership: React.FC<Props> = ({
             arrayDataColumn={headData}
           />
         ) : null}
-      </Grid> */}
+      </Grid>
     </Grid>
   ) : (
     <CircularLoading />

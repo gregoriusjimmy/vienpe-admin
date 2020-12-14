@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Grid, Box } from '@material-ui/core'
 import AddButton from '../../components/add-button/add-button.component'
 import Modal from '../../components/containers/modal/modal.component'
-import FormDaftarMembership from '../../components/form-daftar-membership/formDaftarMembership.component'
+import MembershipForm from '../../components/membership-form/membership-form.component'
 import CircularLoading from '../../components/circular-loading/circular-loading.component'
 import EnhancedTable from '../../components/table/enhanced-table/enhanced-table.component'
 import { connect } from 'react-redux'
@@ -90,12 +90,12 @@ const Membership: React.FC<Props> = ({
   ]
   return isAllLoaded() ? (
     <Grid container spacing={3}>
-      {/* <Grid item xs={6}></Grid>
+      <Grid item xs={6}></Grid>
       <Grid container item justify='flex-end' xs={6}>
         <Box m={1}>
           <AddButton text='Tambah membership' handleClick={handleOpen} />
           <Modal open={open} handleClose={handleClose} ariaLabel='modal-add'>
-            <FormDaftarMembership />
+            <MembershipForm />
           </Modal>
         </Box>
       </Grid>
@@ -111,7 +111,7 @@ const Membership: React.FC<Props> = ({
             placeholder='Search nama...'
           />
         ) : null}
-      </Grid> */}
+      </Grid>
     </Grid>
   ) : (
     <CircularLoading />
