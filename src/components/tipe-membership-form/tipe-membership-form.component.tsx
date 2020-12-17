@@ -36,7 +36,7 @@ const TipeMembershipForm: React.FC<Props> = ({
     keterangan: yup.string().required(),
   })
 
-  const { register, errors, handleSubmit, reset } = useForm<FORM_DATA>({
+  const { register, errors, handleSubmit } = useForm<FORM_DATA>({
     resolver: yupResolver(schema),
   })
 

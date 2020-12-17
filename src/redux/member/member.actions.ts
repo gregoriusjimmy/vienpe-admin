@@ -1,6 +1,7 @@
 import { handdleErrors } from './../../fetch/fetch'
 import { MemberActionTypes, MemberType } from './member.types'
 import { fetchAdd, fetchRead, fetchUpdate } from '../../fetch/fetch'
+import { addSuccessNotificaiton, addErrorNotification } from '../notification/notification.actions'
 export const loadAllMemberStart = () => ({
   type: MemberActionTypes.LOAD_ALL_MEMBER_START,
 })
@@ -38,16 +39,20 @@ export const addMemberFailure = (errorMessage: string) => ({
   payload: errorMessage,
 })
 
-export const addMemberStartAsync = (memberForm: MemberType) => {
+export const addMemberStartAsync = (memberForm: MemberType, succesCallback?: () => void) => {
   return (dispatch) => {
     dispatch(addMemberStart())
     fetchAdd(process.env.REACT_APP_MEMBER_URL, memberForm)
       .then(handdleErrors)
       .then((response) => {
         dispatch(addMemberSuccess(memberForm))
-        alert('success')
+        if (succesCallback) succesCallback()
+        dispatch(addSuccessNotificaiton('menambahkan member!'))
       })
-      .catch((error) => dispatch(addMemberFailure(error.message)))
+      .catch((error) => {
+        dispatch(addMemberFailure(error.message))
+        dispatch(addErrorNotification('menambahkan member'))
+      })
   }
 }
 
@@ -65,14 +70,14 @@ export const updateMemberFailure = (errorMessage: string) => ({
   payload: errorMessage,
 })
 
-export const updateMemberStartAsync = (updatedMember: MemberType) => {
+export const updateMemberStartAsync = (updatedMember: MemberType, succesCallback?: () => void) => {
   return (dispatch) => {
     dispatch(updateMemberStart())
     fetchUpdate(process.env.REACT_APP_MEMBER_URL, updatedMember)
       .then(handdleErrors)
       .then((response) => {
         dispatch(updateMemberSuccess(updatedMember))
-        alert('succes')
+        if (succesCallback) succesCallback()
       })
       .catch((error) => dispatch(updateMemberFailure(error.message)))
   }

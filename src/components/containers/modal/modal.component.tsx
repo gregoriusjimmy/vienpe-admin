@@ -36,6 +36,7 @@ const Modal: React.FC<Props> = ({ children, open, handleClose, ariaLabel }) => {
       aria-describedby={ariaLabel}
       closeAfterTransition
       BackdropComponent={Backdrop}
+      keepMounted={false}
       BackdropProps={{
         timeout: 500,
       }}

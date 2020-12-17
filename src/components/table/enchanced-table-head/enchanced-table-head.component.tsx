@@ -45,7 +45,7 @@ export const EnhancedTableHead: React.FC<Props> = ({
   useEffect(() => {
     if (action) setHeadCells([...arrayDataColumn, { id: 'action', label: 'Action' }])
     else setHeadCells(arrayDataColumn)
-  }, [])
+  }, [action, arrayDataColumn])
 
   const createSortHandler = (property: string) => (event: React.MouseEvent<unknown>) => {
     onRequestSort(event, property)

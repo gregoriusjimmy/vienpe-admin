@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { TextField, Grid, Box, FormControlLabel, Checkbox } from '@material-ui/core'
+import { TextField, Grid, FormControlLabel, Checkbox } from '@material-ui/core'
 import FormCard from '../form-card/form-card.component'
 import useStyles from './member-form.styles'
 import { useForm } from 'react-hook-form'
@@ -10,6 +10,9 @@ import { connect } from 'react-redux'
 import { addMemberStartAsync, updateMemberStartAsync } from '../../redux/member/member.actions'
 import { MemberType } from '../../redux/member/member.types'
 import SubmitButton from '../submit-button/submit-button.component'
+import { selectIsMemberFetching } from '../../redux/member/member.selectors'
+import { RootState } from '../../redux/root-reducer'
+import CircularLoading from '../circular-loading/circular-loading.component'
 
 type FORM_DATA = {
   nama: ''
@@ -20,8 +23,10 @@ type FORM_DATA = {
 }
 
 type Props = {
-  addMemberStartAsync: (member: FORM_DATA) => void
-  updateMemberStartAsync: (member) => void
+  addMemberStartAsync: (member: FORM_DATA, successCallback?) => Promise<any>
+  updateMemberStartAsync: (member?, successCallback?) => Promise<any>
+  handleModalClose: () => void
+  isFetching: boolean
   edit?: true
   selectedMember?: MemberType | null
 }
@@ -29,6 +34,8 @@ type Props = {
 const MemberForm: React.FC<Props> = ({
   addMemberStartAsync,
   updateMemberStartAsync,
+  handleModalClose,
+  isFetching,
   edit,
   selectedMember,
 }) => {
@@ -38,9 +45,8 @@ const MemberForm: React.FC<Props> = ({
   useEffect(() => {
     if (selectedMember) {
       setStatusMembership(selectedMember.status_membership === 'true')
-      console.log(statusMembership)
     }
-  }, [])
+  }, [selectedMember])
 
   const schema = yup.object().shape({
     nama: yup.string().required(),
@@ -59,109 +65,122 @@ const MemberForm: React.FC<Props> = ({
     const { nama, no_telp, email, tgl_lahir } = formValues
     const orderedFormValues = { nama, no_telp, email, tgl_lahir, status_membership: false }
     if (edit) {
-      updateMemberStartAsync({
-        id: selectedMember!.id,
-        ...orderedFormValues,
-        status_membership: statusMembership,
-      })
+      updateMemberStartAsync(
+        {
+          id: selectedMember!.id,
+          ...orderedFormValues,
+          status_membership: statusMembership,
+        },
+        handleModalClose
+      )
     } else {
-      addMemberStartAsync(orderedFormValues)
+      addMemberStartAsync(orderedFormValues, handleModalClose)
     }
   }
 
   return (
     <FormCard title='Daftar Member'>
-      <form
-        className={classes.root}
-        noValidate
-        autoComplete='off'
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <Grid container spacing={1}>
-          <Grid item xs={edit ? 10 : 12}>
-            <TextField
-              inputRef={register}
-              error={!!errors.nama}
-              defaultValue={selectedMember?.nama}
-              name='nama'
-              fullWidth
-              label='Nama'
-              helperText={errors.nama?.message}
-            />
-          </Grid>
-          {edit ? (
-            <Grid item xs={2}>
+      {isFetching ? (
+        <CircularLoading height={'200px'} />
+      ) : (
+        <form
+          className={classes.root}
+          noValidate
+          autoComplete='off'
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <Grid container spacing={1}>
+            <Grid item xs={edit ? 10 : 12}>
               <TextField
                 inputRef={register}
-                value={selectedMember?.id}
-                disabled
-                name='id'
-                label='ID'
+                error={!!errors.nama}
+                defaultValue={selectedMember?.nama}
+                name='nama'
+                fullWidth
+                label='Nama'
+                helperText={errors.nama?.message}
               />
             </Grid>
-          ) : null}
-          <Grid item xs={12}>
-            <TextField
-              inputRef={register}
-              error={!!errors.email}
-              defaultValue={selectedMember?.email}
-              name='email'
-              fullWidth
-              label='Email'
-              type='email'
-              helperText={errors.email?.message}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              inputRef={register}
-              error={!!errors.no_telp}
-              defaultValue={selectedMember?.no_telp}
-              name='no_telp'
-              label='No Telp'
-              helperText={errors.no_telp?.message}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              inputRef={register}
-              error={!!errors.tgl_lahir}
-              defaultValue={selectedMember?.tgl_lahir}
-              name='tgl_lahir'
-              label='Tanggal lahir'
-              type='date'
-              InputLabelProps={{ shrink: true }}
-              helperText={errors.tgl_lahir?.message}
-            />
-          </Grid>
-          {edit ? (
+            {edit ? (
+              <Grid item xs={2}>
+                <TextField
+                  inputRef={register}
+                  value={selectedMember?.id}
+                  disabled
+                  name='id'
+                  label='ID'
+                />
+              </Grid>
+            ) : null}
             <Grid item xs={12}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    inputRef={register}
-                    checked={statusMembership}
-                    onChange={() => setStatusMembership(!statusMembership)}
-                    name='status_membership'
-                  />
-                }
-                label='Status Membership'
+              <TextField
+                inputRef={register}
+                error={!!errors.email}
+                defaultValue={selectedMember?.email}
+                name='email'
+                fullWidth
+                label='Email'
+                type='email'
+                helperText={errors.email?.message}
               />
             </Grid>
-          ) : null}
-          <Grid container justify='flex-end'>
-            <Grid item>
-              <SubmitButton buttonType={edit ? 'edit' : 'add'} />
+            <Grid item xs={6}>
+              <TextField
+                inputRef={register}
+                error={!!errors.no_telp}
+                defaultValue={selectedMember?.no_telp}
+                name='no_telp'
+                label='No Telp'
+                helperText={errors.no_telp?.message}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                inputRef={register}
+                error={!!errors.tgl_lahir}
+                defaultValue={selectedMember?.tgl_lahir}
+                name='tgl_lahir'
+                label='Tanggal lahir'
+                type='date'
+                InputLabelProps={{ shrink: true }}
+                helperText={errors.tgl_lahir?.message}
+              />
+            </Grid>
+            {edit ? (
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      inputRef={register}
+                      checked={statusMembership}
+                      onChange={() => setStatusMembership(!statusMembership)}
+                      name='status_membership'
+                    />
+                  }
+                  label='Status Membership'
+                />
+              </Grid>
+            ) : null}
+            <Grid container justify='flex-end'>
+              <Grid item>
+                <SubmitButton buttonType={edit ? 'edit' : 'add'} />
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      </form>
+        </form>
+      )}
     </FormCard>
   )
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  addMemberStartAsync: (member) => dispatch(addMemberStartAsync(member)),
-  updateMemberStartAsync: (member) => dispatch(updateMemberStartAsync(member)),
+const mapStateToProps = (state: RootState) => ({
+  isFetching: selectIsMemberFetching(state),
 })
-export default connect(null, mapDispatchToProps)(MemberForm)
+
+const mapDispatchToProps = (dispatch) => ({
+  addMemberStartAsync: (member, successCallback?) =>
+    dispatch(addMemberStartAsync(member, successCallback)),
+  updateMemberStartAsync: (member, successCallback?) =>
+    dispatch(updateMemberStartAsync(member, successCallback)),
+})
+export default connect(mapStateToProps, mapDispatchToProps)(MemberForm)

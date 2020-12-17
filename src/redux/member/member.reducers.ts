@@ -4,8 +4,6 @@ const INITIAL_STATE: MemberState = {
   allMember: null,
   isFetching: false,
   isLoaded: false,
-  isAdding: false,
-  isUpdating: false,
   errorMessage: undefined,
 }
 
@@ -14,7 +12,6 @@ const memberReducer = (state = INITIAL_STATE, action: { type: string; payload: a
     case MemberActionTypes.LOAD_ALL_MEMBER_START:
       return {
         ...state,
-        errorMessage: undefined,
         isLoaded: false,
         isFetching: true,
       }
@@ -24,6 +21,7 @@ const memberReducer = (state = INITIAL_STATE, action: { type: string; payload: a
         ...state,
         isFetching: false,
         isLoaded: true,
+        errorMessage: undefined,
         allMember: action.payload,
       }
 
@@ -38,27 +36,28 @@ const memberReducer = (state = INITIAL_STATE, action: { type: string; payload: a
     case MemberActionTypes.ADD_MEMBER_START:
       return {
         ...state,
-        isAdding: true,
+        isFetching: true,
       }
 
     case MemberActionTypes.ADD_MEMBER_SUCCESS:
       const id = state.allMember?.slice(-1)[0]['id']! + 1
       return {
         ...state,
-        isAdding: false,
+        isFetching: false,
+        errorMessage: undefined,
         allMember: [...state.allMember!, { id: id, ...action.payload }],
       }
 
     case MemberActionTypes.ADD_MEMBER_FAILURE:
       return {
         ...state,
-        isAdding: false,
+        isFetching: false,
         errorMessage: action.payload,
       }
     case MemberActionTypes.UPDATE_MEMBER_START:
       return {
         ...state,
-        isUpdating: true,
+        isFetching: true,
       }
 
     case MemberActionTypes.UPDATE_MEMBER_SUCCESS:
@@ -69,14 +68,15 @@ const memberReducer = (state = INITIAL_STATE, action: { type: string; payload: a
       allNewMember[index!] = action.payload
       return {
         ...state,
-        isUpdating: false,
+        isFetching: false,
+        errorMessage: undefined,
         allMember: [...allNewMember],
       }
 
     case MemberActionTypes.UPDATE_MEMBER_FAILURE:
       return {
         ...state,
-        isUpdating: false,
+        isFetching: false,
         errorMessage: action.payload,
       }
     default:

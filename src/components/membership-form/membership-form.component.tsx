@@ -49,7 +49,7 @@ const MembershipForm: React.FC<Props> = ({
     sisa_point: yup.number().required(),
   })
 
-  const { register, errors, handleSubmit, control, reset } = useForm<FORM_DATA>({
+  const { register, errors, handleSubmit, control } = useForm<FORM_DATA>({
     resolver: yupResolver(schema),
   })
 

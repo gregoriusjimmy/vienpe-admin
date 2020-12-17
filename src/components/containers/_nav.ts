@@ -1,10 +1,8 @@
 import PeopleIcon from '@material-ui/icons/People'
 import CardMembershipIcon from '@material-ui/icons/CardMembership'
-import PersonAddIcon from '@material-ui/icons/PersonAdd'
 import BookIcon from '@material-ui/icons/Book'
 import DirectionsRunIcon from '@material-ui/icons/DirectionsRun'
 import StyleIcon from '@material-ui/icons/Style'
-import { ReactNode } from 'react'
 
 export type NavType = {
   tag: string

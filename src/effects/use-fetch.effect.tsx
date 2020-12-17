@@ -15,7 +15,7 @@ export const useFetch = (url: string, dependencies?) => {
     }
 
     fetchData()
-  }, [dependencies])
+  }, [url, dependencies])
 
   return data
 }

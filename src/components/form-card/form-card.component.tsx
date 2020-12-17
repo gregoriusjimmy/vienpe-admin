@@ -3,7 +3,7 @@ import { Card, CardContent, Typography } from '@material-ui/core'
 import useStyles from './form-card.styles'
 type Props = {
   title: String
-  children: JSX.Element
+  children: React.ReactNode
 }
 const FormCard: React.FC<Props> = ({ title, children }) => {
   const classes = useStyles()

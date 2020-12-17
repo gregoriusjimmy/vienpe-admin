@@ -34,7 +34,13 @@ const Member: React.FC<Props> = ({ allMember, isAllMemberLoaded, loadAllMemberSt
     setSelectedMember(member)
     setOpenEdit(true)
   }
+  const handleModalAddClose = () => {
+    setOpenAdd(false)
+  }
 
+  const handleModalEditClose = () => {
+    setOpenEdit(false)
+  }
   const headData: Array<{ id: string; label: string }> = [
     { id: 'id', label: 'ID' },
     { id: 'nama', label: 'Nama' },
@@ -51,10 +57,14 @@ const Member: React.FC<Props> = ({ allMember, isAllMemberLoaded, loadAllMemberSt
         <Box m={2}>
           <AddButton text='Tambah Member' handleClick={() => setOpenAdd(true)} />
           <Modal open={openAdd} handleClose={() => setOpenAdd(false)} ariaLabel='modal-add'>
-            <MemberForm />
+            <MemberForm handleModalClose={handleModalAddClose} />
           </Modal>
           <Modal open={openEdit} handleClose={() => setOpenEdit(false)} ariaLabel='modal-edit'>
-            <MemberForm edit selectedMember={selectedMember} />
+            <MemberForm
+              edit
+              selectedMember={selectedMember}
+              handleModalClose={handleModalEditClose}
+            />
           </Modal>
         </Box>
       </Grid>

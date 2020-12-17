@@ -14,8 +14,6 @@ export type MemberState = {
   allMember: null | []
   isFetching: boolean
   isLoaded: boolean
-  isAdding: boolean
-  isUpdating: boolean
   errorMessage: undefined | string
 }
 
