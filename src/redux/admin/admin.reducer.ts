@@ -2,6 +2,7 @@ import { AdminActionTypes } from './admin.types'
 
 const INITIAL_STATE = {
   currentAdmin: null,
+  isFetcing: false,
 }
 
 const adminReducer = (state = INITIAL_STATE, action) => {

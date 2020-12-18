@@ -54,7 +54,7 @@ const MembershipForm: React.FC<Props> = ({
   })
 
   const onSubmit = async (formValues) => {
-    if (!selectedMember) return alert('select member')
+    if (!selectedMember) return alert('please select member')
     formValues.id_member = selectedMember.id
     const { id_member, tipe_membership, tgl_mulai, tgl_selesai, sisa_point } = formValues
     const orderedFormValues = { id_member, tipe_membership, tgl_mulai, tgl_selesai, sisa_point }
@@ -76,6 +76,7 @@ const MembershipForm: React.FC<Props> = ({
     )
     if (findMember) setSelectedMember(findMember)
   }
+
   const calculateTglSelesai = (e: any) => {
     const convertedTglMulai: Date = new Date(e.target.value)
     // addting 1 month

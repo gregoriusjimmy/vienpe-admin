@@ -1,5 +1,6 @@
 import { TipeMembershipActionTypes, TipeMembershipType } from './tipe-membership.types'
 import { fetchAdd, fetchRead, handdleErrors } from '../../fetch/fetch'
+import { addErrorNotification, addSuccessNotificaiton } from '../notification/notification.actions'
 
 export const loadAllTipeMembershipStart = () => ({
   type: TipeMembershipActionTypes.LOAD_ALL_TIPE_MEMBERSHIP_START,
@@ -45,8 +46,11 @@ export const addTipeMembershipStartAsync = (tipeMembershipForm: TipeMembershipTy
       .then(handdleErrors)
       .then((response) => {
         dispatch(addTipeMembershipSuccess(tipeMembershipForm))
-        alert('success')
+        dispatch(addSuccessNotificaiton(`menambahkan tipe ${tipeMembershipForm.tipe}`))
       })
-      .catch((error) => dispatch(addTipeMembershipFailure(error.message)))
+      .catch((error) => {
+        dispatch(addTipeMembershipFailure(error.message))
+        dispatch(addErrorNotification(`menambahkan tipe, reason: ${error.message}`))
+      })
   }
 }

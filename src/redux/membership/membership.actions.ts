@@ -1,5 +1,6 @@
 import { fetchAdd, fetchRead, fetchUpdate, handdleErrors } from '../../fetch/fetch'
 import { MemberType } from '../member/member.types'
+import { addErrorNotification, addSuccessNotificaiton } from '../notification/notification.actions'
 import { MembershipActionTypes, MembershipType } from './membership.types'
 
 export const loadAllMembershipStart = () => ({
@@ -39,7 +40,11 @@ export const addMembershipFailure = (errorMessage: string) => ({
   payload: errorMessage,
 })
 
-export const addMembershipStartAsync = (membershipForm: MembershipType, member: MemberType) => {
+export const addMembershipStartAsync = (
+  membershipForm: MembershipType,
+  member: MemberType,
+  successCallback?: () => void
+) => {
   return (dispatch) => {
     dispatch(addMembershipStart())
     Promise.all([
@@ -49,9 +54,13 @@ export const addMembershipStartAsync = (membershipForm: MembershipType, member: 
       .then(handdleErrors)
       .then((response) => {
         dispatch(addMembershipSuccess(membershipForm))
-        alert('success')
+        if (successCallback) successCallback()
+        dispatch(addSuccessNotificaiton(`menambahkan membership ${member.nama}`))
       })
-      .catch((error) => dispatch(addMembershipFailure(error.message)))
+      .catch((error) => {
+        dispatch(addMembershipFailure(error.message))
+        dispatch(addErrorNotification(`menambahkan membership, reason: ${error.message}`))
+      })
   }
 }
 

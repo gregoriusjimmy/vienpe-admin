@@ -47,11 +47,11 @@ export const addMemberStartAsync = (memberForm: MemberType, succesCallback?: () 
       .then((response) => {
         dispatch(addMemberSuccess(memberForm))
         if (succesCallback) succesCallback()
-        dispatch(addSuccessNotificaiton('menambahkan member!'))
+        dispatch(addSuccessNotificaiton(`menambahkan member ${memberForm.nama}`))
       })
       .catch((error) => {
         dispatch(addMemberFailure(error.message))
-        dispatch(addErrorNotification('menambahkan member'))
+        dispatch(addErrorNotification(`menambahkan member, reason: ${error.message}`))
       })
   }
 }
@@ -78,7 +78,11 @@ export const updateMemberStartAsync = (updatedMember: MemberType, succesCallback
       .then((response) => {
         dispatch(updateMemberSuccess(updatedMember))
         if (succesCallback) succesCallback()
+        dispatch(addSuccessNotificaiton(`update member ${updatedMember.nama}`))
       })
-      .catch((error) => dispatch(updateMemberFailure(error.message)))
+      .catch((error) => {
+        dispatch(updateMemberFailure(error.message))
+        dispatch(addErrorNotification(`update member, reason: ${error.message}`))
+      })
   }
 }

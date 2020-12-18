@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
-import { HashRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { ThemeProvider } from '@material-ui/core/styles'
 import theme from './theme'
@@ -12,11 +12,11 @@ import store from './redux/store'
 ReactDOM.render(
   <Provider store={store}>
     <ThemeProvider theme={theme}>
-      <HashRouter>
+      <BrowserRouter>
         {/* <React.StrictMode> */}
         <App />
         {/* </React.StrictMode> */}
-      </HashRouter>
+      </BrowserRouter>
     </ThemeProvider>
   </Provider>,
   document.getElementById('root')

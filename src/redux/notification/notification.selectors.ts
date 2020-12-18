@@ -1,4 +1,3 @@
-import { createSelector } from 'reselect'
 import { RootState } from '../root-reducer'
 import { NotificationState } from './notification.types'
 
