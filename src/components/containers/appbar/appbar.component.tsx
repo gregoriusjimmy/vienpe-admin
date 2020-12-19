@@ -8,6 +8,8 @@ import MenuIcon from '@material-ui/icons/Menu'
 import { default as AppBarMUI } from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button'
+import Clock from 'react-live-clock'
+import { Typography } from '@material-ui/core'
 
 type Props = {
   handleDrawerOpen: () => void
@@ -39,6 +41,9 @@ const AppBar: React.FC<Props> = ({ handleDrawerOpen, setCurrentAdmin, open }) =>
         >
           <MenuIcon />
         </IconButton>
+        <Typography>
+          <Clock format={'DD MMMM,\xa0 h:mm '} ticking={true} interval={60000} />
+        </Typography>
         <Button className={logoutButton} onClick={handleLogout} color='inherit'>
           Logout
         </Button>

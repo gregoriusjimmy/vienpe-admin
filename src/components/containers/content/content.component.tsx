@@ -1,7 +1,6 @@
 import React from 'react'
 import routes from '../../../routes'
 import { Route, Switch } from 'react-router-dom'
-import { Fade } from '@material-ui/core'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const Content: React.FC<any> = () => {

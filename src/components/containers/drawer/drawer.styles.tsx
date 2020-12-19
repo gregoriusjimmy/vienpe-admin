@@ -12,14 +12,12 @@ const useStyles = makeStyles((theme: Theme) =>
       width: drawerWidth,
     },
     drawerHeader: {
-      // width: '100%',
       display: 'flex',
       alignItems: 'center',
       padding: theme.spacing(1, 1),
       // necessary for content to be below app bar
       ...theme.mixins.toolbar,
       justifyContent: 'flex-end',
-      // backgroundColor: theme.palette.secondary.main,
     },
 
     divider: {
