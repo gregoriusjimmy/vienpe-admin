@@ -15,7 +15,8 @@ import { Link } from 'react-router-dom'
 import navigations from '../_nav'
 import { useTheme } from '@material-ui/core/styles'
 import useStyles from './drawer.styles'
-
+import VienpePinkLogo from '../../../assets/vienpe-pink.svg'
+import { Box } from '@material-ui/core'
 type Props = {
   handleDrawerClose: () => void
   open: boolean
@@ -33,7 +34,7 @@ const Drawer: React.FC<Props> = ({ handleDrawerClose, open, location }) => {
       const currentNav = nav.to === location.pathname ? true : false
       return (
         <ListItem
-          className={currentNav ? classes.currentNavColor : ''}
+          className={`${currentNav ? classes.currentNavColor : ''} ${classes.nav}`}
           button
           key={index}
           component={Link}
@@ -61,6 +62,9 @@ const Drawer: React.FC<Props> = ({ handleDrawerClose, open, location }) => {
       }}
     >
       <div className={classes.drawerHeader}>
+        <Box marginRight='40px'>
+          <img src={VienpePinkLogo} alt='vienpe' width='80px' />
+        </Box>
         <IconButton onClick={handleDrawerClose}>
           {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
         </IconButton>

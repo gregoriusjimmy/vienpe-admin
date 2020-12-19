@@ -9,7 +9,7 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import AddButton from '../../components/add-button/add-button.component'
-import Modal from '../../components/containers/modal/modal.component'
+import Modal from '../../components/modal/modal.component'
 import FormDaftarInstruktur from '../../components/form-daftar-instruktur/formDaftarInstruktur.component'
 const useStyles = makeStyles({
   table: {

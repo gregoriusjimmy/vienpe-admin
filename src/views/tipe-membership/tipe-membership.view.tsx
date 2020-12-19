@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Grid, Box } from '@material-ui/core'
 import AddButton from '../../components/add-button/add-button.component'
-import Modal from '../../components/containers/modal/modal.component'
+import Modal from '../../components/modal/modal.component'
 import CircularLoading from '../../components/circular-loading/circular-loading.component'
 import EnhancedTable from '../../components/table/enhanced-table/enhanced-table.component'
 import TipeMembershipForm from '../../components/tipe-membership-form/tipe-membership-form.component'

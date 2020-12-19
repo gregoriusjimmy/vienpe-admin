@@ -16,7 +16,8 @@ import { green } from '@material-ui/core/colors'
 import EnhancedTableToolbar from '../enchanced-table-toolbar/enchanced-table-toolbar.component'
 import EnhancedTableHead from '../enchanced-table-head/enchanced-table-head.component'
 import EditAttributesIcon from '@material-ui/icons/EditAttributes'
-
+import CheckBoxIcon from '@material-ui/icons/CheckBox'
+import CloseIcon from '@material-ui/icons/Close'
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
     return -1
@@ -131,6 +132,10 @@ const EnhancedTable: React.FC<Props> = ({
     return data
   }
 
+  const booleanToIcon = (value) => {
+    if (value === 'true') return <CheckBoxIcon />
+    else return <CloseIcon />
+  }
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 
   return data ? (
@@ -162,7 +167,7 @@ const EnhancedTable: React.FC<Props> = ({
                       {Object.entries(row).map(([key, value]) => {
                         return (
                           <TableCell key={`${id}-${key}`}>
-                            {typeof value === 'boolean' ? `${value}` : value}
+                            {key === 'status_membership' ? booleanToIcon(value) : value}
                           </TableCell>
                         )
                       })}
