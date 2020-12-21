@@ -1,4 +1,4 @@
-import { fetchAdd, fetchRead, fetchUpdate, handdleErrors } from '../../fetch/fetch'
+import { fetchAdd, fetchRead, fetchUpdate, handleErrors } from '../../fetch/fetch'
 import { MemberType } from '../member/member.types'
 import { addErrorNotification, addSuccessNotificaiton } from '../notification/notification.actions'
 import { MembershipActionTypes, MembershipType } from './membership.types'
@@ -51,7 +51,7 @@ export const addMembershipStartAsync = (
       fetchAdd(process.env.REACT_APP_MEMBERSHIP_URL, membershipForm),
       fetchUpdate(process.env.REACT_APP_MEMBER_URL, member),
     ])
-      .then(handdleErrors)
+      .then(handleErrors)
       .then((response) => {
         dispatch(addMembershipSuccess(membershipForm))
         if (successCallback) successCallback()
@@ -82,7 +82,7 @@ export const updateMembershipStartAsync = (updatedMembership: MembershipType) =>
   return (dispatch) => {
     dispatch(updateMembershipStart())
     fetchUpdate(process.env.REACT_APP_MEMBERSHIP_URL, updatedMembership)
-      .then(handdleErrors)
+      .then(handleErrors)
       .then((response) => {
         dispatch(updateMembershipSuccess(updatedMembership))
         alert('success')

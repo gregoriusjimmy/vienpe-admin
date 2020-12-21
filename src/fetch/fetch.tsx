@@ -40,7 +40,7 @@ export const fetchUpdate = async (url, dataSend) => {
   return response
 }
 
-export const handdleErrors = (response) => {
+export const handleErrors = (response) => {
   if (!response.ok) {
     throw Error(response.statusText)
   }

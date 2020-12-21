@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 
 import { connect } from 'react-redux'
-import { setCurrentAdmin } from '../../redux/admin/admin.actions'
+import { SetCurrentAdminStartAsync } from '../../redux/admin/admin.actions'
 
 import { Box, TextField, Button } from '@material-ui/core'
 import useStyles from './login.styles'
 
 type Props = {
-  setCurrentAdmin: (admin: {}) => void
+  setCurrentAdminStartAsync: (admin) => void
 }
 
-const Login: React.FC<Props> = ({ setCurrentAdmin }) => {
+const Login: React.FC<Props> = ({ setCurrentAdminStartAsync }) => {
   const { formContainer, loginTitle } = useStyles()
   const [adminCredentials, setAdminCredentials] = useState({
     username: '',
@@ -18,7 +18,7 @@ const Login: React.FC<Props> = ({ setCurrentAdmin }) => {
   })
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setCurrentAdmin({ id: 123, name: 'admin' })
+    setCurrentAdminStartAsync(adminCredentials)
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -65,6 +65,6 @@ const Login: React.FC<Props> = ({ setCurrentAdmin }) => {
   )
 }
 const mapDispatchToProps = (dispatch) => ({
-  setCurrentAdmin: (admin) => dispatch(setCurrentAdmin(admin)),
+  setCurrentAdminStartAsync: (admin) => dispatch(SetCurrentAdminStartAsync(admin)),
 })
 export default connect(null, mapDispatchToProps)(Login)

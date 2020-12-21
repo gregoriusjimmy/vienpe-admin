@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setCurrentAdmin } from '../../../redux/admin/admin.actions'
+import { logoutCurrentAdmin } from '../../../redux/admin/admin.actions'
 import useStyles from './appbar.styles'
 import clsx from 'clsx'
 import IconButton from '@material-ui/core/IconButton'
@@ -13,15 +13,15 @@ import { Typography } from '@material-ui/core'
 
 type Props = {
   handleDrawerOpen: () => void
-  setCurrentAdmin: (admin: null) => void
+  logoutCurrentAdmin: () => void
   open: boolean
 }
 
-const AppBar: React.FC<Props> = ({ handleDrawerOpen, setCurrentAdmin, open }) => {
+const AppBar: React.FC<Props> = ({ handleDrawerOpen, logoutCurrentAdmin, open }) => {
   const { appBar, appBarShift, menuButton, logoutButton, hide } = useStyles()
 
   const handleLogout = () => {
-    setCurrentAdmin(null)
+    logoutCurrentAdmin()
   }
 
   return (
@@ -53,6 +53,6 @@ const AppBar: React.FC<Props> = ({ handleDrawerOpen, setCurrentAdmin, open }) =>
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  setCurrentAdmin: (admin) => dispatch(setCurrentAdmin(admin)),
+  logoutCurrentAdmin: () => dispatch(logoutCurrentAdmin()),
 })
 export default connect(null, mapDispatchToProps)(AppBar)

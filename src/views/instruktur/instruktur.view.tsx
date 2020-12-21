@@ -1,84 +1,103 @@
-import React, { useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import React, { useState, useEffect } from 'react'
 import { Grid, Box } from '@material-ui/core'
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableContainer from '@material-ui/core/TableContainer'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
-import Paper from '@material-ui/core/Paper'
 import AddButton from '../../components/add-button/add-button.component'
+import InstrukturForm from '../../components/instruktur-form/instruktur-form.component'
 import Modal from '../../components/modal/modal.component'
-import FormDaftarInstruktur from '../../components/form-daftar-instruktur/formDaftarInstruktur.component'
-const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-  },
-})
+import EnchancedTable from '../../components/table/enhanced-table/enhanced-table.component'
+import CircularLoading from '../../components/circular-loading/circular-loading.component'
+import { connect } from 'react-redux'
+import { RootState } from '../../redux/root-reducer'
+import { InstrukturType } from '../../redux/instruktur/instruktur.types'
+import {
+  selectAllInstruktur,
+  selectIsAllInstrukturLoaded,
+} from '../../redux/instruktur/instruktur.selectors'
+import { loadAllInstrukturStartAsync } from '../../redux/instruktur/instruktur.actions'
 
-function createData(name: string, calories: number, fat: number, carbs: number, protein: number) {
-  return { name, calories, fat, carbs, protein }
+type Props = {
+  allInstruktur: Array<InstrukturType> | null
+  isAllInstrukturLoaded: boolean
+  loadAllInstrukturStartAsync: () => void
 }
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-]
-const Instruktur: React.FC = () => {
-  const classes = useStyles()
-  const [open, setOpen] = React.useState(false)
+const Instruktur: React.FC<Props> = ({
+  allInstruktur,
+  isAllInstrukturLoaded,
+  loadAllInstrukturStartAsync,
+}) => {
+  const [openAdd, setOpenAdd] = useState(false)
+  const [openEdit, setOpenEdit] = useState(false)
+  const [searchField, setSearchField] = useState('')
+  const [selectedInstruktur, setSelectedInstruktur] = useState<InstrukturType | null>(null)
 
-  const handleOpen = () => {
-    setOpen(true)
+  useEffect(() => {
+    loadAllInstrukturStartAsync()
+  }, [loadAllInstrukturStartAsync])
+
+  const handleSearchFieldChange = (e) => {
+    setSearchField(e.target.value)
+  }
+  const handleAction = (instruktur: InstrukturType) => {
+    setSelectedInstruktur(instruktur)
+    setOpenEdit(true)
+  }
+  const handleModalAddClose = () => {
+    setOpenAdd(false)
   }
 
-  const handleClose = () => {
-    setOpen(false)
+  const handleModalEditClose = () => {
+    setOpenEdit(false)
   }
+  const headData: Array<{ id: string; label: string }> = [
+    { id: 'id', label: 'ID' },
+    { id: 'nama', label: 'Nama' },
+    { id: 'no_telp', label: 'No. Telp' },
+    { id: 'email', label: 'Email' },
+    { id: 'tgl_lahir', label: 'Tgl Lahir' },
+  ]
 
-  return (
+  return isAllInstrukturLoaded ? (
     <Grid container spacing={3}>
       <Grid item xs={6}></Grid>
       <Grid container item justify='flex-end' xs={6}>
-        <Box m={1}>
-          <AddButton text='Tambah Instruktur' handleClick={handleOpen} />
-          <Modal open={open} handleClose={handleClose} ariaLabel='modal-add'>
-            <FormDaftarInstruktur />
+        <Box m={2}>
+          <AddButton text='Tambah Instruktur' handleClick={() => setOpenAdd(true)} />
+          <Modal open={openAdd} handleClose={() => setOpenAdd(false)} ariaLabel='modal-add'>
+            <InstrukturForm handleModalClose={handleModalAddClose} />
+          </Modal>
+          <Modal open={openEdit} handleClose={() => setOpenEdit(false)} ariaLabel='modal-edit'>
+            <InstrukturForm
+              edit
+              selectedInstruktur={selectedInstruktur}
+              handleModalClose={handleModalEditClose}
+            />
           </Modal>
         </Box>
       </Grid>
-      <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label='simple table'>
-          <TableHead>
-            <TableRow>
-              <TableCell>Dessert (100g serving)</TableCell>
-              <TableCell align='right'>Calories</TableCell>
-              <TableCell align='right'>Fat&nbsp;(g)</TableCell>
-              <TableCell align='right'>Carbs&nbsp;(g)</TableCell>
-              <TableCell align='right'>Protein&nbsp;(g)</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.name}>
-                <TableCell component='th' scope='row'>
-                  {row.name}
-                </TableCell>
-                <TableCell align='right'>{row.calories}</TableCell>
-                <TableCell align='right'>{row.fat}</TableCell>
-                <TableCell align='right'>{row.carbs}</TableCell>
-                <TableCell align='right'>{row.protein}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Grid item xs={12}>
+        {allInstruktur ? (
+          <EnchancedTable
+            searchBasedOnId='nama'
+            inputSearch={searchField}
+            onSearchFieldChange={handleSearchFieldChange}
+            title='Instruktur'
+            data={allInstruktur}
+            arrayDataColumn={headData}
+            placeholder='Search nama...'
+            handleAction={handleAction}
+          />
+        ) : null}
+      </Grid>
     </Grid>
+  ) : (
+    <CircularLoading />
   )
 }
-
-export default Instruktur
+const mapStateToProps = (state: RootState) => ({
+  allInstruktur: selectAllInstruktur(state),
+  isAllInstrukturLoaded: selectIsAllInstrukturLoaded(state),
+})
+const mapDispatchToProps = (dispatch) => ({
+  loadAllInstrukturStartAsync: () => dispatch(loadAllInstrukturStartAsync()),
+})
+export default connect(mapStateToProps, mapDispatchToProps)(Instruktur)

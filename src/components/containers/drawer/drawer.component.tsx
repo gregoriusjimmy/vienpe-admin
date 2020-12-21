@@ -63,7 +63,7 @@ const Drawer: React.FC<Props> = ({ handleDrawerClose, open, location }) => {
     >
       <div className={classes.drawerHeader}>
         <Box marginRight='40px'>
-          <img src={VienpePinkLogo} alt='vienpe' width='80px' />
+          <img src={VienpePinkLogo} alt='vienpe' width='100px' />
         </Box>
         <IconButton onClick={handleDrawerClose}>
           {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}

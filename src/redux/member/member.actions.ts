@@ -1,4 +1,4 @@
-import { handdleErrors } from './../../fetch/fetch'
+import { handleErrors } from './../../fetch/fetch'
 import { MemberActionTypes, MemberType } from './member.types'
 import { fetchAdd, fetchRead, fetchUpdate } from '../../fetch/fetch'
 import { addSuccessNotificaiton, addErrorNotification } from '../notification/notification.actions'
@@ -43,7 +43,7 @@ export const addMemberStartAsync = (memberForm: MemberType, succesCallback?: () 
   return (dispatch) => {
     dispatch(addMemberStart())
     fetchAdd(process.env.REACT_APP_MEMBER_URL, memberForm)
-      .then(handdleErrors)
+      .then(handleErrors)
       .then((response) => {
         dispatch(addMemberSuccess(memberForm))
         if (succesCallback) succesCallback()
@@ -74,7 +74,7 @@ export const updateMemberStartAsync = (updatedMember: MemberType, succesCallback
   return (dispatch) => {
     dispatch(updateMemberStart())
     fetchUpdate(process.env.REACT_APP_MEMBER_URL, updatedMember)
-      .then(handdleErrors)
+      .then(handleErrors)
       .then((response) => {
         dispatch(updateMemberSuccess(updatedMember))
         if (succesCallback) succesCallback()
