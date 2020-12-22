@@ -32,6 +32,32 @@ const kelasReducer = (state = INITIAL_STATE, action) => {
         errorMessage: action.payload,
       }
 
+    case KelasActionTypes.ADD_KELAS_START:
+      return {
+        ...state,
+        isFetching: true,
+      }
+
+    case KelasActionTypes.ADD_KELAS_SUCCESS:
+      let id
+      if (state.allKelas) {
+        id = state.allKelas.slice(-1)[0]['id']! + 1
+      } else id = 1
+
+      return {
+        ...state,
+        isFetching: false,
+        errorMessage: undefined,
+        allKelas: [...state.allKelas!, { id: id, ...action.payload }],
+      }
+
+    case KelasActionTypes.ADD_KELAS_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        errorMessage: action.payload,
+      }
+
     default:
       return state
   }

@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect'
 import { RootState } from '../root-reducer'
-import { InstrukturState } from './instruktur.types'
+import { InstrukturState, InstrukturType } from './instruktur.types'
 
 export const selectInstruktur = (state: RootState): InstrukturState => state.instruktur
 
@@ -19,10 +19,16 @@ export const selectIsAllInstrukturLoaded = createSelector(
   (instruktur) => instruktur.isLoaded
 )
 
-// export const selectAllMemberNameWithId = createSelector([selectAllMember], (allMember) => {
-//   if (!allMember) return null
-//   return allMember.map((member: MemberType) => ({ id: member.id, nama: member.nama }))
-// })
+export const selectAllInstrukturNameWithId = createSelector(
+  [selectAllInstruktur],
+  (allInstruktur) => {
+    if (!allInstruktur) return null
+    return allInstruktur.map((instruktur: InstrukturType) => ({
+      id: instruktur.id,
+      nama: instruktur.nama,
+    }))
+  }
+)
 
 export const selectInstrukturErrorMessage = createSelector(
   [selectInstruktur],

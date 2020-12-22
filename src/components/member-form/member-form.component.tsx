@@ -6,13 +6,13 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { connect } from 'react-redux'
-
 import { addMemberStartAsync, updateMemberStartAsync } from '../../redux/member/member.actions'
 import { MemberType } from '../../redux/member/member.types'
 import SubmitButton from '../submit-button/submit-button.component'
 import { selectIsMemberFetching } from '../../redux/member/member.selectors'
 import { RootState } from '../../redux/root-reducer'
 import CircularLoading from '../circular-loading/circular-loading.component'
+import moment from 'moment'
 
 type FORM_DATA = {
   nama: ''
@@ -62,7 +62,9 @@ const MemberForm: React.FC<Props> = ({
   const onSubmit = async (formValues) => {
     if (!formValues.email) formValues.email = null
     if (!formValues.tgl_lahir) formValues.tgl_lahir = null
+    else formValues.tgl_lahir = moment(formValues.tgl_lahir).format('DD-MM-YYYY')
     const { nama, no_telp, email, tgl_lahir } = formValues
+
     const orderedFormValues = { nama, no_telp, email, tgl_lahir, status_membership: false }
     if (edit) {
       updateMemberStartAsync(

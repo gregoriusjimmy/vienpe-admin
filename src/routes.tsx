@@ -4,7 +4,7 @@ import Member from './views/member/member.view'
 import Membership from './views/membership/membership.view'
 import Instruktur from './views/instruktur/instruktur.view'
 import TipeMembership from './views/tipe-membership/tipe-membership.view'
-
+import Kelas from './views/kelas/kelas.view'
 interface View {
   path: String
   name: String
@@ -17,5 +17,6 @@ const routes: Array<View> = [
   { path: '/membership', name: 'Membership', component: Membership },
   { path: '/instruktur', name: 'Instruktur', component: Instruktur },
   { path: '/tipe-membership', name: 'Tipe Membership', component: TipeMembership },
+  { path: '/kelas', name: 'Kelas', component: Kelas },
 ]
 export default routes

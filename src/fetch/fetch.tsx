@@ -41,8 +41,17 @@ export const fetchUpdate = async (url, dataSend) => {
 }
 
 export const handleErrors = (response) => {
-  if (!response.ok) {
-    throw Error(response.statusText)
+  // multiple promises
+  if (Array.isArray(response)) {
+    response.forEach((promise) => {
+      if (!promise.ok) {
+        throw Error(promise.statusText)
+      }
+    })
+  } else {
+    if (!response.ok) {
+      throw Error(response.statusText)
+    }
   }
   return response
 }

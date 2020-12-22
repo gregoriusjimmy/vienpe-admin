@@ -6,7 +6,7 @@ type Props = {
   name: string
   label: string
   control: any
-  defaultValue: any 
+  defaultValue?: any
   children: React.ReactNode
   [otherProps: string]: any
 }
@@ -34,7 +34,6 @@ const ReactHookFormSelect: React.FC<Props> = ({
         control={control}
         defaultValue={defaultValue}
       />
-      {}
       <FormHelperText id='my-helper-text'>{helperText ? helperText : ''}</FormHelperText>
     </FormControl>
   )

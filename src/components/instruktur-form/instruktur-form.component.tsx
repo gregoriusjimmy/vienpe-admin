@@ -16,6 +16,7 @@ import {
 } from '../../redux/instruktur/instruktur.actions'
 import { selectIsInstrukturFetching } from '../../redux/instruktur/instruktur.selectors'
 import { InstrukturType } from '../../redux/instruktur/instruktur.types'
+import moment from 'moment'
 
 type FORM_DATA = {
   nama: ''
@@ -57,6 +58,8 @@ const InstrukturForm: React.FC<Props> = ({
   const onSubmit = async (formValues) => {
     if (!formValues.email) formValues.email = null
     if (!formValues.tgl_lahir) formValues.tgl_lahir = null
+    else formValues.tgl_lahir = moment(formValues.tgl_lahir).format('DD-MM-YYYY')
+
     const { nama, no_telp, email, tgl_lahir } = formValues
     const orderedFormValues = { nama, no_telp, email, tgl_lahir }
     if (edit) {

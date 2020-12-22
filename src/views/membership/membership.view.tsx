@@ -60,7 +60,7 @@ const Membership: React.FC<Props> = ({
     return isAllMemberLoaded && isAllTipeMembershipLoaded && isAllMembershipLoaded
   }
   // need better algorithm and refactoring
-  const mapAllMembershipWithMemberName = () => {
+  const allMembershipWithMemberName = () => {
     return allMembership!.map((membership) => {
       const { id, id_member, tipe_membership, tgl_mulai, tgl_selesai, sisa_point } = membership
       const findMatch = allMemberNameWithId?.find((member) => id_member === member.id)
@@ -76,6 +76,7 @@ const Membership: React.FC<Props> = ({
       return orderedData
     })
   }
+
   const handleSearchFieldChange = (e) => {
     setSearchField(e.target.value)
   }
@@ -95,7 +96,7 @@ const Membership: React.FC<Props> = ({
         <Box m={1}>
           <AddButton text='Tambah membership' handleClick={handleOpen} />
           <Modal open={open} handleClose={handleClose} ariaLabel='modal-add'>
-            <MembershipForm />
+            <MembershipForm handleModalClose={handleClose} />
           </Modal>
         </Box>
       </Grid>
@@ -106,7 +107,7 @@ const Membership: React.FC<Props> = ({
             onSearchFieldChange={handleSearchFieldChange}
             searchBasedOnId='nama'
             title='Membership'
-            data={mapAllMembershipWithMemberName()}
+            data={allMembershipWithMemberName()}
             arrayDataColumn={headData}
             placeholder='Search nama...'
           />

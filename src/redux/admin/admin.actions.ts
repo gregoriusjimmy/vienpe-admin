@@ -1,5 +1,4 @@
 import { fetchAdd, handleErrors } from '../../fetch/fetch'
-import { addErrorNotification } from '../notification/notification.actions'
 import { AdminActionTypes } from './admin.types'
 
 export const setCurrentAdminStart = () => ({

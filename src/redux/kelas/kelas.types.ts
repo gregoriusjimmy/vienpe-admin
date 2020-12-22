@@ -2,6 +2,9 @@ export const KelasActionTypes = {
   LOAD_ALL_KELAS_START: 'LOAD_ALL_KELAS_START',
   LOAD_ALL_KELAS_SUCCESS: 'LOAD_ALL_KELAS_SUCCESS',
   LOAD_ALL_KELAS_FAILURE: 'LOAD_ALL_KELAS_FAILURE',
+  ADD_KELAS_START: 'ADD_KELAS_START',
+  ADD_KELAS_SUCCESS: 'ADD_KELAS_SUCCESS',
+  ADD_KELAS_FAILURE: 'ADD_KELAS_FAILURE',
 }
 export type KelasState = {
   allKelas: null | []
@@ -17,4 +20,5 @@ export type KelasType = {
   hari: string
   jam: string
   keterangan: string
+  created_at: string | null
 }
