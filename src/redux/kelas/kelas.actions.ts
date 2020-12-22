@@ -1,5 +1,5 @@
 import { KelasActionTypes, KelasType } from './kelas.types'
-import { fetchAdd, fetchRead, handleErrors } from '../../fetch/fetch'
+import { fetchPost, fetchGet } from '../../fetch/fetch'
 import { addErrorNotification, addSuccessNotificaiton } from '../notification/notification.actions'
 export const loadAllKelasStart = () => ({
   type: KelasActionTypes.LOAD_ALL_KELAS_START,
@@ -18,8 +18,8 @@ export const loadAllKelasFailure = (errorMessage: string) => ({
 export const loadAllKelasStartAsync = () => {
   return (dispatch) => {
     dispatch(loadAllKelasStart())
-    fetchRead(process.env.REACT_APP_KELAS_URL)
-      .then((data) => dispatch(loadAllKelasSuccess(data)))
+    fetchGet(process.env.REACT_APP_KELAS_URL)
+      .then((response) => dispatch(loadAllKelasSuccess(response.data)))
       .catch((error) => dispatch(loadAllKelasFailure(error.message)))
   }
 }
@@ -41,8 +41,7 @@ export const addKelasFailure = (errorMessage: string) => ({
 export const addKelasStartAsync = (kelasForm: KelasType, succesCallback?: () => void) => {
   return (dispatch) => {
     dispatch(addKelasStart())
-    fetchAdd(process.env.REACT_APP_KELAS_URL, kelasForm)
-      .then(handleErrors)
+    fetchPost(process.env.REACT_APP_KELAS_URL, kelasForm)
       .then((response) => {
         dispatch(addKelasSuccess(kelasForm))
         if (succesCallback) succesCallback()

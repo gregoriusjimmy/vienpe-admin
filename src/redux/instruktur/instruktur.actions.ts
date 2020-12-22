@@ -1,6 +1,5 @@
-import { handleErrors } from './../../fetch/fetch'
 import { InstrukturActionTypes, InstrukturType } from './instruktur.types'
-import { fetchAdd, fetchRead, fetchUpdate } from '../../fetch/fetch'
+import { fetchPost, fetchGet, fetchPut } from '../../fetch/fetch'
 import { addSuccessNotificaiton, addErrorNotification } from '../notification/notification.actions'
 
 export const loadAllInstrukturStart = () => ({
@@ -20,8 +19,8 @@ export const loadAllInstrukturFailure = (errorMessage: string) => ({
 export const loadAllInstrukturStartAsync = () => {
   return (dispatch) => {
     dispatch(loadAllInstrukturStart())
-    fetchRead(process.env.REACT_APP_INSTRUKTUR_URL)
-      .then((data: Array<InstrukturType>) => dispatch(loadAllInstrukturSuccess(data)))
+    fetchGet(process.env.REACT_APP_INSTRUKTUR_URL)
+      .then((response) => dispatch(loadAllInstrukturSuccess(response.data)))
       .catch((error) => dispatch(loadAllInstrukturFailure(error.message)))
   }
 }
@@ -46,8 +45,7 @@ export const addInstrukturStartAsync = (
 ) => {
   return (dispatch) => {
     dispatch(addInstrukturStart())
-    fetchAdd(process.env.REACT_APP_INSTRUKTUR_URL, instrukturForm)
-      .then(handleErrors)
+    fetchPost(process.env.REACT_APP_INSTRUKTUR_URL, instrukturForm)
       .then((response) => {
         dispatch(addInstrukturSuccess(instrukturForm))
         if (succesCallback) succesCallback()
@@ -80,8 +78,7 @@ export const updateInstrukturStartAsync = (
 ) => {
   return (dispatch) => {
     dispatch(updateInstrukturStart())
-    fetchUpdate(process.env.REACT_APP_INSTRUKTUR_URL, updatedInstruktur)
-      .then(handleErrors)
+    fetchPut(process.env.REACT_APP_INSTRUKTUR_URL, updatedInstruktur)
       .then((response) => {
         dispatch(updateInstrukturSuccess(updatedInstruktur))
         if (succesCallback) succesCallback()

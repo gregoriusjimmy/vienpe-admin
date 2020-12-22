@@ -63,6 +63,7 @@ const MemberForm: React.FC<Props> = ({
     if (!formValues.email) formValues.email = null
     if (!formValues.tgl_lahir) formValues.tgl_lahir = null
     else formValues.tgl_lahir = moment(formValues.tgl_lahir).format('DD-MM-YYYY')
+    
     const { nama, no_telp, email, tgl_lahir } = formValues
 
     const orderedFormValues = { nama, no_telp, email, tgl_lahir, status_membership: false }

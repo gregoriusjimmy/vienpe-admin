@@ -1,5 +1,5 @@
 import { TipeMembershipActionTypes, TipeMembershipType } from './tipe-membership.types'
-import { fetchAdd, fetchRead, handleErrors } from '../../fetch/fetch'
+import { fetchPost, fetchGet } from '../../fetch/fetch'
 import { addErrorNotification, addSuccessNotificaiton } from '../notification/notification.actions'
 
 export const loadAllTipeMembershipStart = () => ({
@@ -19,8 +19,8 @@ export const loadAllTipeMembershipFailure = (errorMessage: string) => ({
 export const loadAllTipeMembershipStartAsync = () => {
   return (dispatch) => {
     dispatch(loadAllTipeMembershipStart())
-    fetchRead(process.env.REACT_APP_TIPE_MEMBERSHIP_URL)
-      .then((data: Array<TipeMembershipType>) => dispatch(loadAllTipeMembershipSuccess(data)))
+    fetchGet(process.env.REACT_APP_TIPE_MEMBERSHIP_URL)
+      .then((response) => dispatch(loadAllTipeMembershipSuccess(response.data)))
       .catch((error) => dispatch(loadAllTipeMembershipFailure(error.message)))
   }
 }
@@ -42,8 +42,7 @@ export const addTipeMembershipFailure = (errorMessage: string) => ({
 export const addTipeMembershipStartAsync = (tipeMembershipForm: TipeMembershipType) => {
   return (dispatch) => {
     dispatch(addTipeMembershipStart())
-    fetchAdd(process.env.REACT_APP_TIPE_MEMBERSHIP_URL, tipeMembershipForm)
-      .then(handleErrors)
+    fetchPost(process.env.REACT_APP_TIPE_MEMBERSHIP_URL, tipeMembershipForm)
       .then((response) => {
         dispatch(addTipeMembershipSuccess(tipeMembershipForm))
         dispatch(addSuccessNotificaiton(`menambahkan tipe ${tipeMembershipForm.tipe}`))

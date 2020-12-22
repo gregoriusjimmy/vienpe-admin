@@ -1,5 +1,6 @@
-import { fetchAdd, handleErrors } from '../../fetch/fetch'
+import { fetchPost } from '../../fetch/fetch'
 import { AdminActionTypes } from './admin.types'
+import Cookies from 'universal-cookie'
 
 export const setCurrentAdminStart = () => ({
   type: AdminActionTypes.SET_CURRENT_ADMIN_START,
@@ -18,10 +19,9 @@ export const SetCurrentAdminFailure = (errorMessage) => ({
 export const SetCurrentAdminStartAsync = (admin) => {
   return (dispatch) => {
     dispatch(setCurrentAdminStart())
-    fetchAdd(process.env.REACT_APP_ADMIN_LOGIN_URL, admin)
-      .then(handleErrors)
+    fetchPost(process.env.REACT_APP_ADMIN_LOGIN_URL, admin)
       .then((response) => {
-        dispatch(setCurrentAdminSuccess(admin))
+        dispatch(setCurrentAdminSuccess({ username: admin.username }))
       })
       .catch((error) => {
         dispatch(SetCurrentAdminFailure(error.message))

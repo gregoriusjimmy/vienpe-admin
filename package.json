@@ -2,6 +2,7 @@
   "name": "vienpe-admin",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3001",
   "dependencies": {
     "@hookform/resolvers": "^1.0.1",
     "@material-ui/core": "^4.11.0",
@@ -18,6 +19,7 @@
     "@types/react-redux": "^7.1.11",
     "@types/redux-logger": "^3.0.8",
     "@types/yup": "^0.29.9",
+    "axios": "^0.21.1",
     "framer-motion": "^3.0.0",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.32",
@@ -36,6 +38,7 @@
     "reselect": "^4.0.0",
     "styled-components": "^5.2.1",
     "typescript": "^4.0.3",
+    "universal-cookie": "^4.0.4",
     "web-vitals": "^0.2.4",
     "yup": "^0.31.0"
   },

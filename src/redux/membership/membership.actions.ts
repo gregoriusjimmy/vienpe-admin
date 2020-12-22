@@ -1,4 +1,5 @@
-import { fetchAdd, fetchRead, fetchUpdate, handleErrors } from '../../fetch/fetch'
+import axios from 'axios'
+import { fetchPost, fetchGet, fetchPut } from '../../fetch/fetch'
 import { MemberType } from '../member/member.types'
 import { addErrorNotification, addSuccessNotificaiton } from '../notification/notification.actions'
 import { MembershipActionTypes, MembershipType } from './membership.types'
@@ -20,8 +21,8 @@ export const loadAllMembershipFailure = (errorMessage: string) => ({
 export const loadAllMembershipStartAsync = () => {
   return (dispatch) => {
     dispatch(loadAllMembershipStart())
-    fetchRead(process.env.REACT_APP_MEMBERSHIP_URL)
-      .then((data: Array<MembershipType>) => dispatch(loadAllMembershipSuccess(data)))
+    fetchGet(process.env.REACT_APP_MEMBERSHIP_URL)
+      .then((response) => dispatch(loadAllMembershipSuccess(response.data)))
       .catch((error) => dispatch(loadAllMembershipFailure(error.message)))
   }
 }
@@ -47,11 +48,11 @@ export const addMembershipStartAsync = (
 ) => {
   return (dispatch) => {
     dispatch(addMembershipStart())
-    Promise.all([
-      fetchAdd(process.env.REACT_APP_MEMBERSHIP_URL, membershipForm),
-      fetchUpdate(process.env.REACT_APP_MEMBER_URL, member),
-    ])
-      .then(handleErrors)
+    axios
+      .all([
+        fetchPost(process.env.REACT_APP_MEMBERSHIP_URL, membershipForm),
+        fetchPut(process.env.REACT_APP_MEMBER_URL, member),
+      ])
       .then((response) => {
         dispatch(addMembershipSuccess(membershipForm))
         if (successCallback) successCallback()
@@ -81,11 +82,9 @@ export const updateMembershipFailure = (errorMessage: string) => ({
 export const updateMembershipStartAsync = (updatedMembership: MembershipType) => {
   return (dispatch) => {
     dispatch(updateMembershipStart())
-    fetchUpdate(process.env.REACT_APP_MEMBERSHIP_URL, updatedMembership)
-      .then(handleErrors)
+    fetchPut(process.env.REACT_APP_MEMBERSHIP_URL, updatedMembership)
       .then((response) => {
         dispatch(updateMembershipSuccess(updatedMembership))
-        alert('success')
       })
       .catch((error) => dispatch(updateMembershipFailure(error.message)))
   }

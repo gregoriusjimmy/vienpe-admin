@@ -1,6 +1,5 @@
-import { handleErrors } from './../../fetch/fetch'
 import { MemberActionTypes, MemberType } from './member.types'
-import { fetchAdd, fetchRead, fetchUpdate } from '../../fetch/fetch'
+import { fetchPost, fetchGet, fetchPut } from '../../fetch/fetch'
 import { addSuccessNotificaiton, addErrorNotification } from '../notification/notification.actions'
 export const loadAllMemberStart = () => ({
   type: MemberActionTypes.LOAD_ALL_MEMBER_START,
@@ -19,8 +18,8 @@ export const loadAllMemberFailure = (errorMessage: string) => ({
 export const loadAllMemberStartAsync = () => {
   return (dispatch) => {
     dispatch(loadAllMemberStart())
-    fetchRead(process.env.REACT_APP_MEMBER_URL)
-      .then((data: Array<MemberType>) => dispatch(loadAllMemberSuccess(data)))
+    fetchGet(process.env.REACT_APP_MEMBER_URL)
+      .then((response) => dispatch(loadAllMemberSuccess(response.data)))
       .catch((error) => dispatch(loadAllMemberFailure(error.message)))
   }
 }
@@ -42,8 +41,7 @@ export const addMemberFailure = (errorMessage: string) => ({
 export const addMemberStartAsync = (memberForm: MemberType, succesCallback?: () => void) => {
   return (dispatch) => {
     dispatch(addMemberStart())
-    fetchAdd(process.env.REACT_APP_MEMBER_URL, memberForm)
-      .then(handleErrors)
+    fetchPost(process.env.REACT_APP_MEMBER_URL, memberForm)
       .then((response) => {
         dispatch(addMemberSuccess(memberForm))
         if (succesCallback) succesCallback()
@@ -73,8 +71,7 @@ export const updateMemberFailure = (errorMessage: string) => ({
 export const updateMemberStartAsync = (updatedMember: MemberType, succesCallback?: () => void) => {
   return (dispatch) => {
     dispatch(updateMemberStart())
-    fetchUpdate(process.env.REACT_APP_MEMBER_URL, updatedMember)
-      .then(handleErrors)
+    fetchPut(process.env.REACT_APP_MEMBER_URL, updatedMember)
       .then((response) => {
         dispatch(updateMemberSuccess(updatedMember))
         if (succesCallback) succesCallback()
