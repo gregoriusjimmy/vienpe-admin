@@ -1,6 +1,5 @@
-import { fetchPost } from '../../fetch/fetch'
+import { fetchPost, getErrorMessage } from '../../fetch/fetch'
 import { AdminActionTypes } from './admin.types'
-import Cookies from 'universal-cookie'
 
 export const setCurrentAdminStart = () => ({
   type: AdminActionTypes.SET_CURRENT_ADMIN_START,
@@ -24,8 +23,9 @@ export const SetCurrentAdminStartAsync = (admin) => {
         dispatch(setCurrentAdminSuccess({ username: admin.username }))
       })
       .catch((error) => {
-        dispatch(SetCurrentAdminFailure(error.message))
-        alert('salah')
+        const errorMessage = getErrorMessage(error)
+        dispatch(SetCurrentAdminFailure(errorMessage))
+        alert(errorMessage)
       })
   }
 }

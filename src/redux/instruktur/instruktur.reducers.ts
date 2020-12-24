@@ -40,7 +40,10 @@ const instrukturReducer = (state = INITIAL_STATE, action: { type: string; payloa
       }
 
     case InstrukturActionTypes.ADD_INSTRUKTUR_SUCCESS:
-      const id = state.allInstruktur?.slice(-1)[0]['id']! + 1
+      let id
+      if (state.allInstruktur) id = state.allInstruktur?.slice(-1)[0]['id']! + 1
+      else id = 1
+
       return {
         ...state,
         isFetching: false,
@@ -64,6 +67,7 @@ const instrukturReducer = (state = INITIAL_STATE, action: { type: string; payloa
       const index = state.allInstruktur?.findIndex(
         (instruktur: InstrukturType) => instruktur.id === action.payload.id
       )
+
       const allNewInstruktur: Array<InstrukturType> = [...state.allInstruktur!]
       allNewInstruktur[index!] = action.payload
       return {

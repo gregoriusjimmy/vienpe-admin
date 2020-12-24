@@ -7,6 +7,7 @@ import tipeMembershipReducer from './tipe-membership/tipe-membership.reducer'
 import kelasReducer from './kelas/kelas.reducer'
 import notificationReducer from './notification/notification.reducer'
 import instrukturReducer from './instruktur/instruktur.reducers'
+
 // rootReducer
 export const rootReducer = combineReducers({
   admin: adminReducer,

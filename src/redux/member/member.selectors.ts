@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect'
+import memberFormComponent from '../../components/member-form/member-form.component'
 import { RootState } from '../root-reducer'
 import { MemberState, MemberType } from './member.types'
 
@@ -13,6 +14,14 @@ export const selectIsAllMemberLoaded = createSelector([selectMember], (member) =
 export const selectAllMemberNameWithId = createSelector([selectAllMember], (allMember) => {
   if (!allMember) return null
   return allMember.map((member: MemberType) => ({ id: member.id, nama: member.nama }))
+})
+export const selectAllMemberIdNameStatus = createSelector([selectAllMember], (allMember) => {
+  if (!allMember) return null
+  return allMember.map((member: MemberType) => ({
+    id: member.id,
+    nama: member.nama,
+    status_membership: member.status_membership,
+  }))
 })
 
 export const selectMemberErrorMessage = createSelector(

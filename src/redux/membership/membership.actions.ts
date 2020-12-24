@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { fetchPost, fetchGet, fetchPut } from '../../fetch/fetch'
+import { fetchPost, fetchGet, fetchPut, getErrorMessage } from '../../fetch/fetch'
 import { MemberType } from '../member/member.types'
 import { addErrorNotification, addSuccessNotificaiton } from '../notification/notification.actions'
 import { MembershipActionTypes, MembershipType } from './membership.types'
@@ -59,8 +59,9 @@ export const addMembershipStartAsync = (
         dispatch(addSuccessNotificaiton(`menambahkan membership ${member.nama}`))
       })
       .catch((error) => {
-        dispatch(addMembershipFailure(error.message))
-        dispatch(addErrorNotification(`menambahkan membership, reason: ${error.message}`))
+        const errorMessage = getErrorMessage(error)
+        dispatch(addMembershipFailure(errorMessage))
+        dispatch(addErrorNotification(`menambahkan membership, reason: ${errorMessage}`))
       })
   }
 }

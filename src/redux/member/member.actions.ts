@@ -1,5 +1,5 @@
 import { MemberActionTypes, MemberType } from './member.types'
-import { fetchPost, fetchGet, fetchPut } from '../../fetch/fetch'
+import { fetchPost, fetchGet, fetchPut, getErrorMessage } from '../../fetch/fetch'
 import { addSuccessNotificaiton, addErrorNotification } from '../notification/notification.actions'
 export const loadAllMemberStart = () => ({
   type: MemberActionTypes.LOAD_ALL_MEMBER_START,
@@ -48,8 +48,9 @@ export const addMemberStartAsync = (memberForm: MemberType, succesCallback?: () 
         dispatch(addSuccessNotificaiton(`menambahkan member ${memberForm.nama}`))
       })
       .catch((error) => {
-        dispatch(addMemberFailure(error.message))
-        dispatch(addErrorNotification(`menambahkan member, reason: ${error.message}`))
+        const errorMessage = getErrorMessage(error)
+        dispatch(addMemberFailure(errorMessage))
+        dispatch(addErrorNotification(`menambahkan member, reason: ${errorMessage}`))
       })
   }
 }
@@ -78,8 +79,9 @@ export const updateMemberStartAsync = (updatedMember: MemberType, succesCallback
         dispatch(addSuccessNotificaiton(`update member ${updatedMember.nama}`))
       })
       .catch((error) => {
-        dispatch(updateMemberFailure(error.message))
-        dispatch(addErrorNotification(`update member, reason: ${error.message}`))
+        const errorMessage = getErrorMessage(error)
+        dispatch(updateMemberFailure(errorMessage))
+        dispatch(addErrorNotification(`update member, reason: ${errorMessage}`))
       })
   }
 }

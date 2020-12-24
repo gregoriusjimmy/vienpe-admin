@@ -17,3 +17,10 @@ export const fetchPost = async (url, dataSend) => {
 export const fetchPut = async (url, dataSend) => {
   return await axios.put(url, dataSend)
 }
+
+export const getErrorMessage = (error) => {
+  let errorMessage
+  if (error.response?.data) errorMessage = error.response.data
+  else errorMessage = error.message
+  return errorMessage
+}

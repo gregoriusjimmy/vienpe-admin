@@ -1,5 +1,5 @@
 import { InstrukturActionTypes, InstrukturType } from './instruktur.types'
-import { fetchPost, fetchGet, fetchPut } from '../../fetch/fetch'
+import { fetchPost, fetchGet, fetchPut, getErrorMessage } from '../../fetch/fetch'
 import { addSuccessNotificaiton, addErrorNotification } from '../notification/notification.actions'
 
 export const loadAllInstrukturStart = () => ({
@@ -85,8 +85,9 @@ export const updateInstrukturStartAsync = (
         dispatch(addSuccessNotificaiton(`update member ${updatedInstruktur.nama}`))
       })
       .catch((error) => {
-        dispatch(updateInstrukturFailure(error.message))
-        dispatch(addErrorNotification(`update member, reason: ${error.message}`))
+        const errorMessage = getErrorMessage(error)
+        dispatch(updateInstrukturFailure(errorMessage))
+        dispatch(addErrorNotification(`update member, reason: ${errorMessage}`))
       })
   }
 }

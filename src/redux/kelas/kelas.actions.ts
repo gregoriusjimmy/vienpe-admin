@@ -1,5 +1,5 @@
 import { KelasActionTypes, KelasType } from './kelas.types'
-import { fetchPost, fetchGet } from '../../fetch/fetch'
+import { fetchPost, fetchGet, getErrorMessage } from '../../fetch/fetch'
 import { addErrorNotification, addSuccessNotificaiton } from '../notification/notification.actions'
 export const loadAllKelasStart = () => ({
   type: KelasActionTypes.LOAD_ALL_KELAS_START,
@@ -48,8 +48,9 @@ export const addKelasStartAsync = (kelasForm: KelasType, succesCallback?: () => 
         dispatch(addSuccessNotificaiton(`menambahkan kelas`))
       })
       .catch((error) => {
-        dispatch(addKelasFailure(error.message))
-        dispatch(addErrorNotification(`menambahkan kelas, reason: ${error.message}`))
+        const errorMessage = getErrorMessage(error)
+        dispatch(addKelasFailure(errorMessage))
+        dispatch(addErrorNotification(`menambahkan kelas, reason: ${errorMessage}`))
       })
   }
 }

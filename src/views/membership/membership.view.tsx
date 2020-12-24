@@ -86,7 +86,7 @@ const Membership: React.FC<Props> = ({
     { id: 'nama', label: 'Nama' },
     { id: 'tipe_membership', label: 'Tipe Memberhsip' },
     { id: 'tgl_mulai', label: 'Tgl Mulai' },
-    { id: 'tgl_selesai', label: 'Tgl Selesai?' },
+    { id: 'tgl_selesai', label: 'Tgl Selesai' },
     { id: 'sisa_point', label: 'Sisa Point' },
   ]
   return isAllLoaded() ? (

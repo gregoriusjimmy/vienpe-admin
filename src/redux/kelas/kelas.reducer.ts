@@ -40,9 +40,8 @@ const kelasReducer = (state = INITIAL_STATE, action) => {
 
     case KelasActionTypes.ADD_KELAS_SUCCESS:
       let id
-      if (state.allKelas) {
-        id = state.allKelas.slice(-1)[0]['id']! + 1
-      } else id = 1
+      if (state.allKelas) id = state.allKelas.slice(-1)[0]['id']! + 1
+      else id = 1
 
       return {
         ...state,
