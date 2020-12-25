@@ -1,5 +1,5 @@
 import { KelasActionTypes, KelasType } from './kelas.types'
-import { fetchPost, fetchGet, getErrorMessage } from '../../fetch/fetch'
+import { fetchPost, fetchGet, getErrorMessage, fetchPut } from '../../fetch/fetch'
 import { addErrorNotification, addSuccessNotificaiton } from '../notification/notification.actions'
 export const loadAllKelasStart = () => ({
   type: KelasActionTypes.LOAD_ALL_KELAS_START,
@@ -43,7 +43,7 @@ export const addKelasStartAsync = (kelasForm: KelasType, succesCallback?: () => 
     dispatch(addKelasStart())
     fetchPost(process.env.REACT_APP_KELAS_URL, kelasForm)
       .then((response) => {
-        dispatch(addKelasSuccess(kelasForm))
+        dispatch(addKelasSuccess(response.data))
         if (succesCallback) succesCallback()
         dispatch(addSuccessNotificaiton(`menambahkan kelas`))
       })
@@ -51,6 +51,42 @@ export const addKelasStartAsync = (kelasForm: KelasType, succesCallback?: () => 
         const errorMessage = getErrorMessage(error)
         dispatch(addKelasFailure(errorMessage))
         dispatch(addErrorNotification(`menambahkan kelas, reason: ${errorMessage}`))
+      })
+  }
+}
+export const updateKelasAktifStart = () => ({
+  type: KelasActionTypes.UPDATE_KELAS_AKTIF_START,
+})
+
+export const updateKelasAktifSuccess = (payload: {
+  id: string | number
+  aktif: boolean | string
+}) => ({
+  type: KelasActionTypes.UPDATE_KELAS_AKTIF_SUCCESS,
+  payload: payload,
+})
+
+export const updateKelasAktifFailure = (errorMessage: string) => ({
+  type: KelasActionTypes.UPDATE_KELAS_AKTIF_FAILURE,
+  payload: errorMessage,
+})
+
+export const updateKelasAktifStartAsync = (
+  kelas: { id: string; aktif: boolean },
+  succesCallback?: () => void
+) => {
+  return (dispatch) => {
+    dispatch(updateKelasAktifStart())
+    fetchPut(process.env.REACT_APP_KELAS_URL, kelas)
+      .then((response) => {
+        dispatch(updateKelasAktifSuccess(response.data))
+        if (succesCallback) succesCallback()
+        dispatch(addSuccessNotificaiton(`update kelas`))
+      })
+      .catch((error) => {
+        const errorMessage = getErrorMessage(error)
+        dispatch(updateKelasAktifFailure(errorMessage))
+        dispatch(addErrorNotification(`update kelas, reason: ${errorMessage}`))
       })
   }
 }

@@ -40,15 +40,11 @@ const memberReducer = (state = INITIAL_STATE, action: { type: string; payload: a
       }
 
     case MemberActionTypes.ADD_MEMBER_SUCCESS:
-      let id
-      if (state.allMember) id = state.allMember?.slice(-1)[0]['id']! + 1
-      else id = 1
-
       return {
         ...state,
         isFetching: false,
         errorMessage: undefined,
-        allMember: [...state.allMember!, { id: id, ...action.payload }],
+        allMember: [...state.allMember!, action.payload],
       }
 
     case MemberActionTypes.ADD_MEMBER_FAILURE:

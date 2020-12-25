@@ -40,15 +40,11 @@ const instrukturReducer = (state = INITIAL_STATE, action: { type: string; payloa
       }
 
     case InstrukturActionTypes.ADD_INSTRUKTUR_SUCCESS:
-      let id
-      if (state.allInstruktur) id = state.allInstruktur?.slice(-1)[0]['id']! + 1
-      else id = 1
-
       return {
         ...state,
         isFetching: false,
         errorMessage: undefined,
-        allInstruktur: [...state.allInstruktur!, { id: id, ...action.payload }],
+        allInstruktur: [...state.allInstruktur!, action.payload],
       }
 
     case InstrukturActionTypes.ADD_INSTRUKTUR_FAILURE:

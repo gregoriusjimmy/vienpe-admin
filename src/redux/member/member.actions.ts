@@ -43,7 +43,7 @@ export const addMemberStartAsync = (memberForm: MemberType, succesCallback?: () 
     dispatch(addMemberStart())
     fetchPost(process.env.REACT_APP_MEMBER_URL, memberForm)
       .then((response) => {
-        dispatch(addMemberSuccess(memberForm))
+        dispatch(addMemberSuccess(response.data))
         if (succesCallback) succesCallback()
         dispatch(addSuccessNotificaiton(`menambahkan member ${memberForm.nama}`))
       })
@@ -74,7 +74,7 @@ export const updateMemberStartAsync = (updatedMember: MemberType, succesCallback
     dispatch(updateMemberStart())
     fetchPut(process.env.REACT_APP_MEMBER_URL, updatedMember)
       .then((response) => {
-        dispatch(updateMemberSuccess(updatedMember))
+        dispatch(updateMemberSuccess(response.data))
         if (succesCallback) succesCallback()
         dispatch(addSuccessNotificaiton(`update member ${updatedMember.nama}`))
       })

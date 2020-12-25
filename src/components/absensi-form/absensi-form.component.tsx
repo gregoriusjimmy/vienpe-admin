@@ -172,8 +172,8 @@ const AbsensiForm: React.FC<Props> = ({ allMember, allKelas, addAbsensiStartAsyn
               getOptionLabel={(option) =>
                 `Hari: ${option.hari}, Jam: ${option.jam}, Jenis: ${
                   option.kategori_senam
-                }, Tgl dibuat ${option.created_at}, ${option.keterangan && `Keterangan:`} ${
-                  option.keterangan
+                }, Tgl dibuat ${option.created_at}, ${option.aktif && `Keterangan:`} ${
+                  option.aktif
                 }`
               }
               onChange={(e, value) => setSelectedKelas(value)}

@@ -44,7 +44,7 @@ export const addTipeMembershipStartAsync = (tipeMembershipForm: TipeMembershipTy
     dispatch(addTipeMembershipStart())
     fetchPost(process.env.REACT_APP_TIPE_MEMBERSHIP_URL, tipeMembershipForm)
       .then((response) => {
-        dispatch(addTipeMembershipSuccess(tipeMembershipForm))
+        dispatch(addTipeMembershipSuccess(response.data))
         dispatch(addSuccessNotificaiton(`menambahkan tipe ${tipeMembershipForm.tipe}`))
       })
       .catch((error) => {

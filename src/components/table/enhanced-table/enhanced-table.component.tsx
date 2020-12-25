@@ -11,7 +11,9 @@ import {
   TableRow,
   TableBody,
   IconButton,
+  Switch,
 } from '@material-ui/core'
+
 import { green } from '@material-ui/core/colors'
 import EnhancedTableToolbar from '../enchanced-table-toolbar/enchanced-table-toolbar.component'
 import EnhancedTableHead from '../enchanced-table-head/enchanced-table-head.component'
@@ -90,6 +92,7 @@ type Props = {
   searchBasedOnId: string
   onSearchFieldChange: (e) => void
   handleAction?: (data) => void
+  handleActionSwitch?: (data) => void
   [other: string]: any
 }
 
@@ -102,6 +105,7 @@ const EnhancedTable: React.FC<Props> = ({
   searchBasedOnId,
   onSearchFieldChange,
   handleAction,
+  handleActionSwitch,
 }) => {
   const classes = useStyles()
   const [order, setOrder] = React.useState<Order>('asc')
@@ -136,6 +140,10 @@ const EnhancedTable: React.FC<Props> = ({
     if (value === 'true') return <CheckBoxIcon />
     else return <CloseIcon />
   }
+  const convertToBoolean = (value) => {
+    if (typeof value === 'boolean') return value
+    else return value === 'true'
+  }
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 
   return data ? (
@@ -168,6 +176,15 @@ const EnhancedTable: React.FC<Props> = ({
                         return (
                           <TableCell key={`${id}-${key}`}>
                             {key === 'status_membership' ? booleanToIcon(value) : value}
+                            {key === 'aktif' && handleActionSwitch && (
+                              <Switch
+                                checked={convertToBoolean(value)}
+                                onChange={(e) => handleActionSwitch({ id, value })}
+                                size='small'
+                                color='primary'
+                                name='aktif'
+                              />
+                            )}
                           </TableCell>
                         )
                       })}

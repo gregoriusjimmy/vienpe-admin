@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 import { RootState } from '../../redux/root-reducer'
 import { KelasType } from '../../redux/kelas/kelas.types'
 import { selectAllKelas, selectIsAllKelasLoaded } from '../../redux/kelas/kelas.selectors'
-import { loadAllKelasStartAsync } from '../../redux/kelas/kelas.actions'
+import { loadAllKelasStartAsync, updateKelasAktifStartAsync } from '../../redux/kelas/kelas.actions'
 import { loadAllInstrukturStartAsync } from '../../redux/instruktur/instruktur.actions'
 import {
   selectAllInstrukturNameWithId,
@@ -23,6 +23,7 @@ type Props = {
   isAllInstrukturLoaded: boolean
   loadAllKelasStartAsync: () => void
   loadAllInstrukturStartAsync: () => void
+  updateKelasAktifStartAsync: (kelas) => void
 }
 
 const Kelas: React.FC<Props> = ({
@@ -32,6 +33,7 @@ const Kelas: React.FC<Props> = ({
   allInstrukturNameWithId,
   loadAllKelasStartAsync,
   loadAllInstrukturStartAsync,
+  updateKelasAktifStartAsync,
 }) => {
   const [openAdd, setOpenAdd] = useState(false)
   const [searchField, setSearchField] = useState('')
@@ -51,10 +53,13 @@ const Kelas: React.FC<Props> = ({
   const isAllLoaded = (): boolean => {
     return isAllKelasLoaded && isAllInstrukturLoaded
   }
-
+  const handleActionSwitch = ({ id, value }) => {
+    updateKelasAktifStartAsync({ id, value })
+  }
+  
   const allKelasWithInstrukturName = () => {
     return allKelas!.map((kelas) => {
-      const { id, hari, jam, kategori_senam, id_instruktur, keterangan, created_at } = kelas
+      const { id, hari, jam, kategori_senam, id_instruktur, aktif, created_at } = kelas
       const findMatch = allInstrukturNameWithId?.find(
         (instruktur) => id_instruktur === instruktur.id
       )
@@ -65,7 +70,7 @@ const Kelas: React.FC<Props> = ({
         jam,
         kategori_senam,
         nama_instruktur: findMatch!.nama,
-        keterangan,
+        aktif,
         created_at,
       }
       return orderedData
@@ -77,7 +82,7 @@ const Kelas: React.FC<Props> = ({
     { id: 'jam', label: 'Jam' },
     { id: 'kategori_senam', label: 'Kategori' },
     { id: 'nama_instruktur', label: 'Instruktur' },
-    { id: 'keterangan', label: 'Keterangan' },
+    { id: 'aktif', label: 'Aktif?' },
     { id: 'created_at', label: 'Tgl Dibuat' },
   ]
 
@@ -102,6 +107,7 @@ const Kelas: React.FC<Props> = ({
             data={allKelasWithInstrukturName()}
             arrayDataColumn={headData}
             placeholder='Search hari...'
+            handleActionSwitch={handleActionSwitch}
           />
         ) : null}
       </Grid>
@@ -119,5 +125,6 @@ const mapStateToProps = (state: RootState) => ({
 const mapDispatchToProps = (dispatch) => ({
   loadAllKelasStartAsync: () => dispatch(loadAllKelasStartAsync()),
   loadAllInstrukturStartAsync: () => dispatch(loadAllInstrukturStartAsync()),
+  updateKelasAktifStartAsync: (kelas) => dispatch(updateKelasAktifStartAsync(kelas)),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Kelas)

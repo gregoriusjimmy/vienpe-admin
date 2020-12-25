@@ -21,9 +21,9 @@ import moment from 'moment'
 type FORM_DATA = {
   hari: 'SENIN' | 'SELASA' | 'RABU' | 'KAMIS' | 'JUMAT' | 'SABTU' | 'MINGGU'
   jam: any
+  aktif: boolean
   kategori_senam: string
   nama_instruktur: string
-  keterangan: string
 }
 
 type Props = {
@@ -49,7 +49,6 @@ const KelasForm: React.FC<Props> = ({
     jam: yup.string().required(),
     kategori_senam: yup.string().required(),
     nama_instruktur: yup.string().required(),
-    keterangan: yup.string().notRequired(),
   })
 
   const { register, errors, handleSubmit, control } = useForm<FORM_DATA>({
@@ -59,23 +58,15 @@ const KelasForm: React.FC<Props> = ({
   const onSubmit = async (formValues) => {
     if (!selectedInstruktur) return alert('please select instruktur')
     formValues.id_instruktur = selectedInstruktur.id
+
     formValues.created_at = moment(new Date()).format('DD-MM-YYYY')
-    const {
-      hari,
-      jam,
-      kategori_senam,
-      nama_instruktur,
-      keterangan,
-      id_instruktur,
-      created_at,
-    } = formValues
+    const { hari, jam, kategori_senam, nama_instruktur, id_instruktur, created_at } = formValues
     const orderedFormValues = {
       hari,
       jam,
       kategori_senam,
       id_instruktur,
       nama_instruktur,
-      keterangan,
       created_at,
     }
     addKelasStartAsync(orderedFormValues, handleModalClose)
@@ -171,15 +162,7 @@ const KelasForm: React.FC<Props> = ({
                 ))}
               </ReactHookFormSelect>
             </Grid>
-            <Grid item xs={6}>
-              <TextField
-                inputRef={register}
-                name='keterangan'
-                label='Keterangan'
-                error={!!errors.keterangan}
-                helperText={errors.keterangan?.message}
-              />
-            </Grid>
+
             <Grid container justify='flex-end'>
               <Grid item>
                 <SubmitButton buttonType='add' />

@@ -38,14 +38,10 @@ const membershipReducer = (state = INITIAL_STATE, action: { type: string; payloa
       }
 
     case MembershipActionTypes.ADD_MEMBERSHIP_SUCCESS:
-      let id
-      if (state.allMembership) id = state.allMembership?.slice(-1)[0]['id']! + 1
-      else id = 1
-
       return {
         ...state,
         isAdding: false,
-        allMembership: [...state.allMembership!, { id: id, ...action.payload }],
+        allMembership: [...state.allMembership!, ...action.payload],
       }
 
     case MembershipActionTypes.ADD_MEMBERSHIP_FAILURE:

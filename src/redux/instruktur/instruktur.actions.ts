@@ -80,7 +80,7 @@ export const updateInstrukturStartAsync = (
     dispatch(updateInstrukturStart())
     fetchPut(process.env.REACT_APP_INSTRUKTUR_URL, updatedInstruktur)
       .then((response) => {
-        dispatch(updateInstrukturSuccess(updatedInstruktur))
+        dispatch(updateInstrukturSuccess(response.data))
         if (succesCallback) succesCallback()
         dispatch(addSuccessNotificaiton(`update member ${updatedInstruktur.nama}`))
       })

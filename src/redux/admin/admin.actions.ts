@@ -20,7 +20,7 @@ export const SetCurrentAdminStartAsync = (admin) => {
     dispatch(setCurrentAdminStart())
     fetchPost(process.env.REACT_APP_ADMIN_LOGIN_URL, admin)
       .then((response) => {
-        dispatch(setCurrentAdminSuccess({ username: admin.username }))
+        dispatch(setCurrentAdminSuccess(response.data))
       })
       .catch((error) => {
         const errorMessage = getErrorMessage(error)

@@ -54,7 +54,7 @@ export const addMembershipStartAsync = (
         fetchPut(process.env.REACT_APP_MEMBER_URL, member),
       ])
       .then((response) => {
-        dispatch(addMembershipSuccess(membershipForm))
+        dispatch(addMembershipSuccess(response[0].data))
         if (successCallback) successCallback()
         dispatch(addSuccessNotificaiton(`menambahkan membership ${member.nama}`))
       })

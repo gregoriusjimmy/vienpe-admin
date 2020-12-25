@@ -1,4 +1,4 @@
-import { KelasActionTypes, KelasState } from './kelas.types'
+import { KelasActionTypes, KelasState, KelasType } from './kelas.types'
 
 const INITIAL_STATE: KelasState = {
   allKelas: null,
@@ -39,18 +39,39 @@ const kelasReducer = (state = INITIAL_STATE, action) => {
       }
 
     case KelasActionTypes.ADD_KELAS_SUCCESS:
-      let id
-      if (state.allKelas) id = state.allKelas.slice(-1)[0]['id']! + 1
-      else id = 1
+      return {
+        ...state,
+        isFetching: false,
+        errorMessage: undefined,
+        allKelas: [...state.allKelas!, action.payload],
+      }
+
+    case KelasActionTypes.ADD_KELAS_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        errorMessage: action.payload,
+      }
+
+    case KelasActionTypes.UPDATE_KELAS_AKTIF_START:
+      return {
+        ...state,
+        isFetching: true,
+      }
+
+    case KelasActionTypes.UPDATE_KELAS_AKTIF_SUCCESS:
+      const index = state.allKelas?.findIndex((kelas: KelasType) => kelas.id === action.payload.id)
+      const allNewKelas: Array<KelasType> = [...state.allKelas!]
+      allNewKelas[index!]['aktif'] = action.payload.aktif
 
       return {
         ...state,
         isFetching: false,
         errorMessage: undefined,
-        allKelas: [...state.allKelas!, { id: id, ...action.payload }],
+        allKelas: [...allNewKelas],
       }
 
-    case KelasActionTypes.ADD_KELAS_FAILURE:
+    case KelasActionTypes.UPDATE_KELAS_AKTIF_FAILURE:
       return {
         ...state,
         isFetching: false,
