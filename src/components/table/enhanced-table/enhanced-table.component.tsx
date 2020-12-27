@@ -144,6 +144,25 @@ const EnhancedTable: React.FC<Props> = ({
     if (typeof value === 'boolean') return value
     else return value === 'true'
   }
+  const generateTableCell = (id, key, value) => {
+    let displayedValue
+    if (key === 'status_membership') displayedValue = booleanToIcon(value)
+    else if (key === 'aktif' && handleActionSwitch) {
+      let convertedValue = convertToBoolean(value)
+
+      displayedValue = (
+        <Switch
+          checked={convertedValue}
+          onChange={(e) => handleActionSwitch({ id: id, aktif: !convertedValue })}
+          size='small'
+          color='primary'
+          name='aktif'
+        />
+      )
+    } else displayedValue = value
+
+    return <TableCell key={`${id}-${key}`}>{displayedValue}</TableCell>
+  }
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 
   return data ? (
@@ -173,22 +192,10 @@ const EnhancedTable: React.FC<Props> = ({
                   return (
                     <TableRow key={id}>
                       {Object.entries(row).map(([key, value]) => {
-                        return (
-                          <TableCell key={`${id}-${key}`}>
-                            {key === 'status_membership' ? booleanToIcon(value) : value}
-                            {key === 'aktif' && handleActionSwitch && (
-                              <Switch
-                                checked={convertToBoolean(value)}
-                                onChange={(e) => handleActionSwitch({ id, value })}
-                                size='small'
-                                color='primary'
-                                name='aktif'
-                              />
-                            )}
-                          </TableCell>
-                        )
+                        const tableCell = generateTableCell(id, key, value)
+                        return tableCell
                       })}
-                      {handleAction ? (
+                      {handleAction && (
                         <TableCell key={`edit-${Object.values(row)[0]}`}>
                           <IconButton
                             aria-label='edit'
@@ -198,7 +205,7 @@ const EnhancedTable: React.FC<Props> = ({
                             <EditAttributesIcon style={{ color: green[500] }} />
                           </IconButton>
                         </TableCell>
-                      ) : null}
+                      )}
                     </TableRow>
                   )
                 })}

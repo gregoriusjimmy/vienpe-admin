@@ -23,7 +23,7 @@ type Props = {
   isAllInstrukturLoaded: boolean
   loadAllKelasStartAsync: () => void
   loadAllInstrukturStartAsync: () => void
-  updateKelasAktifStartAsync: (kelas) => void
+  updateKelasAktifStartAsync: (kelas: { id: string; aktif: boolean }) => void
 }
 
 const Kelas: React.FC<Props> = ({
@@ -53,10 +53,10 @@ const Kelas: React.FC<Props> = ({
   const isAllLoaded = (): boolean => {
     return isAllKelasLoaded && isAllInstrukturLoaded
   }
-  const handleActionSwitch = ({ id, value }) => {
-    updateKelasAktifStartAsync({ id, value })
+  const handleActionSwitch = ({ id, aktif }) => {
+    updateKelasAktifStartAsync({ id, aktif })
   }
-  
+
   const allKelasWithInstrukturName = () => {
     return allKelas!.map((kelas) => {
       const { id, hari, jam, kategori_senam, id_instruktur, aktif, created_at } = kelas

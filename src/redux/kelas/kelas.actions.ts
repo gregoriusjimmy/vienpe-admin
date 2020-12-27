@@ -77,11 +77,13 @@ export const updateKelasAktifStartAsync = (
 ) => {
   return (dispatch) => {
     dispatch(updateKelasAktifStart())
-    fetchPut(process.env.REACT_APP_KELAS_URL, kelas)
+    fetchPut(process.env.REACT_APP_KELAS_AKTIF_URL, kelas)
       .then((response) => {
         dispatch(updateKelasAktifSuccess(response.data))
         if (succesCallback) succesCallback()
-        dispatch(addSuccessNotificaiton(`update kelas`))
+        let text = ''
+        kelas.aktif === true ? (text = 'mengaktifkan') : (text = 'menonaktifkan')
+        dispatch(addSuccessNotificaiton(`${text} kelas`))
       })
       .catch((error) => {
         const errorMessage = getErrorMessage(error)
