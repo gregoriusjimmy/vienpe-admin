@@ -10,7 +10,7 @@ export const KelasActionTypes = {
   UPDATE_KELAS_AKTIF_FAILURE: 'UPDATE_KELAS_AKTIF_FAILURE',
 }
 export type KelasState = {
-  allKelas: null | []
+  allKelas: null | Array<KelasType>
   isFetching: boolean
   isLoaded: boolean
   errorMessage: undefined | string
@@ -22,6 +22,27 @@ export type KelasType = {
   kategori_senam: string
   hari: string
   jam: string
+  aktif: string | boolean
+  created_at: string | null
+}
+
+export type KelasWithInstrukturNameType = {
+  id: string
+  kategori_senam: string
+  hari: string
+  jam: string
+  nama_instruktur: string
+  aktif: string | boolean
+  created_at: string | null
+}
+
+export type KelasWithInstrukturType = {
+  id: string
+  kategori_senam: string
+  hari: string
+  jam: string
+  id_instruktur: string
+  nama_instruktur: string
   aktif: string | boolean
   created_at: string | null
 }

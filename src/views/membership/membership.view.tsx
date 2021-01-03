@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { Grid, Box } from '@material-ui/core'
 import AddButton from '../../components/add-button/add-button.component'
 import Modal from '../../components/modal/modal.component'
-import MembershipForm from '../../components/membership-form/membership-form.component'
+import MembershipFormAdd from '../../components/membership-form-add/membership-form-add.component'
+import MembershipFormUpdate from '../../components/membership-form-update/membership-form-update.component'
 import CircularLoading from '../../components/circular-loading/circular-loading.component'
 import EnhancedTable from '../../components/table/enhanced-table/enhanced-table.component'
 import { connect } from 'react-redux'
@@ -10,6 +11,7 @@ import { loadAllTipeMembershipStartAsync } from '../../redux/tipe-membership/tip
 import { loadAllMemberStartAsync } from '../../redux/member/member.actions'
 import { selectIsAllTipeMembershipLoaded } from '../../redux/tipe-membership/tipe-membership.selectors'
 import {
+  selectAllMember,
   selectAllMemberNameWithId,
   selectIsAllMemberLoaded,
 } from '../../redux/member/member.selectors'
@@ -20,6 +22,9 @@ import {
 } from '../../redux/membership/membership.selectors'
 import { MembershipType } from '../../redux/membership/membership.types'
 import { loadAllMembershipStartAsync } from '../../redux/membership/membership.actions'
+import UpdateButton from '../../components/update-button/update-button.component'
+import { combineAllMembershipWithMember } from '../../utils/utils'
+import { MemberType } from '../../redux/member/member.types'
 
 type Props = {
   allMembership: Array<MembershipType> | null
@@ -29,23 +34,27 @@ type Props = {
   isAllTipeMembershipLoaded: boolean
   isAllMemberLoaded: boolean
   isAllMembershipLoaded: boolean
-  allMemberNameWithId: Array<{ id: string; nama: string }> | null
+  allMember: Array<MemberType> | null
 }
 const Membership: React.FC<Props> = ({
   allMembership,
-  loadAllMemberStartAsync,
+  allMember,
   loadAllTipeMembershipStartAsync,
   loadAllMembershipStartAsync,
+  loadAllMemberStartAsync,
   isAllTipeMembershipLoaded,
   isAllMemberLoaded,
   isAllMembershipLoaded,
-  allMemberNameWithId,
 }) => {
-  const [open, setOpen] = useState(false)
+  const [openAdd, setOpenAdd] = useState(false)
+  const [openUpdate, setOpenUpdate] = useState(false)
   const [searchField, setSearchField] = useState('')
 
-  const handleOpen = () => {
-    setOpen(true)
+  const handleOpenAdd = () => {
+    setOpenAdd(true)
+  }
+  const handleOpenUpdate = () => {
+    setOpenUpdate(true)
   }
   useEffect(() => {
     loadAllTipeMembershipStartAsync()
@@ -53,28 +62,14 @@ const Membership: React.FC<Props> = ({
     loadAllMembershipStartAsync()
   }, [loadAllTipeMembershipStartAsync, loadAllMemberStartAsync, loadAllMembershipStartAsync])
 
-  const handleClose = () => {
-    setOpen(false)
+  const handleCloseAdd = () => {
+    setOpenAdd(false)
+  }
+  const handleCloseUpdate = () => {
+    setOpenUpdate(false)
   }
   const isAllLoaded = () => {
     return isAllMemberLoaded && isAllTipeMembershipLoaded && isAllMembershipLoaded
-  }
-  // need better algorithm and refactoring
-  const allMembershipWithMemberName = () => {
-    return allMembership!.map((membership) => {
-      const { id, id_member, tipe_membership, tgl_mulai, tgl_selesai, sisa_point } = membership
-      const findMatch = allMemberNameWithId?.find((member) => id_member === member.id)
-      const orderedData = {
-        id,
-        id_member,
-        nama: findMatch!.nama,
-        tipe_membership,
-        tgl_mulai,
-        tgl_selesai,
-        sisa_point,
-      }
-      return orderedData
-    })
   }
 
   const handleSearchFieldChange = (e) => {
@@ -83,31 +78,38 @@ const Membership: React.FC<Props> = ({
   const headData: Array<{ id: string; label: string }> = [
     { id: 'id', label: 'ID' },
     { id: 'id_member', label: 'ID Member' },
-    { id: 'nama', label: 'Nama' },
+    { id: 'nama_member', label: 'Nama' },
     { id: 'tipe_membership', label: 'Tipe Memberhsip' },
     { id: 'tgl_mulai', label: 'Tgl Mulai' },
     { id: 'tgl_selesai', label: 'Tgl Selesai' },
     { id: 'sisa_point', label: 'Sisa Point' },
   ]
+
   return isAllLoaded() ? (
     <Grid container spacing={3}>
       <Grid item xs={6}></Grid>
       <Grid container item justify='flex-end' xs={6}>
         <Box m={1}>
-          <AddButton text='Tambah membership' handleClick={handleOpen} />
-          <Modal open={open} handleClose={handleClose} ariaLabel='modal-add'>
-            <MembershipForm handleModalClose={handleClose} />
+          <UpdateButton text='Update Membership' handleClick={handleOpenUpdate} />
+          <Modal open={openUpdate} handleClose={handleCloseUpdate} ariaLabel='modal-update'>
+            <MembershipFormUpdate handleModalClose={handleCloseUpdate} />
+          </Modal>
+        </Box>
+        <Box m={1}>
+          <AddButton text='Tambah Membership' handleClick={handleOpenAdd} />
+          <Modal open={openAdd} handleClose={handleCloseAdd} ariaLabel='modal-add'>
+            <MembershipFormAdd handleModalClose={handleCloseAdd} />
           </Modal>
         </Box>
       </Grid>
       <Grid item xs={12}>
-        {allMembership ? (
+        {allMembership && allMember ? (
           <EnhancedTable
             inputSearch={searchField}
             onSearchFieldChange={handleSearchFieldChange}
-            searchBasedOnId='nama'
+            searchBasedOnId='nama_member'
             title='Membership'
-            data={allMembershipWithMemberName()}
+            data={combineAllMembershipWithMember(allMembership, allMember)}
             arrayDataColumn={headData}
             placeholder='Search nama...'
           />
@@ -123,7 +125,7 @@ const mapStateToProps = (state: RootState) => ({
   isAllMemberLoaded: selectIsAllMemberLoaded(state),
   isAllMembershipLoaded: selectIsAllMembershipLoaded(state),
   allMembership: selectAllMembership(state),
-  allMemberNameWithId: selectAllMemberNameWithId(state),
+  allMember: selectAllMember(state),
 })
 
 const mapDispatchToProps = (dispatch) => ({

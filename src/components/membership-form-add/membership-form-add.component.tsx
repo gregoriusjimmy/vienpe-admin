@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { TextField, Grid, MenuItem } from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import FormCard from '../form-card/form-card.component'
-import useStyles from './membership-form.styles'
+import useStyles from './membership-form-add.styles'
 import { connect } from 'react-redux'
 import { selectAllMember, selectIsMemberFetching } from '../../redux/member/member.selectors'
 import { RootState } from '../../redux/root-reducer'
@@ -19,6 +19,7 @@ import CircularLoading from '../circular-loading/circular-loading.component'
 import moment from 'moment'
 
 type FORM_DATA = {
+  id_member: string | number
   tipe_membership: string
   tgl_mulai: string
   tgl_selesai: string
@@ -28,18 +29,14 @@ type FORM_DATA = {
 type Props = {
   allMember: Array<MemberType> | null
   allTipeMembership: Array<{ tipe: string; keterangan: string }> | null
-  addMembershipStartAsync: (membershipForm, member, successCallback: () => void) => void
   isFetching: boolean
+  addMembershipStartAsync: (membershipForm, member, successCallback: () => void) => void
   handleModalClose: () => void
-  edit?: true
-  selectedMembership?: MembershipType | null
 }
-const MembershipForm: React.FC<Props> = ({
+const MembershipFormAdd: React.FC<Props> = ({
   allMember,
   allTipeMembership,
   isFetching,
-  edit,
-  selectedMembership,
   handleModalClose,
   addMembershipStartAsync,
 }) => {
@@ -59,35 +56,17 @@ const MembershipForm: React.FC<Props> = ({
     resolver: yupResolver(schema),
   })
 
-  const onSubmit = async (formValues) => {
+  const onSubmit = async (formValues: FORM_DATA) => {
     if (!selectedMember) return alert('please select member')
-    formValues.id_member = selectedMember.id
     formValues.tgl_mulai = moment(formValues.tgl_mulai).format('DD-MM-YYYY')
     formValues.tgl_selesai = moment(formValues.tgl_selesai).format('DD-MM-YYYY')
-    const { id_member, tipe_membership, tgl_mulai, tgl_selesai, sisa_point } = formValues
-    const orderedFormValues = { id_member, tipe_membership, tgl_mulai, tgl_selesai, sisa_point }
-    // if (edit) {
-    //   updateMemberStartAsync({
-    //     id: selectedMember!.id,
-    //     ...orderedFormValues,
-    //     status_membership: statusMembership,
-    //   })
-    // } else {
-    //   addMemberStartAsync(orderedFormValues)
-    // }
-
+    formValues.id_member = selectedMember.id
+    console.log(formValues)
     addMembershipStartAsync(
-      orderedFormValues,
+      formValues,
       { ...selectedMember, status_membership: true },
       handleModalClose
     )
-  }
-
-  const findMemberId = (event, inputedMemberName: string) => {
-    const findMember = allMember!.find(
-      (member) => member.nama.toLowerCase() === inputedMemberName.toLowerCase()
-    )
-    if (findMember) setSelectedMember(findMember)
   }
 
   const calculateTglSelesai = (e: any) => {
@@ -96,7 +75,7 @@ const MembershipForm: React.FC<Props> = ({
     setTglSelesai(tglSelesai)
   }
 
-  const getNamaMemberOptions = {
+  const getMemberOptions = {
     options: allMember!,
     getOptionLabel: (option: MemberType) => option.nama,
   }
@@ -113,12 +92,12 @@ const MembershipForm: React.FC<Props> = ({
           onSubmit={handleSubmit(onSubmit)}
         >
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            <Grid item xs={10}>
               <Autocomplete
-                {...getNamaMemberOptions}
+                {...getMemberOptions}
                 id='nama-member'
                 disableClearable
-                onInputChange={findMemberId}
+                onChange={(e, value) => setSelectedMember(value)}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -130,6 +109,15 @@ const MembershipForm: React.FC<Props> = ({
                     helperText={errors.nama_member?.message}
                   />
                 )}
+              />
+            </Grid>
+            <Grid item xs={2}>
+              <TextField
+                value={selectedMember ? `${selectedMember.id}` : ''}
+                disabled
+                margin='normal'
+                name='id_member'
+                label='ID'
               />
             </Grid>
             <Grid item xs={6}>
@@ -211,4 +199,4 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(addMembershipStartAsync(membershipForm, member, successCallback)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(MembershipForm)
+export default connect(mapStateToProps, mapDispatchToProps)(MembershipFormAdd)

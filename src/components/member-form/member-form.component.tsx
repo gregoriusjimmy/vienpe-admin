@@ -63,26 +63,24 @@ const MemberForm: React.FC<Props> = ({
     if (!formValues.email) formValues.email = null
     if (!formValues.tgl_lahir) formValues.tgl_lahir = null
     else formValues.tgl_lahir = moment(formValues.tgl_lahir).format('DD-MM-YYYY')
-    
-    const { nama, no_telp, email, tgl_lahir } = formValues
+    formValues.status_membership = false
 
-    const orderedFormValues = { nama, no_telp, email, tgl_lahir, status_membership: false }
     if (edit) {
       updateMemberStartAsync(
         {
           id: selectedMember!.id,
-          ...orderedFormValues,
+          ...formValues,
           status_membership: statusMembership,
         },
         handleModalClose
       )
     } else {
-      addMemberStartAsync(orderedFormValues, handleModalClose)
+      addMemberStartAsync(formValues, handleModalClose)
     }
   }
 
   return (
-    <FormCard title='Daftar Member'>
+    <FormCard title={`${edit ? 'Edit' : 'Daftar'} Member`}>
       {isFetching ? (
         <CircularLoading height={'200px'} />
       ) : (
@@ -106,13 +104,7 @@ const MemberForm: React.FC<Props> = ({
             </Grid>
             {edit ? (
               <Grid item xs={2}>
-                <TextField
-                  inputRef={register}
-                  value={selectedMember?.id}
-                  disabled
-                  name='id'
-                  label='ID'
-                />
+                <TextField value={selectedMember?.id} disabled name='id' label='ID' />
               </Grid>
             ) : null}
             <Grid item xs={12}>
@@ -141,7 +133,6 @@ const MemberForm: React.FC<Props> = ({
               <TextField
                 inputRef={register}
                 error={!!errors.tgl_lahir}
-                defaultValue={selectedMember?.tgl_lahir}
                 name='tgl_lahir'
                 label='Tanggal lahir'
                 type='date'

@@ -1,16 +1,16 @@
 import React from 'react'
 import { Button } from '@material-ui/core'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
-import { green } from '@material-ui/core/colors'
-import AddIcon from '@material-ui/icons/Add'
+import { blue } from '@material-ui/core/colors'
+import EditAttributesIcon from '@material-ui/icons/EditAttributes'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       color: '#fff',
-      backgroundColor: theme.palette.success.main,
+      backgroundColor: theme.palette.info.main,
       '&:hover': {
-        backgroundColor: green[700],
+        backgroundColor: blue[700],
       },
     },
   })
@@ -22,7 +22,7 @@ type Props = {
   [otherProps: string]: any
 }
 
-const AddButton: React.FC<Props> = ({ text, handleClick, ...otherProps }) => {
+const UpdateButton: React.FC<Props> = ({ text, handleClick, ...otherProps }) => {
   const classes = useStyles()
   return (
     <Button
@@ -31,11 +31,11 @@ const AddButton: React.FC<Props> = ({ text, handleClick, ...otherProps }) => {
       disableElevation
       className={classes.root}
       onClick={handleClick}
-      startIcon={<AddIcon />}
+      startIcon={<EditAttributesIcon />}
     >
       {text}
     </Button>
   )
 }
 
-export default AddButton
+export default UpdateButton

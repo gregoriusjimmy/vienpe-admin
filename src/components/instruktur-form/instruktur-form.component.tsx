@@ -59,24 +59,21 @@ const InstrukturForm: React.FC<Props> = ({
     if (!formValues.email) formValues.email = null
     if (!formValues.tgl_lahir) formValues.tgl_lahir = null
     else formValues.tgl_lahir = moment(formValues.tgl_lahir).format('DD-MM-YYYY')
-
-    const { nama, no_telp, email, tgl_lahir } = formValues
-    const orderedFormValues = { nama, no_telp, email, tgl_lahir }
     if (edit) {
       updateInstrukturStartAsync(
         {
           id: selectedInstruktur!.id,
-          ...orderedFormValues,
+          ...formValues,
         },
         handleModalClose
       )
     } else {
-      addInstrukturStartAsync(orderedFormValues, handleModalClose)
+      addInstrukturStartAsync(formValues, handleModalClose)
     }
   }
 
   return (
-    <FormCard title='Daftar Instruktur'>
+    <FormCard title={`${edit ? 'Update' : 'Daftar'}Instruktur`}>
       {isFetching ? (
         <CircularLoading height={'200px'} />
       ) : (
@@ -100,13 +97,7 @@ const InstrukturForm: React.FC<Props> = ({
             </Grid>
             {edit && (
               <Grid item xs={2}>
-                <TextField
-                  inputRef={register}
-                  value={selectedInstruktur?.id}
-                  disabled
-                  name='id'
-                  label='ID'
-                />
+                <TextField value={selectedInstruktur?.id} disabled name='id' label='ID' />
               </Grid>
             )}
             <Grid item xs={12}>

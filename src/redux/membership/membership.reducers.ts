@@ -4,8 +4,6 @@ const INITIAL_STATE: MembershipState = {
   allMembership: null,
   isFetching: false,
   isLoaded: false,
-  isAdding: false,
-  isUpdating: false,
   errorMessage: undefined,
 }
 
@@ -34,27 +32,29 @@ const membershipReducer = (state = INITIAL_STATE, action: { type: string; payloa
     case MembershipActionTypes.ADD_MEMBERSHIP_START:
       return {
         ...state,
-        isAdding: true,
+        isFetching: true,
       }
 
     case MembershipActionTypes.ADD_MEMBERSHIP_SUCCESS:
+      console.log(state.allMembership)
+      console.log(action.payload)
       return {
         ...state,
-        isAdding: false,
-        allMembership: [...state.allMembership!, ...action.payload],
+        isFetching: false,
+        allMembership: [...state.allMembership!, action.payload],
       }
 
     case MembershipActionTypes.ADD_MEMBERSHIP_FAILURE:
       return {
         ...state,
-        isAdding: false,
+        isFetching: false,
         errorMessage: action.payload,
       }
 
     case MembershipActionTypes.UPDATE_MEMBERSHIP_START:
       return {
         ...state,
-        isUpdating: true,
+        isFetching: true,
       }
 
     case MembershipActionTypes.UPDATE_MEMBERSHIP_SUCCESS:
@@ -65,14 +65,14 @@ const membershipReducer = (state = INITIAL_STATE, action: { type: string; payloa
       allNewMembership[index!] = action.payload
       return {
         ...state,
-        isUpdating: false,
+        isFetching: false,
         allMember: [...allNewMembership],
       }
 
     case MembershipActionTypes.UPDATE_MEMBERSHIP_FAILURE:
       return {
         ...state,
-        isUpdating: false,
+        isFetching: false,
         errorMessage: action.payload,
       }
 

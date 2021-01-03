@@ -149,7 +149,6 @@ const EnhancedTable: React.FC<Props> = ({
     if (key === 'status_membership') displayedValue = booleanToIcon(value)
     else if (key === 'aktif' && handleActionSwitch) {
       let convertedValue = convertToBoolean(value)
-
       displayedValue = (
         <Switch
           checked={convertedValue}
@@ -188,11 +187,11 @@ const EnhancedTable: React.FC<Props> = ({
               {stableSort(filterItemBySearch(inputSearch, data), getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const id = Object.values(row)[0]
+                  const rowId = Object.values(row)[0]
                   return (
-                    <TableRow key={id}>
-                      {Object.entries(row).map(([key, value]) => {
-                        const tableCell = generateTableCell(id, key, value)
+                    <TableRow key={rowId}>
+                      {arrayDataColumn.map(({ id, label }) => {
+                        const tableCell = generateTableCell(rowId, id, row[id])
                         return tableCell
                       })}
                       {handleAction && (

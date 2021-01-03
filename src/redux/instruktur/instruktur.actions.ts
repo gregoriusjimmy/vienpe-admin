@@ -47,13 +47,14 @@ export const addInstrukturStartAsync = (
     dispatch(addInstrukturStart())
     fetchPost(process.env.REACT_APP_INSTRUKTUR_URL, instrukturForm)
       .then((response) => {
-        dispatch(addInstrukturSuccess(instrukturForm))
+        dispatch(addInstrukturSuccess(response.data))
         if (succesCallback) succesCallback()
-        dispatch(addSuccessNotificaiton(`menambahkan member ${instrukturForm.nama}`))
+        dispatch(addSuccessNotificaiton(`menambahkan instruktur ${instrukturForm.nama}`))
       })
       .catch((error) => {
-        dispatch(addInstrukturFailure(error.message))
-        dispatch(addErrorNotification(`menambahkan member, reason: ${error.message}`))
+        const errorMessage = getErrorMessage(error)
+        dispatch(addInstrukturFailure(errorMessage))
+        dispatch(addErrorNotification(`menambahkan instruktur, reason: ${errorMessage}`))
       })
   }
 }
@@ -82,12 +83,12 @@ export const updateInstrukturStartAsync = (
       .then((response) => {
         dispatch(updateInstrukturSuccess(response.data))
         if (succesCallback) succesCallback()
-        dispatch(addSuccessNotificaiton(`update member ${updatedInstruktur.nama}`))
+        dispatch(addSuccessNotificaiton(`update instruktur ${updatedInstruktur.nama}`))
       })
       .catch((error) => {
         const errorMessage = getErrorMessage(error)
         dispatch(updateInstrukturFailure(errorMessage))
-        dispatch(addErrorNotification(`update member, reason: ${errorMessage}`))
+        dispatch(addErrorNotification(`update instruktur, reason: ${errorMessage}`))
       })
   }
 }

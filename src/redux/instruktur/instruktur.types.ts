@@ -24,3 +24,8 @@ export type InstrukturType = {
   email: string | null
   tgl_lahir: string | null
 }
+
+export type InstrukturNameWithIdType = {
+  id: string
+  nama: string
+}

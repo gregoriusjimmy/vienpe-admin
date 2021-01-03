@@ -12,13 +12,16 @@ import { selectAllKelas, selectIsAllKelasLoaded } from '../../redux/kelas/kelas.
 import { loadAllKelasStartAsync, updateKelasAktifStartAsync } from '../../redux/kelas/kelas.actions'
 import { loadAllInstrukturStartAsync } from '../../redux/instruktur/instruktur.actions'
 import {
+  selectAllInstruktur,
   selectAllInstrukturNameWithId,
   selectIsAllInstrukturLoaded,
 } from '../../redux/instruktur/instruktur.selectors'
+import { combineAllKelasWithInstruktur } from '../../utils/utils'
+import { InstrukturNameWithIdType, InstrukturType } from '../../redux/instruktur/instruktur.types'
 
 type Props = {
   allKelas: Array<KelasType> | null
-  allInstrukturNameWithId: Array<{ id: string; nama: string }> | null
+  allInstruktur: Array<InstrukturType> | null
   isAllKelasLoaded: boolean
   isAllInstrukturLoaded: boolean
   loadAllKelasStartAsync: () => void
@@ -30,7 +33,7 @@ const Kelas: React.FC<Props> = ({
   allKelas,
   isAllKelasLoaded,
   isAllInstrukturLoaded,
-  allInstrukturNameWithId,
+  allInstruktur,
   loadAllKelasStartAsync,
   loadAllInstrukturStartAsync,
   updateKelasAktifStartAsync,
@@ -57,25 +60,6 @@ const Kelas: React.FC<Props> = ({
     updateKelasAktifStartAsync({ id, aktif })
   }
 
-  const allKelasWithInstrukturName = () => {
-    return allKelas!.map((kelas) => {
-      const { id, hari, jam, kategori_senam, id_instruktur, aktif, created_at } = kelas
-      const findMatch = allInstrukturNameWithId?.find(
-        (instruktur) => id_instruktur === instruktur.id
-      )
-      console.log(findMatch)
-      const orderedData = {
-        id,
-        hari,
-        jam,
-        kategori_senam,
-        nama_instruktur: findMatch!.nama,
-        aktif,
-        created_at,
-      }
-      return orderedData
-    })
-  }
   const headData: Array<{ id: string; label: string }> = [
     { id: 'id', label: 'ID' },
     { id: 'hari', label: 'Hari' },
@@ -98,13 +82,13 @@ const Kelas: React.FC<Props> = ({
         </Box>
       </Grid>
       <Grid item xs={12}>
-        {allKelas ? (
+        {allKelas && allInstruktur ? (
           <EnchancedTable
             searchBasedOnId='hari'
             inputSearch={searchField}
             onSearchFieldChange={handleSearchFieldChange}
             title='Kelas'
-            data={allKelasWithInstrukturName()}
+            data={combineAllKelasWithInstruktur(allKelas, allInstruktur)}
             arrayDataColumn={headData}
             placeholder='Search hari...'
             handleActionSwitch={handleActionSwitch}
@@ -120,11 +104,12 @@ const mapStateToProps = (state: RootState) => ({
   allKelas: selectAllKelas(state),
   isAllKelasLoaded: selectIsAllKelasLoaded(state),
   isAllInstrukturLoaded: selectIsAllInstrukturLoaded(state),
-  allInstrukturNameWithId: selectAllInstrukturNameWithId(state),
+  allInstruktur: selectAllInstruktur(state),
 })
 const mapDispatchToProps = (dispatch) => ({
   loadAllKelasStartAsync: () => dispatch(loadAllKelasStartAsync()),
   loadAllInstrukturStartAsync: () => dispatch(loadAllInstrukturStartAsync()),
-  updateKelasAktifStartAsync: (kelas) => dispatch(updateKelasAktifStartAsync(kelas)),
+  updateKelasAktifStartAsync: (kelas: { id: string; aktif: boolean }) =>
+    dispatch(updateKelasAktifStartAsync(kelas)),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Kelas)

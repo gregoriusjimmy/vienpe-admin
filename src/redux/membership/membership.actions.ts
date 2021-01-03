@@ -80,13 +80,27 @@ export const updateMembershipFailure = (errorMessage: string) => ({
   payload: errorMessage,
 })
 
-export const updateMembershipStartAsync = (updatedMembership: MembershipType) => {
+export const updateMembershipStartAsync = (
+  updatedMembership: MembershipType,
+  member: MemberType,
+  successCallback?: () => void
+) => {
   return (dispatch) => {
     dispatch(updateMembershipStart())
-    fetchPut(process.env.REACT_APP_MEMBERSHIP_URL, updatedMembership)
+    axios
+      .all([
+        fetchPut(process.env.REACT_APP_MEMBERSHIP_URL, updatedMembership),
+        fetchPut(process.env.REACT_APP_MEMBER_URL, member),
+      ])
       .then((response) => {
-        dispatch(updateMembershipSuccess(updatedMembership))
+        dispatch(updateMembershipSuccess(response[0].data))
+        if (successCallback) successCallback()
+        dispatch(addSuccessNotificaiton(`update membership ${member.nama}`))
       })
-      .catch((error) => dispatch(updateMembershipFailure(error.message)))
+      .catch((error) => {
+        const errorMessage = getErrorMessage(error)
+        dispatch(updateMembershipFailure(errorMessage))
+        dispatch(addErrorNotification(`update membership, reason: ${errorMessage}`))
+      })
   }
 }

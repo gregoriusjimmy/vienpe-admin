@@ -39,8 +39,8 @@ const KelasForm: React.FC<Props> = ({
   handleModalClose,
 }) => {
   const classes = useStyles()
-
   const [selectedInstruktur, setSelectedInstruktur] = useState<InstrukturType>()
+
   const HARI = ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU', 'MINGGU']
   const KATEGORI_SENAM = ['Aerobik', 'Goyang Dumang', 'Break Dance']
 
@@ -58,28 +58,11 @@ const KelasForm: React.FC<Props> = ({
   const onSubmit = async (formValues) => {
     if (!selectedInstruktur) return alert('please select instruktur')
     formValues.id_instruktur = selectedInstruktur.id
-
     formValues.created_at = moment(new Date()).format('DD-MM-YYYY')
-    const { hari, jam, kategori_senam, nama_instruktur, id_instruktur, created_at } = formValues
-    const orderedFormValues = {
-      hari,
-      jam,
-      kategori_senam,
-      id_instruktur,
-      nama_instruktur,
-      created_at,
-    }
-    addKelasStartAsync(orderedFormValues, handleModalClose)
+    addKelasStartAsync(formValues, handleModalClose)
   }
 
-  const findInstrukturId = (event, inputedInstrukturName: string) => {
-    const findInstruktur = allInstruktur!.find(
-      (instruktur) => instruktur.nama.toLowerCase() === inputedInstrukturName.toLowerCase()
-    )
-    if (findInstruktur) setSelectedInstruktur(findInstruktur)
-  }
-
-  const getNamaInstrukturOptions = {
+  const getInstrukturOptions = {
     options: allInstruktur!,
     getOptionLabel: (option: InstrukturType) => option.nama,
   }
@@ -96,12 +79,12 @@ const KelasForm: React.FC<Props> = ({
           onSubmit={handleSubmit(onSubmit)}
         >
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            <Grid item xs={10}>
               <Autocomplete
-                {...getNamaInstrukturOptions}
-                id='nama-member'
+                {...getInstrukturOptions}
+                id='nama-instruktur'
                 disableClearable
-                onInputChange={findInstrukturId}
+                onChange={(e, value) => setSelectedInstruktur(value)}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -113,6 +96,15 @@ const KelasForm: React.FC<Props> = ({
                     helperText={errors.nama_instruktur?.message}
                   />
                 )}
+              />
+            </Grid>
+            <Grid item xs={2}>
+              <TextField
+                value={selectedInstruktur ? `${selectedInstruktur.id}` : ''}
+                disabled
+                margin='normal'
+                name='id_instruktur'
+                label='ID'
               />
             </Grid>
             <Grid item xs={6}>
