@@ -1,6 +1,6 @@
 import React from 'react'
 import routes from '../../../routes'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const Content: React.FC<any> = () => {
@@ -30,7 +30,7 @@ const Content: React.FC<any> = () => {
             )
           })}
 
-          {/* <Redirect from="/" to="/dashboard" /> */}
+          <Redirect from='/' to='/absensi' />
         </Switch>
       </AnimatePresence>
     </div>

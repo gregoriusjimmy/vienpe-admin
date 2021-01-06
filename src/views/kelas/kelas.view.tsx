@@ -13,11 +13,10 @@ import { loadAllKelasStartAsync, updateKelasAktifStartAsync } from '../../redux/
 import { loadAllInstrukturStartAsync } from '../../redux/instruktur/instruktur.actions'
 import {
   selectAllInstruktur,
-  selectAllInstrukturNameWithId,
   selectIsAllInstrukturLoaded,
 } from '../../redux/instruktur/instruktur.selectors'
 import { combineAllKelasWithInstruktur } from '../../utils/utils'
-import { InstrukturNameWithIdType, InstrukturType } from '../../redux/instruktur/instruktur.types'
+import { InstrukturType } from '../../redux/instruktur/instruktur.types'
 
 type Props = {
   allKelas: Array<KelasType> | null

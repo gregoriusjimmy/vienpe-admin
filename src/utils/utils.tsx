@@ -15,7 +15,9 @@ export const combineAllKelasWithInstruktur = (
   return allKelas!.map(
     (kelas): KelasWithInstrukturType => {
       const { id_instruktur } = kelas
-      const findMatch = allInstruktur.find((instruktur) => id_instruktur === instruktur.id)
+      const findMatch = allInstruktur.find((instruktur) => {
+        return id_instruktur === instruktur.id
+      })
 
       const { id, nama } = findMatch!
       return { ...kelas, id_instruktur: id, nama_instruktur: nama }

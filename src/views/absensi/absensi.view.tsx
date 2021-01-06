@@ -15,16 +15,13 @@ import { RootState } from '../../redux/root-reducer'
 import CircularLoading from '../../components/circular-loading/circular-loading.component'
 import { KelasType } from '../../redux/kelas/kelas.types'
 import { loadAllMemberStartAsync } from '../../redux/member/member.actions'
-import {
-  combineAllKelasWithInstruktur,
-  combineAllMembershipWithTipeMembership,
-} from '../../utils/utils'
+
 import {
   selectAllInstruktur,
-  selectAllInstrukturNameWithId,
+  selectIsAllInstrukturLoaded,
 } from '../../redux/instruktur/instruktur.selectors'
 import { MemberType } from '../../redux/member/member.types'
-import { InstrukturNameWithIdType, InstrukturType } from '../../redux/instruktur/instruktur.types'
+import { InstrukturType } from '../../redux/instruktur/instruktur.types'
 import { MembershipType } from '../../redux/membership/membership.types'
 import {
   selectAllTipeMembership,
@@ -32,6 +29,7 @@ import {
 } from '../../redux/tipe-membership/tipe-membership.selectors'
 import { loadAllTipeMembershipStartAsync } from '../../redux/tipe-membership/tipe-membership.actions'
 import { TipeMembershipType } from '../../redux/tipe-membership/tipe-membership.types'
+import { loadAllAbsensiStartAsync } from '../../redux/absensi/absensi.actions'
 
 type Props = {
   allMember: Array<MemberType> | null
@@ -49,6 +47,7 @@ type Props = {
   loadAllInstrukturStartAsync: () => void
   loadAllKelasStartAsync: () => void
   loadAllTipeMembershipStartAsync: () => void
+  loadAllAbsensiStartAsync: () => void
 }
 
 const Absensi: React.FC<Props> = ({
@@ -67,6 +66,7 @@ const Absensi: React.FC<Props> = ({
   loadAllKelasStartAsync,
   loadAllMembershipStartAsync,
   loadAllTipeMembershipStartAsync,
+  loadAllAbsensiStartAsync,
 }) => {
   useEffect(() => {
     loadAllMemberStartAsync()
@@ -74,14 +74,16 @@ const Absensi: React.FC<Props> = ({
     loadAllKelasStartAsync()
     loadAllMembershipStartAsync()
     loadAllTipeMembershipStartAsync()
+    loadAllAbsensiStartAsync()
   }, [
     loadAllMemberStartAsync,
     loadAllInstrukturStartAsync,
     loadAllKelasStartAsync,
     loadAllMembershipStartAsync,
     loadAllTipeMembershipStartAsync,
+    loadAllAbsensiStartAsync,
   ])
-  const isAllLoaded = () => {
+  const isAllLoaded = (): Boolean => {
     return (
       isAllMemberLoaded &&
       isAllKelasLoaded &&
@@ -112,7 +114,7 @@ const mapStateToProps = (state: RootState) => ({
   isAllMemberLoaded: selectIsAllMemberLoaded(state),
   isAllMembershipLoaded: selectIsAllMembershipLoaded(state),
   isAllKelasLoaded: selectIsAllKelasLoaded(state),
-  isAllInstrukturLoaded: selectIsAllKelasLoaded(state),
+  isAllInstrukturLoaded: selectIsAllInstrukturLoaded(state),
   isAllTipeMembershipLoaded: selectIsAllTipeMembershipLoaded(state),
 })
 
@@ -122,5 +124,6 @@ const mapDispatchToProps = (dispatch) => ({
   loadAllMembershipStartAsync: () => dispatch(loadAllMembershipStartAsync()),
   loadAllKelasStartAsync: () => dispatch(loadAllKelasStartAsync()),
   loadAllTipeMembershipStartAsync: () => dispatch(loadAllTipeMembershipStartAsync()),
+  loadAllAbsensiStartAsync: () => dispatch(loadAllAbsensiStartAsync()),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Absensi)

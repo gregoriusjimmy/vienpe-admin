@@ -13,6 +13,7 @@ const kelasReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         errorMessage: undefined,
+        isLoaded: false,
         isFetching: true,
       }
 

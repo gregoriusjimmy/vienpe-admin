@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { TextField, Grid, MenuItem } from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import FormCard from '../form-card/form-card.component'
-import useStyles from './membership-form-add.styles'
 import { connect } from 'react-redux'
 import { selectAllMember, selectIsMemberFetching } from '../../redux/member/member.selectors'
 import { RootState } from '../../redux/root-reducer'
@@ -13,10 +12,10 @@ import { MemberType } from '../../redux/member/member.types'
 import ReactHookFormSelect from '../react-hook-form-select/react-hook-form-select.component'
 import { selectAllTipeMembership } from '../../redux/tipe-membership/tipe-membership.selectors'
 import { addMembershipStartAsync } from '../../redux/membership/membership.actions'
-import { MembershipType } from '../../redux/membership/membership.types'
 import SubmitButton from '../submit-button/submit-button.component'
 import CircularLoading from '../circular-loading/circular-loading.component'
 import moment from 'moment'
+import Form from '../form/form.component'
 
 type FORM_DATA = {
   id_member: string | number
@@ -40,7 +39,6 @@ const MembershipFormAdd: React.FC<Props> = ({
   handleModalClose,
   addMembershipStartAsync,
 }) => {
-  const classes = useStyles()
   const [tglSelesai, setTglSelesai] = useState('')
   const [selectedMember, setSelectedMember] = useState<MemberType>()
 
@@ -61,7 +59,7 @@ const MembershipFormAdd: React.FC<Props> = ({
     formValues.tgl_mulai = moment(formValues.tgl_mulai).format('DD-MM-YYYY')
     formValues.tgl_selesai = moment(formValues.tgl_selesai).format('DD-MM-YYYY')
     formValues.id_member = selectedMember.id
-    console.log(formValues)
+
     addMembershipStartAsync(
       formValues,
       { ...selectedMember, status_membership: true },
@@ -85,12 +83,7 @@ const MembershipFormAdd: React.FC<Props> = ({
       {isFetching ? (
         <CircularLoading height='200px' />
       ) : (
-        <form
-          className={classes.root}
-          noValidate
-          autoComplete='off'
-          onSubmit={handleSubmit(onSubmit)}
-        >
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={2}>
             <Grid item xs={10}>
               <Autocomplete
@@ -182,7 +175,7 @@ const MembershipFormAdd: React.FC<Props> = ({
               </Grid>
             </Grid>
           </Grid>
-        </form>
+        </Form>
       )}
     </FormCard>
   )

@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect'
-import memberFormComponent from '../../components/member-form/member-form.component'
 import { RootState } from '../root-reducer'
 import { MemberState, MemberType } from './member.types'
 

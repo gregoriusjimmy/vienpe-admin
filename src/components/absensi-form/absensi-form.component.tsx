@@ -1,14 +1,9 @@
 import React, { useState } from 'react'
-import { TextField, Grid, MenuItem, FormControlLabel, Checkbox, Box } from '@material-ui/core'
+import { TextField, Grid, FormControlLabel, Checkbox, Box } from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import FormCard from '../form-card/form-card.component'
-import useStyles from './absensi-form.styles'
 import { connect } from 'react-redux'
-import {
-  selectAllMember,
-  selectAllMemberIdNameStatus,
-  selectIsMemberFetching,
-} from '../../redux/member/member.selectors'
+import { selectAllMember } from '../../redux/member/member.selectors'
 import { RootState } from '../../redux/root-reducer'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -17,92 +12,68 @@ import { MemberType } from '../../redux/member/member.types'
 import SubmitButton from '../submit-button/submit-button.component'
 import CircularLoading from '../circular-loading/circular-loading.component'
 import moment from 'moment'
-import { KelasType, KelasWithInstrukturType } from '../../redux/kelas/kelas.types'
-import { addAbsensiStartAsync } from '../../redux/absensi/absensi.actions'
+import { KelasWithInstrukturType } from '../../redux/kelas/kelas.types'
+import { addAbsensiMemberStartAsync } from '../../redux/absensi/absensi.actions'
 import { selectAllKelas } from '../../redux/kelas/kelas.selectors'
-import {
-  selectAllInstruktur,
-  selectAllInstrukturNameWithId,
-} from '../../redux/instruktur/instruktur.selectors'
-import { InstrukturNameWithIdType } from '../../redux/instruktur/instruktur.types'
-import {
-  MembershipType,
-  MembershipWithTipeMembershipType,
-} from '../../redux/membership/membership.types'
+import { selectAllInstruktur } from '../../redux/instruktur/instruktur.selectors'
+import { MembershipWithTipeMembershipType } from '../../redux/membership/membership.types'
 import {
   combineAllKelasWithInstruktur,
   combineAllMembershipWithTipeMembership,
 } from '../../utils/utils'
 import { selectAllMembership } from '../../redux/membership/membership.selectors'
 import { selectAllTipeMembership } from '../../redux/tipe-membership/tipe-membership.selectors'
+import Form from '../form/form.component'
 
 type FORM_DATA = {
-  id_member: string
-  id_kelas: string
+  id_member: string | number
   tgl_absensi: string
+  kelas: string
   use_membership: boolean | string
 }
 type Props = {
   allMember: Array<MemberType> | null
-  allKelasWithInstruktur: Array<KelasWithInstrukturType>
+  allKelasWithInstruktur: Array<KelasWithInstrukturType> | null
   allMembershipWithTipeMembership: Array<MembershipWithTipeMembershipType> | null
-  addAbsensiStartAsync: (absensiForm, successCallback: () => void) => void
+  addAbsensiMemberStartAsync: (absensiForm, successCallback: () => void) => void
 }
 
 const AbsensiForm: React.FC<Props> = ({
   allMember,
   allKelasWithInstruktur,
   allMembershipWithTipeMembership,
-  addAbsensiStartAsync,
+  addAbsensiMemberStartAsync,
 }) => {
-  const classes = useStyles()
-  const [selectedMember, setSelectedMember] = useState<MemberType>({
-    id: '',
-    nama: '',
-    no_telp: '',
-    email: '',
-    tgl_lahir: '',
-    status_membership: '',
-  })
+  const [selectedMember, setSelectedMember] = useState<MemberType | null>(null)
 
   const [selectedHari, setSelectedHari] = useState('')
   const [selectedKelas, setSelectedKelas] = useState<KelasWithInstrukturType>()
-  const [selectedMembership, setSelectedMembership] = useState<MembershipWithTipeMembershipType>()
+  const [
+    selectedMembership,
+    setSelectedMembership,
+  ] = useState<MembershipWithTipeMembershipType | null>()
+  const [useMembership, setUseMembership] = useState(true)
+
   const schema = yup.object().shape({
     id_member: yup.string().required(),
-    nama_member: yup.string().required(),
     tgl_absensi: yup.string().required(),
-    use_membership: yup.boolean().required(),
+    kelas: yup.string().required(),
+    use_membership: yup.boolean(),
   })
 
   const { register, errors, handleSubmit } = useForm<FORM_DATA>({
     resolver: yupResolver(schema),
   })
 
-  const onSubmit = async (formValues) => {
-    // if (!selectedMember) return alert('please select member')
-    // formValues.id_member = selectedMember.id
-    // formValues.tgl_mulai = moment(formValues.tgl_mulai).format('DD-MM-YYYY')
-    // formValues.tgl_selesai = moment(formValues.tgl_selesai).format('DD-MM-YYYY')
-    // const { id_member, tipe_membership, tgl_mulai, tgl_selesai, sisa_point } = formValues
-    // const orderedFormValues = { id_member, tipe_membership, tgl_mulai, tgl_selesai, sisa_point }
-    // if (edit) {
-    //   updateMemberStartAsync({
-    //     id: selectedMember!.id,
-    //     ...orderedFormValues,
-    //     status_membership: statusMembership,
-    //   })
-    // } else {
-    //   addMemberStartAsync(orderedFormValues)
-    // }
-    // addAbsensiStartAsync()
+  const onSubmit = (formValues) => {
+    console.log(formValues)
   }
 
   const getSelectedMemberOptions = {
     options: allMember!,
   }
   const getSelectedKelasOptions = {
-    options: allKelasWithInstruktur.sort((a, b) => b.hari.localeCompare(a.hari)),
+    options: allKelasWithInstruktur!.sort((a, b) => b.hari.localeCompare(a.hari)),
   }
 
   const getTodayDate = () => {
@@ -114,12 +85,7 @@ const AbsensiForm: React.FC<Props> = ({
 
   return (
     <FormCard title='Form Absen' withoutModal>
-      <form
-        className={classes.root}
-        noValidate
-        autoComplete='off'
-        onSubmit={handleSubmit(onSubmit)}
-      >
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Grid container justify='flex-end'>
@@ -144,7 +110,7 @@ const AbsensiForm: React.FC<Props> = ({
               getOptionSelected={(option, value) => option.id === value.id}
               id='id-member'
               disableClearable
-              value={selectedMember}
+              value={selectedMember!}
               onChange={(e: any, value: MemberType) => handleChangeSelectedMember(value)}
               renderInput={(params) => (
                 <TextField
@@ -166,7 +132,7 @@ const AbsensiForm: React.FC<Props> = ({
               getOptionSelected={(option, value) => option.id === value.id}
               id='nama-member'
               disableClearable
-              value={selectedMember}
+              value={selectedMember!}
               onChange={(e: any, value: MemberType) => handleChangeSelectedMember(value)}
               renderInput={(params) => (
                 <TextField {...params} name='nama_member' label='Nama Member' margin='normal' />
@@ -178,7 +144,6 @@ const AbsensiForm: React.FC<Props> = ({
               <FormControlLabel
                 control={
                   <Checkbox
-                    inputRef={register}
                     checked={selectedMember?.status_membership === 'true'}
                     disabled
                     name='status_membership'
@@ -223,10 +188,13 @@ const AbsensiForm: React.FC<Props> = ({
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  inputRef={register}
                   name='kelas'
                   label='Kelas'
                   margin='normal'
                   variant='outlined'
+                  error={!!errors.kelas}
+                  helperText={errors.kelas?.message}
                 />
               )}
             />
@@ -242,30 +210,46 @@ const AbsensiForm: React.FC<Props> = ({
             />
           </Grid>
           {selectedMember?.status_membership === 'true' && (
-            <Grid item xs={9}>
-              <Autocomplete
-                options={allMembershipWithTipeMembership!}
-                getOptionLabel={(option) =>
-                  `Tipe: ${option.tipe_membership} ${option.keterangan} \t Periode: ${option.tgl_mulai} - ${option.tgl_selesai} \t Sisa point: ${option.sisa_point}`
-                }
-                onChange={(e, value) => setSelectedMembership(value)}
-                filterOptions={(options) =>
-                  options.filter((option) => option.id_member === selectedMember.id)
-                }
-                filterSelectedOptions
-                id='membership'
-                disableClearable
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    name='membership'
-                    label='Membership'
-                    margin='normal'
-                    variant='outlined'
+            <React.Fragment>
+              <Grid item xs={9}>
+                <Autocomplete
+                  options={allMembershipWithTipeMembership!}
+                  getOptionLabel={(option) =>
+                    `Tipe: ${option.tipe_membership} ${option.keterangan} \t Periode: ${option.tgl_mulai} - ${option.tgl_selesai} \t Sisa point: ${option.sisa_point}`
+                  }
+                  onChange={(e, value) => setSelectedMembership(value)}
+                  filterOptions={(options) =>
+                    options.filter((option) => option.id_member === selectedMember.id)
+                  }
+                  disabled={!useMembership}
+                  filterSelectedOptions
+                  id='membership'
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      name='membership'
+                      label='Membership'
+                      margin='normal'
+                      variant='outlined'
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <Box mt='25px' ml='10px'>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={useMembership}
+                        onChange={() => setUseMembership(!useMembership)}
+                        name='use_membership'
+                      />
+                    }
+                    label='Pakai Membership'
                   />
-                )}
-              />
-            </Grid>
+                </Box>
+              </Grid>
+            </React.Fragment>
           )}
           {/* <Grid item xs={4}>
             <Autocomplete
@@ -359,7 +343,7 @@ const AbsensiForm: React.FC<Props> = ({
             </Grid>
           </Grid>
         </Grid>
-      </form>
+      </Form>
     </FormCard>
   )
 }
@@ -377,8 +361,8 @@ const mapStateToProps = (state: RootState) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  addAbsensiStartAsync: (absensiForm, successCallback) =>
-    dispatch(addAbsensiStartAsync(absensiForm, successCallback)),
+  addAbsensiMemberStartAsync: (absensiForm, successCallback) =>
+    dispatch(addAbsensiMemberStartAsync(absensiForm, successCallback)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AbsensiForm)

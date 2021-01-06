@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import { TextField, Button, Grid } from '@material-ui/core'
+import { TextField, Grid } from '@material-ui/core'
 import FormCard from '../form-card/form-card.component'
-import useStyles from './tipe-membership-form.styles'
-
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { connect } from 'react-redux'
-
 import { addTipeMembershipStartAsync } from '../../redux/tipe-membership/tipe-membership.actions'
-
 import { selectAllTipeMembership } from '../../redux/tipe-membership/tipe-membership.selectors'
-
 import { RootState } from '../../redux/root-reducer'
 import { TipeMembershipType } from '../../redux/tipe-membership/tipe-membership.types'
+import Form from '../form/form.component'
+import SubmitButton from '../submit-button/submit-button.component'
 
 type FORM_DATA = {
   tipe: string
@@ -21,7 +18,7 @@ type FORM_DATA = {
 }
 
 type Props = {
-  allTipeMembership: [] | null
+  allTipeMembership: Array<TipeMembershipType> | null
   addTipeMembershipStartAsync: (tipeMembership: FORM_DATA) => void
 }
 
@@ -29,7 +26,6 @@ const TipeMembershipForm: React.FC<Props> = ({
   allTipeMembership,
   addTipeMembershipStartAsync,
 }) => {
-  const { root, submitBtn } = useStyles()
   const [nextAvailableTipe, setNextAvailableTipe] = useState('')
 
   const schema = yup.object().shape({
@@ -55,7 +51,7 @@ const TipeMembershipForm: React.FC<Props> = ({
   }
   return (
     <FormCard title='Daftar Tipe Membership'>
-      <form className={root} noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={1}>
           <Grid item xs={2}>
             <TextField
@@ -78,12 +74,10 @@ const TipeMembershipForm: React.FC<Props> = ({
             />
           </Grid>
           <Grid item xs={12}>
-            <Button className={submitBtn} type='submit' variant='contained' color='primary'>
-              Submit
-            </Button>
+            <SubmitButton buttonType='add'>Submit</SubmitButton>
           </Grid>
         </Grid>
-      </form>
+      </Form>
     </FormCard>
   )
 }

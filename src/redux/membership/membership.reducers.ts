@@ -36,8 +36,6 @@ const membershipReducer = (state = INITIAL_STATE, action: { type: string; payloa
       }
 
     case MembershipActionTypes.ADD_MEMBERSHIP_SUCCESS:
-      console.log(state.allMembership)
-      console.log(action.payload)
       return {
         ...state,
         isFetching: false,

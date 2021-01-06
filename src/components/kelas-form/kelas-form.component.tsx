@@ -1,12 +1,10 @@
 import React, { useState } from 'react'
 import { TextField, Grid, MenuItem } from '@material-ui/core'
 import FormCard from '../form-card/form-card.component'
-import useStyles from './kelas-form.styles'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { connect } from 'react-redux'
-
 import SubmitButton from '../submit-button/submit-button.component'
 import { RootState } from '../../redux/root-reducer'
 import CircularLoading from '../circular-loading/circular-loading.component'
@@ -17,6 +15,7 @@ import { InstrukturType } from '../../redux/instruktur/instruktur.types'
 import { Autocomplete } from '@material-ui/lab'
 import ReactHookFormSelect from '../react-hook-form-select/react-hook-form-select.component'
 import moment from 'moment'
+import Form from '../form/form.component'
 
 type FORM_DATA = {
   hari: 'SENIN' | 'SELASA' | 'RABU' | 'KAMIS' | 'JUMAT' | 'SABTU' | 'MINGGU'
@@ -38,7 +37,6 @@ const KelasForm: React.FC<Props> = ({
   addKelasStartAsync,
   handleModalClose,
 }) => {
-  const classes = useStyles()
   const [selectedInstruktur, setSelectedInstruktur] = useState<InstrukturType>()
 
   const HARI = ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU', 'MINGGU']
@@ -72,12 +70,7 @@ const KelasForm: React.FC<Props> = ({
       {isFetching ? (
         <CircularLoading height={'200px'} />
       ) : (
-        <form
-          className={classes.root}
-          noValidate
-          autoComplete='off'
-          onSubmit={handleSubmit(onSubmit)}
-        >
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={2}>
             <Grid item xs={10}>
               <Autocomplete
@@ -161,7 +154,7 @@ const KelasForm: React.FC<Props> = ({
               </Grid>
             </Grid>
           </Grid>
-        </form>
+        </Form>
       )}
     </FormCard>
   )

@@ -1,12 +1,10 @@
 import React from 'react'
 import { TextField, Grid } from '@material-ui/core'
 import FormCard from '../form-card/form-card.component'
-import useStyles from './instruktur-form.styles'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { connect } from 'react-redux'
-
 import SubmitButton from '../submit-button/submit-button.component'
 import { RootState } from '../../redux/root-reducer'
 import CircularLoading from '../circular-loading/circular-loading.component'
@@ -17,6 +15,7 @@ import {
 import { selectIsInstrukturFetching } from '../../redux/instruktur/instruktur.selectors'
 import { InstrukturType } from '../../redux/instruktur/instruktur.types'
 import moment from 'moment'
+import Form from '../form/form.component'
 
 type FORM_DATA = {
   nama: ''
@@ -42,8 +41,6 @@ const InstrukturForm: React.FC<Props> = ({
   edit,
   selectedInstruktur,
 }) => {
-  const classes = useStyles()
-
   const schema = yup.object().shape({
     nama: yup.string().required(),
     email: yup.string().email().nullable().default(undefined),
@@ -60,29 +57,18 @@ const InstrukturForm: React.FC<Props> = ({
     if (!formValues.tgl_lahir) formValues.tgl_lahir = null
     else formValues.tgl_lahir = moment(formValues.tgl_lahir).format('DD-MM-YYYY')
     if (edit) {
-      updateInstrukturStartAsync(
-        {
-          id: selectedInstruktur!.id,
-          ...formValues,
-        },
-        handleModalClose
-      )
+      updateInstrukturStartAsync({ id: selectedInstruktur!.id, ...formValues }, handleModalClose)
     } else {
       addInstrukturStartAsync(formValues, handleModalClose)
     }
   }
 
   return (
-    <FormCard title={`${edit ? 'Update' : 'Daftar'}Instruktur`}>
+    <FormCard title={`${edit ? 'Update' : 'Daftar'} Instruktur`}>
       {isFetching ? (
         <CircularLoading height={'200px'} />
       ) : (
-        <form
-          className={classes.root}
-          noValidate
-          autoComplete='off'
-          onSubmit={handleSubmit(onSubmit)}
-        >
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={1}>
             <Grid item xs={edit ? 10 : 12}>
               <TextField
@@ -140,7 +126,7 @@ const InstrukturForm: React.FC<Props> = ({
               </Grid>
             </Grid>
           </Grid>
-        </form>
+        </Form>
       )}
     </FormCard>
   )

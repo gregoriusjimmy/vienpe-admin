@@ -10,11 +10,7 @@ import { connect } from 'react-redux'
 import { loadAllTipeMembershipStartAsync } from '../../redux/tipe-membership/tipe-membership.actions'
 import { loadAllMemberStartAsync } from '../../redux/member/member.actions'
 import { selectIsAllTipeMembershipLoaded } from '../../redux/tipe-membership/tipe-membership.selectors'
-import {
-  selectAllMember,
-  selectAllMemberNameWithId,
-  selectIsAllMemberLoaded,
-} from '../../redux/member/member.selectors'
+import { selectAllMember, selectIsAllMemberLoaded } from '../../redux/member/member.selectors'
 import { RootState } from '../../redux/root-reducer'
 import {
   selectAllMembership,

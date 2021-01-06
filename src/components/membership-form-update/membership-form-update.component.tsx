@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { TextField, Grid } from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import FormCard from '../form-card/form-card.component'
-import useStyles from './membership-form-update.styles'
 import { connect } from 'react-redux'
 import { selectAllMember, selectIsMemberFetching } from '../../redux/member/member.selectors'
 import { RootState } from '../../redux/root-reducer'
@@ -10,7 +9,6 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { MemberType } from '../../redux/member/member.types'
-
 import { updateMembershipStartAsync } from '../../redux/membership/membership.actions'
 import { MembershipWithMemberType } from '../../redux/membership/membership.types'
 import SubmitButton from '../submit-button/submit-button.component'
@@ -18,9 +16,9 @@ import CircularLoading from '../circular-loading/circular-loading.component'
 import moment from 'moment'
 import { selectAllMembership } from '../../redux/membership/membership.selectors'
 import { combineAllMembershipWithMember } from '../../utils/utils'
+import Form from '../form/form.component'
 
 type FORM_DATA = {
-  membership: {}
   tgl_mulai: string
   tgl_selesai: string
   sisa_point: number
@@ -39,7 +37,6 @@ const MembershipFormUpdate: React.FC<Props> = ({
   handleModalClose,
   updateMembershipStartAsync,
 }) => {
-  const classes = useStyles()
   const [tglSelesai, setTglSelesai] = useState('')
   const [selectedMember, setSelectedMember] = useState<MemberType>()
   const [selectedMembership, setSelectedMembership] = useState<MembershipWithMemberType | null>(
@@ -82,12 +79,7 @@ const MembershipFormUpdate: React.FC<Props> = ({
       {isFetching ? (
         <CircularLoading height='200px' />
       ) : (
-        <form
-          className={classes.root}
-          noValidate
-          autoComplete='off'
-          onSubmit={handleSubmit(onSubmit)}
-        >
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={2}>
             <Grid item xs={10}>
               <Autocomplete
@@ -202,7 +194,7 @@ const MembershipFormUpdate: React.FC<Props> = ({
               </Grid>
             </Grid>
           </Grid>
-        </form>
+        </Form>
       )}
     </FormCard>
   )

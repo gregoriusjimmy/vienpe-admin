@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { TextField, Grid, FormControlLabel, Checkbox } from '@material-ui/core'
 import FormCard from '../form-card/form-card.component'
-import useStyles from './member-form.styles'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -13,6 +12,7 @@ import { selectIsMemberFetching } from '../../redux/member/member.selectors'
 import { RootState } from '../../redux/root-reducer'
 import CircularLoading from '../circular-loading/circular-loading.component'
 import moment from 'moment'
+import Form from '../form/form.component'
 
 type FORM_DATA = {
   nama: ''
@@ -24,7 +24,7 @@ type FORM_DATA = {
 
 type Props = {
   addMemberStartAsync: (member: FORM_DATA, successCallback?) => Promise<any>
-  updateMemberStartAsync: (member?, successCallback?) => Promise<any>
+  updateMemberStartAsync: (member, successCallback?) => Promise<any>
   handleModalClose: () => void
   isFetching: boolean
   edit?: true
@@ -40,9 +40,9 @@ const MemberForm: React.FC<Props> = ({
   selectedMember,
 }) => {
   const [statusMembership, setStatusMembership] = useState(false)
-  const classes = useStyles()
 
   useEffect(() => {
+    // transform string 'true' to boolean
     if (selectedMember) {
       setStatusMembership(selectedMember.status_membership === 'true')
     }
@@ -84,12 +84,7 @@ const MemberForm: React.FC<Props> = ({
       {isFetching ? (
         <CircularLoading height={'200px'} />
       ) : (
-        <form
-          className={classes.root}
-          noValidate
-          autoComplete='off'
-          onSubmit={handleSubmit(onSubmit)}
-        >
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={1}>
             <Grid item xs={edit ? 10 : 12}>
               <TextField
@@ -140,7 +135,7 @@ const MemberForm: React.FC<Props> = ({
                 helperText={errors.tgl_lahir?.message}
               />
             </Grid>
-            {edit ? (
+            {edit && (
               <Grid item xs={12}>
                 <FormControlLabel
                   control={
@@ -154,14 +149,14 @@ const MemberForm: React.FC<Props> = ({
                   label='Status Membership'
                 />
               </Grid>
-            ) : null}
+            )}
             <Grid container justify='flex-end'>
               <Grid item>
                 <SubmitButton buttonType={edit ? 'edit' : 'add'} />
               </Grid>
             </Grid>
           </Grid>
-        </form>
+        </Form>
       )}
     </FormCard>
   )
