@@ -26,7 +26,7 @@ export type AbsensiMemberType = {
   id_member: string
   tgl_absensi: string
   id_kelas: string
-  use_membership: boolean
+  id_membership: string
 }
 export type AbsensiInstrukturType = {
   id: string

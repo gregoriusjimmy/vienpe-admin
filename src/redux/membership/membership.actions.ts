@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { fetchPost, fetchGet, fetchPut, getErrorMessage } from '../../fetch/fetch'
+import { updateMemberSuccess } from '../member/member.actions'
 import { MemberType } from '../member/member.types'
 import { addErrorNotification, addSuccessNotificaiton } from '../notification/notification.actions'
 import { MembershipActionTypes, MembershipType } from './membership.types'
@@ -48,13 +49,10 @@ export const addMembershipStartAsync = (
 ) => {
   return (dispatch) => {
     dispatch(addMembershipStart())
-    axios
-      .all([
-        fetchPost(process.env.REACT_APP_MEMBERSHIP_URL, membershipForm),
-        fetchPut(process.env.REACT_APP_MEMBER_URL, member),
-      ])
+    fetchPost(process.env.REACT_APP_MEMBERSHIP_URL, { membership: membershipForm, member: member })
       .then((response) => {
-        dispatch(addMembershipSuccess(response[0].data))
+        dispatch(addMembershipSuccess(response.data.membership))
+        dispatch(updateMemberSuccess(response.data.member))
         if (successCallback) successCallback()
         dispatch(addSuccessNotificaiton(`menambahkan membership ${member.nama}`))
       })
@@ -87,13 +85,13 @@ export const updateMembershipStartAsync = (
 ) => {
   return (dispatch) => {
     dispatch(updateMembershipStart())
-    axios
-      .all([
-        fetchPut(process.env.REACT_APP_MEMBERSHIP_URL, updatedMembership),
-        fetchPut(process.env.REACT_APP_MEMBER_URL, member),
-      ])
+    fetchPut(process.env.REACT_APP_MEMBERSHIP_URL, {
+      membership: updatedMembership,
+      member: member,
+    })
       .then((response) => {
-        dispatch(updateMembershipSuccess(response[0].data))
+        dispatch(updateMembershipSuccess(response.data.membership))
+        dispatch(updateMemberSuccess(response.data.member))
         if (successCallback) successCallback()
         dispatch(addSuccessNotificaiton(`update membership ${member.nama}`))
       })

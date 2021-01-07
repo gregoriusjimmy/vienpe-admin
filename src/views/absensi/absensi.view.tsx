@@ -83,7 +83,7 @@ const Absensi: React.FC<Props> = ({
     loadAllTipeMembershipStartAsync,
     loadAllAbsensiStartAsync,
   ])
-  const isAllLoaded = (): Boolean => {
+  const isAllLoaded = (): boolean => {
     return (
       isAllMemberLoaded &&
       isAllKelasLoaded &&

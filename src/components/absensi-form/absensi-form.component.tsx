@@ -29,13 +29,12 @@ type FORM_DATA = {
   id_member: string | number
   tgl_absensi: string
   kelas: string
-  use_membership: boolean | string
 }
 type Props = {
   allMember: Array<MemberType> | null
   allKelasWithInstruktur: Array<KelasWithInstrukturType> | null
   allMembershipWithTipeMembership: Array<MembershipWithTipeMembershipType> | null
-  addAbsensiMemberStartAsync: (absensiForm, successCallback: () => void) => void
+  addAbsensiMemberStartAsync: (absensiForm, useMembership: boolean) => void
 }
 
 const AbsensiForm: React.FC<Props> = ({
@@ -45,14 +44,13 @@ const AbsensiForm: React.FC<Props> = ({
   addAbsensiMemberStartAsync,
 }) => {
   const [selectedMember, setSelectedMember] = useState<MemberType | null>(null)
-
   const [selectedHari, setSelectedHari] = useState('')
-  const [selectedKelas, setSelectedKelas] = useState<KelasWithInstrukturType>()
+  const [selectedKelas, setSelectedKelas] = useState<KelasWithInstrukturType | null>(null)
   const [
     selectedMembership,
     setSelectedMembership,
   ] = useState<MembershipWithTipeMembershipType | null>()
-  const [useMembership, setUseMembership] = useState(true)
+  const [useMembership, setUseMembership] = useState(false)
 
   const schema = yup.object().shape({
     id_member: yup.string().required(),
@@ -61,12 +59,24 @@ const AbsensiForm: React.FC<Props> = ({
     use_membership: yup.boolean(),
   })
 
-  const { register, errors, handleSubmit } = useForm<FORM_DATA>({
+  const { register, errors, handleSubmit, reset } = useForm<FORM_DATA>({
     resolver: yupResolver(schema),
   })
 
   const onSubmit = (formValues) => {
+    delete formValues['kelas']
+    formValues.id_kelas = selectedKelas?.id
+    if (useMembership && selectedMembership) {
+      formValues.id_membership = selectedMembership.id
+    }
+    addAbsensiMemberStartAsync(formValues, useMembership)
     console.log(formValues)
+    // clear state after submit
+    reset()
+    setSelectedMember(null)
+    setSelectedHari('')
+    setSelectedKelas(null)
+    setSelectedMembership(null)
   }
 
   const getSelectedMemberOptions = {
@@ -81,6 +91,7 @@ const AbsensiForm: React.FC<Props> = ({
   }
   const handleChangeSelectedMember = (value: MemberType) => {
     setSelectedMember(value)
+    if (selectedMember?.status_membership === true) setUseMembership(true)
   }
 
   return (
@@ -236,7 +247,7 @@ const AbsensiForm: React.FC<Props> = ({
                 />
               </Grid>
               <Grid item xs={3}>
-                <Box mt='25px' ml='10px'>
+                <Box mt='10px' ml='10px'>
                   <FormControlLabel
                     control={
                       <Checkbox
@@ -361,8 +372,8 @@ const mapStateToProps = (state: RootState) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  addAbsensiMemberStartAsync: (absensiForm, successCallback) =>
-    dispatch(addAbsensiMemberStartAsync(absensiForm, successCallback)),
+  addAbsensiMemberStartAsync: (absensiForm, useMembership) =>
+    dispatch(addAbsensiMemberStartAsync(absensiForm, useMembership)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AbsensiForm)
