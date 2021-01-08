@@ -64,7 +64,7 @@ const membershipReducer = (state = INITIAL_STATE, action: { type: string; payloa
       return {
         ...state,
         isFetching: false,
-        allMember: [...allNewMembership],
+        allMembership: [...allNewMembership],
       }
 
     case MembershipActionTypes.UPDATE_MEMBERSHIP_FAILURE:

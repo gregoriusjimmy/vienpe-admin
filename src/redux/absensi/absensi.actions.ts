@@ -72,14 +72,13 @@ export const addAbsensiMemberFailure = (errorMessage: string) => ({
 
 export const addAbsensiMemberStartAsync = (
   absensiMemberForm: AbsensiMemberType,
-  succesCallback?: () => void
+  useMembership:boolean
 ) => {
   return (dispatch) => {
     dispatch(addAbsensiMemberStart())
     fetchPost(process.env.REACT_APP_ABSENSI_MEMBER_URL, absensiMemberForm)
       .then((response) => {
         dispatch(addAbsensiMemberSuccess(response.data))
-        if (succesCallback) succesCallback()
         dispatch(addSuccessNotificaiton(`menambahkan absensi dengan id ${absensiMemberForm.id}`))
       })
       .catch((error) => {

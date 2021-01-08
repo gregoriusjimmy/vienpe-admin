@@ -19,6 +19,7 @@ import { combineAllMembershipWithMember } from '../../utils/utils'
 import Form from '../form/form.component'
 
 type FORM_DATA = {
+  id: string | number
   tgl_mulai: string
   tgl_selesai: string
   sisa_point: number
@@ -38,7 +39,7 @@ const MembershipFormUpdate: React.FC<Props> = ({
   updateMembershipStartAsync,
 }) => {
   const [tglSelesai, setTglSelesai] = useState('')
-  const [selectedMember, setSelectedMember] = useState<MemberType>()
+  const [selectedMember, setSelectedMember] = useState<MemberType | null>(null)
   const [selectedMembership, setSelectedMembership] = useState<MembershipWithMemberType | null>(
     null
   )
@@ -55,9 +56,6 @@ const MembershipFormUpdate: React.FC<Props> = ({
   })
 
   const onSubmit = async (formValues) => {
-    const memberForUpdate = allMember!.find((member) => member.id === selectedMembership!.id_member)
-
-    setSelectedMember(memberForUpdate)
     formValues.tgl_mulai = moment(formValues.tgl_mulai).format('DD-MM-YYYY')
     formValues.tgl_selesai = moment(formValues.tgl_selesai).format('DD-MM-YYYY')
 
@@ -72,6 +70,11 @@ const MembershipFormUpdate: React.FC<Props> = ({
     const tglMulai = moment(e.target.value)
     const tglSelesai = tglMulai.clone().add(1, 'M').format('YYYY-MM-DD')
     setTglSelesai(tglSelesai)
+  }
+  const setMemberAndMembership = (value: MembershipWithMemberType) => {
+    setSelectedMembership(value)
+    const memberForUpdate = allMember!.find((member) => member.id === value.id_member)
+    setSelectedMember(memberForUpdate!)
   }
 
   return (
@@ -91,7 +94,7 @@ const MembershipFormUpdate: React.FC<Props> = ({
                 id='membership'
                 value={selectedMembership!}
                 disableClearable
-                onChange={(e, value) => setSelectedMembership(value)}
+                onChange={(e, value) => setMemberAndMembership(value)}
                 renderInput={(params) => (
                   <TextField {...params} name='membership' label='Membership' margin='normal' />
                 )}
@@ -105,9 +108,17 @@ const MembershipFormUpdate: React.FC<Props> = ({
                 id='id-membership'
                 disableClearable
                 value={selectedMembership!}
-                onChange={(e, value) => setSelectedMembership(value)}
+                onChange={(e, value) => setMemberAndMembership(value)}
                 renderInput={(params) => (
-                  <TextField {...params} inputRef={register} name='id' label='ID' margin='normal' />
+                  <TextField
+                    {...params}
+                    inputRef={register}
+                    name='id'
+                    label='ID'
+                    margin='normal'
+                    error={!!errors.id}
+                    helperText={errors.id?.message}
+                  />
                 )}
               />
             </Grid>
@@ -119,7 +130,7 @@ const MembershipFormUpdate: React.FC<Props> = ({
                 type='date'
                 value={
                   selectedMembership
-                    ? moment(selectedMembership.tgl_mulai).format('YYYY-MM-DD')
+                    ? moment(selectedMembership.tgl_mulai, 'DD-MM-YYYY').format('YYYY-MM-DD')
                     : ''
                 }
                 onChange={calculateTglSelesai}
@@ -146,7 +157,7 @@ const MembershipFormUpdate: React.FC<Props> = ({
                 type='date'
                 value={
                   selectedMembership
-                    ? moment(selectedMembership.tgl_selesai).format('YYYY-MM-DD')
+                    ? moment(selectedMembership.tgl_selesai, 'DD-MM-YYYY').format('YYYY-MM-DD')
                     : ''
                 }
                 onChange={(e) => setTglSelesai(e.target.value)}

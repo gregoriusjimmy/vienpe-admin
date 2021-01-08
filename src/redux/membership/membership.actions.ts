@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { fetchPost, fetchGet, fetchPut, getErrorMessage } from '../../fetch/fetch'
 import { updateMemberSuccess } from '../member/member.actions'
 import { MemberType } from '../member/member.types'
