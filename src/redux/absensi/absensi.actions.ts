@@ -72,14 +72,21 @@ export const addAbsensiMemberFailure = (errorMessage: string) => ({
 
 export const addAbsensiMemberStartAsync = (
   absensiMemberForm: AbsensiMemberType,
-  useMembership:boolean
+  useMembership: boolean
 ) => {
   return (dispatch) => {
     dispatch(addAbsensiMemberStart())
-    fetchPost(process.env.REACT_APP_ABSENSI_MEMBER_URL, absensiMemberForm)
+    fetchPost(process.env.REACT_APP_ABSENSI_MEMBER_URL, {
+      absensiMember: absensiMemberForm,
+      useMembership: useMembership,
+    })
       .then((response) => {
         dispatch(addAbsensiMemberSuccess(response.data))
-        dispatch(addSuccessNotificaiton(`menambahkan absensi dengan id ${absensiMemberForm.id}`))
+        dispatch(
+          addSuccessNotificaiton(
+            `menambahkan absensi dengan id member ${absensiMemberForm.id_member}`
+          )
+        )
       })
       .catch((error) => {
         dispatch(addAbsensiMemberFailure(error.message))
@@ -91,9 +98,9 @@ export const addAbsensiMemberStartAsync = (
 export const addAbsensiInstrukturStart = () => ({
   type: AbsensiActionTypes.ADD_ABSENSI_INSTURKTUR_START,
 })
-export const addAbsensiInstrukturSuccess = (newAbsensiMember: AbsensiMemberType) => ({
+export const addAbsensiInstrukturSuccess = (newAbsensiInstruktur: AbsensiInstrukturType) => ({
   type: AbsensiActionTypes.ADD_ABSENSI_INSTURKTUR_SUCCESS,
-  payload: newAbsensiMember,
+  payload: newAbsensiInstruktur,
 })
 
 export const addAbsensiInstrukturFailure = (errorMessage: string) => ({
@@ -112,7 +119,9 @@ export const addAbsensiInstrukturStartAsync = (
         dispatch(addAbsensiInstrukturSuccess(response.data))
         if (succesCallback) succesCallback()
         dispatch(
-          addSuccessNotificaiton(`menambahkan absensi dengan id ${absensiInstrukturForm.id}`)
+          addSuccessNotificaiton(
+            `menambahkan absensi dengan instruktur id ${absensiInstrukturForm.id_instruktur}`
+          )
         )
       })
       .catch((error) => {
