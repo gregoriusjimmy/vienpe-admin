@@ -44,7 +44,7 @@ const kelasReducer = (state = INITIAL_STATE, action) => {
         ...state,
         isFetching: false,
         errorMessage: undefined,
-        allKelas: [...state.allKelas!, action.payload],
+        allKelas: [action.payload, ...state.allKelas!],
       }
 
     case KelasActionTypes.ADD_KELAS_FAILURE:

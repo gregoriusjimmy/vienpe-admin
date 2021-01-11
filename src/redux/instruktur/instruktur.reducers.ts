@@ -44,7 +44,7 @@ const instrukturReducer = (state = INITIAL_STATE, action: { type: string; payloa
         ...state,
         isFetching: false,
         errorMessage: undefined,
-        allInstruktur: [...state.allInstruktur!, action.payload],
+        allInstruktur: [action.payload, ...state.allInstruktur!],
       }
 
     case InstrukturActionTypes.ADD_INSTRUKTUR_FAILURE:

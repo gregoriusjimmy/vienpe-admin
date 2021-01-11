@@ -44,7 +44,7 @@ const memberReducer = (state = INITIAL_STATE, action: { type: string; payload: a
         ...state,
         isFetching: false,
         errorMessage: undefined,
-        allMember: [...state.allMember!, action.payload],
+        allMember: [action.payload, ...state.allMember!],
       }
 
     case MemberActionTypes.ADD_MEMBER_FAILURE:

@@ -5,7 +5,6 @@ import Modal from '../../components/modal/modal.component'
 import MembershipFormAdd from '../../components/membership-form-add/membership-form-add.component'
 import MembershipFormUpdate from '../../components/membership-form-update/membership-form-update.component'
 import CircularLoading from '../../components/circular-loading/circular-loading.component'
-import EnhancedTable from '../../components/table/enhanced-table/enhanced-table.component'
 import { connect } from 'react-redux'
 import { loadAllTipeMembershipStartAsync } from '../../redux/tipe-membership/tipe-membership.actions'
 import { loadAllMemberStartAsync } from '../../redux/member/member.actions'
@@ -21,6 +20,9 @@ import { loadAllMembershipStartAsync } from '../../redux/membership/membership.a
 import UpdateButton from '../../components/update-button/update-button.component'
 import { combineAllMembershipWithMember } from '../../utils/utils'
 import { MemberType } from '../../redux/member/member.types'
+import { ColDef } from '@material-ui/data-grid'
+import TableCard from '../../components/table-card/table-card.component'
+import CustomDataGrid from '../../components/custom-data-grid/custom-data-grid.component'
 
 type Props = {
   allMembership: Array<MembershipType> | null
@@ -44,7 +46,6 @@ const Membership: React.FC<Props> = ({
 }) => {
   const [openAdd, setOpenAdd] = useState(false)
   const [openUpdate, setOpenUpdate] = useState(false)
-  const [searchField, setSearchField] = useState('')
 
   const handleOpenAdd = () => {
     setOpenAdd(true)
@@ -68,17 +69,14 @@ const Membership: React.FC<Props> = ({
     return isAllMemberLoaded && isAllTipeMembershipLoaded && isAllMembershipLoaded
   }
 
-  const handleSearchFieldChange = (e) => {
-    setSearchField(e.target.value)
-  }
-  const headData: Array<{ id: string; label: string }> = [
-    { id: 'id', label: 'ID' },
-    { id: 'id_member', label: 'ID Member' },
-    { id: 'nama_member', label: 'Nama' },
-    { id: 'tipe_membership', label: 'Tipe Memberhsip' },
-    { id: 'tgl_mulai', label: 'Tgl Mulai' },
-    { id: 'tgl_selesai', label: 'Tgl Selesai' },
-    { id: 'sisa_point', label: 'Sisa Point' },
+  const columns: ColDef[] = [
+    { field: 'id', headerName: 'ID', type: 'number' },
+    { field: 'id_member', headerName: 'ID Member', flex: 0.18, type: 'number' },
+    { field: 'nama_member', headerName: 'Nama', flex: 0.22 },
+    { field: 'tipe_membership', headerName: 'Tipe Memberhsip', flex: 0.2 },
+    { field: 'tgl_mulai', headerName: 'Tgl Mulai', flex: 0.2, type: 'date' },
+    { field: 'tgl_selesai', headerName: 'Tgl Selesai', flex: 0.2, type: 'date' },
+    { field: 'sisa_point', headerName: 'Sisa Point', flex: 0.15, type: 'number' },
   ]
 
   return isAllLoaded() ? (
@@ -100,15 +98,12 @@ const Membership: React.FC<Props> = ({
       </Grid>
       <Grid item xs={12}>
         {allMembership && allMember ? (
-          <EnhancedTable
-            inputSearch={searchField}
-            onSearchFieldChange={handleSearchFieldChange}
-            searchBasedOnId='nama_member'
-            title='Membership'
-            data={combineAllMembershipWithMember(allMembership, allMember)}
-            arrayDataColumn={headData}
-            placeholder='Search nama...'
-          />
+          <TableCard>
+            <CustomDataGrid
+              rows={combineAllMembershipWithMember(allMembership, allMember)}
+              columns={columns}
+            />
+          </TableCard>
         ) : null}
       </Grid>
     </Grid>

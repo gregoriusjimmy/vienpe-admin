@@ -8,9 +8,14 @@ import kelasReducer from './kelas/kelas.reducer'
 import notificationReducer from './notification/notification.reducer'
 import instrukturReducer from './instruktur/instruktur.reducers'
 
+import absensiInstrukturReducer from './absensi-instruktur/absensi-instruktur.reducers'
+import absensiMemberReducer from './absensi-member/absensi-member.reducers'
+
 // rootReducer
 export const rootReducer = combineReducers({
   admin: adminReducer,
+  absensiInstruktur: absensiInstrukturReducer,
+  absensiMember: absensiMemberReducer,
   member: memberReducer,
   instruktur: instrukturReducer,
   membership: membershipReducer,
