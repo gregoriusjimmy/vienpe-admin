@@ -69,7 +69,7 @@ const Member: React.FC<Props> = ({ allMember, isAllMemberLoaded, loadAllMemberSt
         </Box>
       </Grid>
       <Grid item xs={12}>
-        {allMember ? (
+        {allMember && (
           <EnchancedTable
             searchBasedOnId='nama'
             inputSearch={searchField}
@@ -80,7 +80,7 @@ const Member: React.FC<Props> = ({ allMember, isAllMemberLoaded, loadAllMemberSt
             placeholder='Search nama...'
             handleAction={handleAction}
           />
-        ) : null}
+        )}
       </Grid>
     </Grid>
   ) : (

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Grid } from '@material-ui/core'
+import { Box, Grid, Typography } from '@material-ui/core'
 import AbsensiForm from '../../components/absensi-form/absensi-form.component'
 import { loadAllInstrukturStartAsync } from '../../redux/instruktur/instruktur.actions'
 import { loadAllKelasStartAsync } from '../../redux/kelas/kelas.actions'
@@ -29,6 +29,7 @@ import {
   selectIsAllAbsensiInstrukturLoaded,
 } from '../../redux/absensi-instruktur/absensi-instruktur.selectors'
 import { AbsensiInstrukturViewType } from '../../redux/absensi-instruktur/absensi-instruktur.types'
+import CustomNowRowsOverlay from '../../components/custom-no-rows-overlay/custom-no-rows-overlay.component'
 
 type Props = {
   allAbsensiMember: Array<AbsensiMemberViewType> | null
@@ -118,6 +119,7 @@ const Absensi: React.FC<Props> = ({
     { field: 'jam', headerName: 'Jam', flex: 0.5 },
     { field: 'kategori_senam', headerName: 'Senam', flex: 1 },
   ]
+
   return isAllLoaded() ? (
     <Grid container spacing={3}>
       <Grid container>
@@ -126,16 +128,28 @@ const Absensi: React.FC<Props> = ({
         </Grid>
       </Grid>
       <Grid item xs={12}>
-        <TableCard>
+        <TableCard title='Absensi Member'>
           {allAbsensiMember && (
-            <CustomDataGrid rows={allAbsensiMember} columns={columnsAbsensiMember} />
+            <CustomDataGrid
+              components={{
+                noRowsOverlay: CustomNowRowsOverlay,
+              }}
+              rows={allAbsensiMember}
+              columns={columnsAbsensiMember}
+              showToolbar={false}
+            />
           )}
         </TableCard>
       </Grid>
       <Grid item xs={12}>
-        <TableCard>
+        <TableCard title='Absensi Instruktur'>
           {allAbsensiInstruktur && (
-            <CustomDataGrid rows={allAbsensiInstruktur} columns={columnsAbsensiInstruktur} />
+            <CustomDataGrid
+              components={{ noRowsOverlay: CustomNowRowsOverlay }}
+              rows={allAbsensiInstruktur}
+              columns={columnsAbsensiInstruktur}
+              showToolbar={false}
+            />
           )}
         </TableCard>
       </Grid>

@@ -58,7 +58,7 @@ const TipeMembership: React.FC<Props> = ({
         </Box>
       </Grid>
       <Grid item xs={12}>
-        {allTipeMembership ? (
+        {allTipeMembership && (
           <EnhancedTable
             inputSearch={searchField}
             onSearchFieldChange={handleSearchFieldChange}
@@ -68,7 +68,7 @@ const TipeMembership: React.FC<Props> = ({
             data={allTipeMembership}
             arrayDataColumn={headData}
           />
-        ) : null}
+        )}
       </Grid>
     </Grid>
   ) : (

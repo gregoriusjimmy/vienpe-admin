@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import routes from '../../../routes'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
+import CircularLoading from '../../circular-loading/circular-loading.component'
+import ErrorBoundary from '../../error-boundary/error-boundary.component'
 
 const Content: React.FC<any> = () => {
   return (
-    <div>
-      <AnimatePresence>
+    <AnimatePresence>
+      <Suspense fallback={<CircularLoading />}>
         <Switch>
           {routes.map((route, idx) => {
             return (
@@ -32,8 +34,8 @@ const Content: React.FC<any> = () => {
 
           <Redirect from='/' to='/absensi' />
         </Switch>
-      </AnimatePresence>
-    </div>
+      </Suspense>
+    </AnimatePresence>
   )
 }
 

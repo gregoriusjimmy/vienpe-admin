@@ -23,6 +23,7 @@ import { MemberType } from '../../redux/member/member.types'
 import { ColDef } from '@material-ui/data-grid'
 import TableCard from '../../components/table-card/table-card.component'
 import CustomDataGrid from '../../components/custom-data-grid/custom-data-grid.component'
+import CustomNowRowsOverlay from '../../components/custom-no-rows-overlay/custom-no-rows-overlay.component'
 
 type Props = {
   allMembership: Array<MembershipType> | null
@@ -100,6 +101,7 @@ const Membership: React.FC<Props> = ({
         {allMembership && allMember ? (
           <TableCard>
             <CustomDataGrid
+              components={{ noRowsOverlay: CustomNowRowsOverlay }}
               rows={combineAllMembershipWithMember(allMembership, allMember)}
               columns={columns}
             />

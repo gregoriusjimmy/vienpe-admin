@@ -59,7 +59,7 @@ const Layout: React.FC<Props> = ({ notifications }) => {
         <div className={classes.drawerHeader} />
         <Content />
       </main>
-      {notif.message ? (
+      {notif.message && (
         <Snackbar open={openNotif} autoHideDuration={6000} onClose={handleNotifClose}>
           <MuiAlert
             onClose={handleNotifClose}
@@ -68,7 +68,7 @@ const Layout: React.FC<Props> = ({ notifications }) => {
             {`${notif.type === 'success' ? 'Berhasil' : 'Gagal'} ${notif.message}`}
           </MuiAlert>
         </Snackbar>
-      ) : null}
+      )}
     </div>
   )
 }
