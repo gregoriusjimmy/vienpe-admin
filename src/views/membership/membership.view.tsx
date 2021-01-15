@@ -15,7 +15,7 @@ import {
   selectAllMembership,
   selectIsAllMembershipLoaded,
 } from '../../redux/membership/membership.selectors'
-import { MembershipType } from '../../redux/membership/membership.types'
+import { MembershipType, MembershipWithMemberType } from '../../redux/membership/membership.types'
 import { loadAllMembershipStartAsync } from '../../redux/membership/membership.actions'
 import UpdateButton from '../../components/update-button/update-button.component'
 import { combineAllMembershipWithMember } from '../../utils/utils'
@@ -26,6 +26,7 @@ import CustomDataGrid from '../../components/custom-data-grid/custom-data-grid.c
 import CustomNowRowsOverlay from '../../components/custom-no-rows-overlay/custom-no-rows-overlay.component'
 
 type Props = {
+  allMember: Array<MemberType> | null
   allMembership: Array<MembershipType> | null
   loadAllMemberStartAsync: () => void
   loadAllTipeMembershipStartAsync: () => void
@@ -33,7 +34,6 @@ type Props = {
   isAllTipeMembershipLoaded: boolean
   isAllMemberLoaded: boolean
   isAllMembershipLoaded: boolean
-  allMember: Array<MemberType> | null
 }
 const Membership: React.FC<Props> = ({
   allMembership,
@@ -47,7 +47,7 @@ const Membership: React.FC<Props> = ({
 }) => {
   const [openAdd, setOpenAdd] = useState(false)
   const [openUpdate, setOpenUpdate] = useState(false)
-
+  const [rows, setRows] = useState<MembershipWithMemberType[] | null>(null)
   const handleOpenAdd = () => {
     setOpenAdd(true)
   }
@@ -59,6 +59,10 @@ const Membership: React.FC<Props> = ({
     loadAllMemberStartAsync()
     loadAllMembershipStartAsync()
   }, [loadAllTipeMembershipStartAsync, loadAllMemberStartAsync, loadAllMembershipStartAsync])
+
+  useEffect(() => {
+    setRows(combineAllMembershipWithMember(allMembership, allMember))
+  }, [allMembership, allMember])
 
   const handleCloseAdd = () => {
     setOpenAdd(false)
@@ -87,7 +91,10 @@ const Membership: React.FC<Props> = ({
         <Box m={1}>
           <UpdateButton text='Update Membership' handleClick={handleOpenUpdate} />
           <Modal open={openUpdate} handleClose={handleCloseUpdate} ariaLabel='modal-update'>
-            <MembershipFormUpdate handleModalClose={handleCloseUpdate} />
+            <MembershipFormUpdate
+              allMembershipWithMember={rows}
+              handleModalClose={handleCloseUpdate}
+            />
           </Modal>
         </Box>
         <Box m={1}>
@@ -98,15 +105,17 @@ const Membership: React.FC<Props> = ({
         </Box>
       </Grid>
       <Grid item xs={12}>
-        {allMembership && allMember ? (
+        {rows ? (
           <TableCard>
             <CustomDataGrid
               components={{ noRowsOverlay: CustomNowRowsOverlay }}
-              rows={combineAllMembershipWithMember(allMembership, allMember)}
+              rows={rows}
               columns={columns}
             />
           </TableCard>
-        ) : null}
+        ) : (
+          <CircularLoading />
+        )}
       </Grid>
     </Grid>
   ) : (

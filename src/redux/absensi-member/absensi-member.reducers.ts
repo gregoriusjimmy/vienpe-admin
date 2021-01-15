@@ -12,6 +12,7 @@ const absensiMemberReducer = (state = INITIAL_STATE, action: { type: string; pay
     case AbsensiMemberActionTypes.LOAD_ALL_ABSENSI_MEMBER_START:
       return {
         ...state,
+        allAbsensiMember: null,
         isLoaded: false,
         isFetching: true,
       }

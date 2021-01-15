@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { TextField, Grid, FormControlLabel, Checkbox, Box, Switch } from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import FormCard from '../form-card/form-card.component'
@@ -12,7 +12,6 @@ import { MemberType } from '../../redux/member/member.types'
 import SubmitButton from '../submit-button/submit-button.component'
 import moment from 'moment'
 import { KelasWithInstrukturType } from '../../redux/kelas/kelas.types'
-
 import { selectAllKelas } from '../../redux/kelas/kelas.selectors'
 import { selectAllInstruktur } from '../../redux/instruktur/instruktur.selectors'
 import { MembershipWithTipeMembershipType } from '../../redux/membership/membership.types'

@@ -13,7 +13,9 @@ const tipeMembershipReducer = (state = INITIAL_STATE, action: { type: string; pa
     case TipeMembershipActionTypes.LOAD_ALL_TIPE_MEMBERSHIP_START:
       return {
         ...state,
+        allTipeMembership: null,
         errorMeesage: undefined,
+        isLoaded: false,
         isFetching: true,
       }
     case TipeMembershipActionTypes.LOAD_ALL_TIPE_MEMBERSHIP_SUCCESS:

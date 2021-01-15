@@ -31,23 +31,21 @@ interface Props {
   [otherProps: string]: any
 }
 
-const CustomDataGrid: React.FC<DataGridProps & Props> = ({
-  rows,
-  columns,
-  showToolbar = true,
-  ...otherProps
-}) => {
-  const classes = useStyles()
-  return (
-    <DataGrid
-      className={classes.root}
-      disableSelectionOnClick
-      rows={rows}
-      columns={columns}
-      showToolbar={showToolbar}
-      {...otherProps}
-    />
-  )
-}
+const CustomDataGrid = React.memo(
+  ({ rows, columns, showToolbar = true, ...otherProps }: Props & DataGridProps) => {
+    const classes = useStyles()
+    return (
+      <DataGrid
+        className={classes.root}
+        disableSelectionOnClick
+        rows={rows}
+        columns={columns}
+        showToolbar={showToolbar}
+        {...otherProps}
+      />
+    )
+  },
+  (prevProps, nextProps) => prevProps.rows === nextProps.rows
+)
 
 export default CustomDataGrid

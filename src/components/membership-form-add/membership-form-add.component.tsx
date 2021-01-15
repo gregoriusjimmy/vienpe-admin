@@ -40,7 +40,7 @@ const MembershipFormAdd: React.FC<Props> = ({
   addMembershipStartAsync,
 }) => {
   const [tglSelesai, setTglSelesai] = useState('')
-  const [selectedMember, setSelectedMember] = useState<MemberType>()
+  const [selectedMember, setSelectedMember] = useState<MemberType | null>(null)
 
   const schema = yup.object().shape({
     nama_member: yup.string().required(),
@@ -65,6 +65,7 @@ const MembershipFormAdd: React.FC<Props> = ({
       { ...selectedMember, status_membership: true },
       handleModalClose
     )
+    setSelectedMember(null)
   }
 
   const calculateTglSelesai = (e: any) => {

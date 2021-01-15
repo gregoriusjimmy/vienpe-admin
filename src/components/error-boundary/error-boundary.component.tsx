@@ -1,8 +1,10 @@
 import React from 'react'
-import { Box, Button, colors, Typography } from '@material-ui/core'
+import { Box, Typography } from '@material-ui/core'
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles'
-import { Link } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import ErrorImage from '../../assets/error-image.png'
+import { RouteProps } from 'react-router'
+
 const styles = (theme: Theme) =>
   createStyles({
     root: {
@@ -25,7 +27,7 @@ const styles = (theme: Theme) =>
 interface Props extends WithStyles<typeof styles> {
   children: React.ReactNode
 }
-class ErrorBoundary extends React.Component<Props, { hasErrored: boolean }> {
+class ErrorBoundary extends React.Component<Props & RouteProps, { hasErrored: boolean }> {
   constructor(props) {
     super(props)
     this.state = {
@@ -55,7 +57,10 @@ class ErrorBoundary extends React.Component<Props, { hasErrored: boolean }> {
           <Box mt='20px'>
             <Typography
               className={classes.refeshText}
-              onClick={() => window.location.reload()}
+              onClick={() => {
+                window.location.reload()
+                this.props.history.push('/login')
+              }}
               variant='h6'
             >
               Kembali ke halaman login
@@ -68,4 +73,4 @@ class ErrorBoundary extends React.Component<Props, { hasErrored: boolean }> {
   }
 }
 
-export default withStyles(styles)(ErrorBoundary)
+export default withRouter(withStyles(styles)(ErrorBoundary))

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Box, Grid, Typography } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import AbsensiForm from '../../components/absensi-form/absensi-form.component'
 import { loadAllInstrukturStartAsync } from '../../redux/instruktur/instruktur.actions'
 import { loadAllKelasStartAsync } from '../../redux/kelas/kelas.actions'

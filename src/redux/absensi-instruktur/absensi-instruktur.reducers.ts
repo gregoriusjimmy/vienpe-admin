@@ -15,6 +15,7 @@ const absensiInstrukturReducer = (
     case AbsensiInstrukturActionTypes.LOAD_ALL_ABSENSI_INSTRUKTUR_START:
       return {
         ...state,
+        allAbsensiInstruktur: null,
         isLoaded: false,
         isFetching: true,
       }

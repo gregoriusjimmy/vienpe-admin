@@ -9,9 +9,10 @@ import {
 import { TipeMembershipType } from '../redux/tipe-membership/tipe-membership.types'
 
 export const combineAllKelasWithInstruktur = (
-  allKelas: Array<KelasType>,
-  allInstruktur: Array<InstrukturType>
+  allKelas: Array<KelasType> | null,
+  allInstruktur: Array<InstrukturType> | null
 ) => {
+  if (!allKelas || !allInstruktur) return null
   return allKelas!.map(
     (kelas): KelasWithInstrukturType => {
       const { id_instruktur } = kelas
@@ -26,9 +27,10 @@ export const combineAllKelasWithInstruktur = (
 }
 
 export const combineAllMembershipWithTipeMembership = (
-  allMembership: Array<MembershipType>,
-  allTipeMembership: Array<TipeMembershipType>
+  allMembership: Array<MembershipType> | null,
+  allTipeMembership: Array<TipeMembershipType> | null
 ) => {
+  if (!allTipeMembership || !allMembership) return null
   return allMembership!.map(
     (membership): MembershipWithTipeMembershipType => {
       const { tipe_membership } = membership
@@ -42,13 +44,16 @@ export const combineAllMembershipWithTipeMembership = (
 }
 
 export const combineAllMembershipWithMember = (
-  allMembership: Array<MembershipType>,
-  allMember: Array<MemberType>
+  allMembership: Array<MembershipType> | null,
+  allMember: Array<MemberType> | null
 ) => {
+  if (!allMembership || !allMember) return null
+
   return allMembership!.map(
     (membership): MembershipWithMemberType => {
       const { id_member } = membership
       const findMatch = allMember.find((member) => id_member === member.id)
+
       const { nama, id } = findMatch!
       return { ...membership, nama_member: nama, id_member: id }
     }

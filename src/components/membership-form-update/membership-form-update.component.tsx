@@ -14,8 +14,7 @@ import { MembershipWithMemberType } from '../../redux/membership/membership.type
 import SubmitButton from '../submit-button/submit-button.component'
 import CircularLoading from '../circular-loading/circular-loading.component'
 import moment from 'moment'
-import { selectAllMembership } from '../../redux/membership/membership.selectors'
-import { combineAllMembershipWithMember } from '../../utils/utils'
+
 import Form from '../form/form.component'
 
 type FORM_DATA = {
@@ -26,7 +25,7 @@ type FORM_DATA = {
 }
 type Props = {
   allMember: Array<MemberType> | null
-  allMembershipWithMember: Array<MembershipWithMemberType>
+  allMembershipWithMember: Array<MembershipWithMemberType> | null
   isFetching: boolean
   updateMembershipStartAsync: (membershipForm, member, successCallback: () => void) => void
   handleModalClose: () => void
@@ -79,7 +78,7 @@ const MembershipFormUpdate: React.FC<Props> = ({
 
   return (
     <FormCard title='Update Membership'>
-      {isFetching ? (
+      {isFetching || !allMembershipWithMember ? (
         <CircularLoading height='200px' />
       ) : (
         <Form onSubmit={handleSubmit(onSubmit)}>
@@ -213,10 +212,6 @@ const MembershipFormUpdate: React.FC<Props> = ({
 
 const mapStateToProps = (state: RootState) => ({
   allMember: selectAllMember(state),
-  allMembershipWithMember: combineAllMembershipWithMember(
-    selectAllMembership(state)!,
-    selectAllMember(state)!
-  ),
   isFetching: selectIsMemberFetching(state),
 })
 

@@ -75,7 +75,7 @@ const Instruktur: React.FC<Props> = ({
         </Box>
       </Grid>
       <Grid item xs={12}>
-        {allInstruktur ? (
+        {allInstruktur && (
           <EnchancedTable
             searchBasedOnId='nama'
             inputSearch={searchField}
@@ -86,7 +86,7 @@ const Instruktur: React.FC<Props> = ({
             placeholder='Search nama...'
             handleAction={handleAction}
           />
-        ) : null}
+        )}
       </Grid>
     </Grid>
   ) : (

@@ -7,7 +7,7 @@ import EnchancedTable from '../../components/table/enhanced-table/enhanced-table
 import CircularLoading from '../../components/circular-loading/circular-loading.component'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/root-reducer'
-import { KelasType } from '../../redux/kelas/kelas.types'
+import { KelasType, KelasWithInstrukturType } from '../../redux/kelas/kelas.types'
 import { selectAllKelas, selectIsAllKelasLoaded } from '../../redux/kelas/kelas.selectors'
 import { loadAllKelasStartAsync, updateKelasAktifStartAsync } from '../../redux/kelas/kelas.actions'
 import { loadAllInstrukturStartAsync } from '../../redux/instruktur/instruktur.actions'
@@ -39,11 +39,15 @@ const Kelas: React.FC<Props> = ({
 }) => {
   const [openAdd, setOpenAdd] = useState(false)
   const [searchField, setSearchField] = useState('')
-
+  const [data, setData] = useState<KelasWithInstrukturType[] | null>(null)
   useEffect(() => {
     loadAllKelasStartAsync()
     loadAllInstrukturStartAsync()
   }, [loadAllKelasStartAsync, loadAllInstrukturStartAsync])
+
+  useEffect(() => {
+    setData(combineAllKelasWithInstruktur(allKelas, allInstruktur))
+  }, [allKelas, allInstruktur])
 
   const handleSearchFieldChange = (e) => {
     setSearchField(e.target.value)
@@ -81,18 +85,18 @@ const Kelas: React.FC<Props> = ({
         </Box>
       </Grid>
       <Grid item xs={12}>
-        {allKelas && allInstruktur ? (
+        {data && (
           <EnchancedTable
             searchBasedOnId='hari'
             inputSearch={searchField}
             onSearchFieldChange={handleSearchFieldChange}
             title='Kelas'
-            data={combineAllKelasWithInstruktur(allKelas, allInstruktur)}
+            data={data}
             arrayDataColumn={headData}
             placeholder='Search hari...'
             handleActionSwitch={handleActionSwitch}
           />
-        ) : null}
+        )}
       </Grid>
     </Grid>
   ) : (

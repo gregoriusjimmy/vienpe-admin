@@ -12,6 +12,7 @@ const kelasReducer = (state = INITIAL_STATE, action) => {
     case KelasActionTypes.LOAD_ALL_KELAS_START:
       return {
         ...state,
+        allKelas: null,
         errorMessage: undefined,
         isLoaded: false,
         isFetching: true,

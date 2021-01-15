@@ -12,6 +12,7 @@ const instrukturReducer = (state = INITIAL_STATE, action: { type: string; payloa
     case InstrukturActionTypes.LOAD_ALL_INSTRUKTUR_START:
       return {
         ...state,
+        allInstruktur: null,
         isLoaded: false,
         isFetching: true,
       }

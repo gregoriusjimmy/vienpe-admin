@@ -12,6 +12,8 @@ const membershipReducer = (state = INITIAL_STATE, action: { type: string; payloa
     case MembershipActionTypes.LOAD_ALL_MEMBERSHIP_START:
       return {
         ...state,
+        allMembership: null,
+        isLoaded: false,
         isFetching: true,
       }
     case MembershipActionTypes.LOAD_ALL_MEMBERSHIP_SUCCESS:

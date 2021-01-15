@@ -12,6 +12,7 @@ const memberReducer = (state = INITIAL_STATE, action: { type: string; payload: a
     case MemberActionTypes.LOAD_ALL_MEMBER_START:
       return {
         ...state,
+        allMember: null,
         isLoaded: false,
         isFetching: true,
       }
