@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TextField, Grid, FormControlLabel, Checkbox, Box, Switch } from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import FormCard from '../form-card/form-card.component'
@@ -11,10 +11,13 @@ import * as yup from 'yup'
 import { MemberType } from '../../redux/member/member.types'
 import SubmitButton from '../submit-button/submit-button.component'
 import moment from 'moment'
-import { KelasWithInstrukturType } from '../../redux/kelas/kelas.types'
+import { KelasType, KelasWithInstrukturType } from '../../redux/kelas/kelas.types'
 import { selectAllKelas } from '../../redux/kelas/kelas.selectors'
 import { selectAllInstruktur } from '../../redux/instruktur/instruktur.selectors'
-import { MembershipWithTipeMembershipType } from '../../redux/membership/membership.types'
+import {
+  MembershipType,
+  MembershipWithTipeMembershipType,
+} from '../../redux/membership/membership.types'
 import {
   combineAllKelasWithInstruktur,
   combineAllMembershipWithTipeMembership,
@@ -26,6 +29,7 @@ import { InstrukturType } from '../../redux/instruktur/instruktur.types'
 import { addAbsensiMemberStartAsync } from '../../redux/absensi-member/absensi-member.actions'
 import { addAbsensiInstrukturStartAsync } from '../../redux/absensi-instruktur/absensi-instruktur.actions'
 import theme from '../../theme'
+import { TipeMembershipType } from '../../redux/tipe-membership/tipe-membership.types'
 
 type FORM_DATA = {
   tgl_absensi: string
@@ -34,8 +38,9 @@ type FORM_DATA = {
 type Props = {
   allMember: Array<MemberType> | null
   allInstruktur: Array<InstrukturType> | null
-  allKelasWithInstruktur: Array<KelasWithInstrukturType> | null
-  allMembershipWithTipeMembership: Array<MembershipWithTipeMembershipType> | null
+  allKelas: Array<KelasType> | null
+  allMembership: Array<MembershipType> | null
+  allTipeMembership: Array<TipeMembershipType> | null
   addAbsensiMemberStartAsync: (absensiForm, useMembership: boolean) => void
   addAbsensiInstrukturStartAsync: (absensiForm) => void
 }
@@ -43,8 +48,9 @@ type Props = {
 const AbsensiForm: React.FC<Props> = ({
   allMember,
   allInstruktur,
-  allKelasWithInstruktur,
-  allMembershipWithTipeMembership,
+  allKelas,
+  allMembership,
+  allTipeMembership,
   addAbsensiMemberStartAsync,
   addAbsensiInstrukturStartAsync,
 }) => {
@@ -54,6 +60,12 @@ const AbsensiForm: React.FC<Props> = ({
   const [selectedMember, setSelectedMember] = useState<MemberType | null>(null)
   const [selectedHari, setSelectedHari] = useState<string | null>(null)
   const [selectedKelas, setSelectedKelas] = useState<KelasWithInstrukturType | null>(null)
+  const [allKelasWithInstruktur, setAllKelasWithInstruktur] = useState<
+    KelasWithInstrukturType[] | null
+  >(null)
+  const [allMembershipWithTipeMembership, setAllMembershipWithTipeMembership] = useState<
+    MembershipWithTipeMembershipType[] | null
+  >(null)
   const [
     selectedMembership,
     setSelectedMembership,
@@ -65,7 +77,15 @@ const AbsensiForm: React.FC<Props> = ({
     kelas: yup.string().required(),
     use_membership: yup.boolean(),
   })
+  useEffect(() => {
+    setAllKelasWithInstruktur(combineAllKelasWithInstruktur(allKelas, allInstruktur))
+  }, [allKelas, allInstruktur])
 
+  useEffect(() => {
+    setAllMembershipWithTipeMembership(
+      combineAllMembershipWithTipeMembership(allMembership, allTipeMembership)
+    )
+  }, [allMembership, allTipeMembership])
   const { register, errors, handleSubmit, reset } = useForm<FORM_DATA>({
     resolver: yupResolver(schema),
   })
@@ -89,13 +109,15 @@ const AbsensiForm: React.FC<Props> = ({
   }
 
   const getSelectedMemberOptions = {
-    options: allMember!,
+    options: allMember ? allMember : [],
   }
   const getSelectedInstrukturOptions = {
-    options: allInstruktur!,
+    options: allInstruktur ? allInstruktur : [],
   }
   const getSelectedKelasOptions = {
-    options: allKelasWithInstruktur!.sort((a, b) => b.hari.localeCompare(a.hari)),
+    options: allKelasWithInstruktur
+      ? allKelasWithInstruktur.sort((a, b) => b.hari.localeCompare(a.hari))
+      : [],
   }
 
   const getTodayDate = () => {
@@ -158,7 +180,7 @@ const AbsensiForm: React.FC<Props> = ({
                 </Grid>
               </Grid>
             </Grid>
-            {isFormInstruktur ? (
+            {isFormInstruktur && allKelasWithInstruktur ? (
               <React.Fragment>
                 <Grid item xs={2}>
                   <Autocomplete
@@ -370,14 +392,9 @@ const AbsensiForm: React.FC<Props> = ({
 const mapStateToProps = (state: RootState) => ({
   allMember: selectAllMember(state),
   allInstruktur: selectAllInstruktur(state),
-  allKelasWithInstruktur: combineAllKelasWithInstruktur(
-    selectAllKelas(state)!,
-    selectAllInstruktur(state)!
-  ),
-  allMembershipWithTipeMembership: combineAllMembershipWithTipeMembership(
-    selectAllMembership(state)!,
-    selectAllTipeMembership(state)!
-  ),
+  allKelas: selectAllKelas(state),
+  allMembership: selectAllMembership(state),
+  allTipeMembership: selectAllTipeMembership(state),
 })
 
 const mapDispatchToProps = (dispatch) => ({

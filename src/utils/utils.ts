@@ -13,7 +13,7 @@ export const combineAllKelasWithInstruktur = (
   allInstruktur: Array<InstrukturType> | null
 ) => {
   if (!allKelas || !allInstruktur) return null
-  return allKelas!.map(
+  return allKelas.map(
     (kelas): KelasWithInstrukturType => {
       const { id_instruktur } = kelas
       const findMatch = allInstruktur.find((instruktur) => {
@@ -31,7 +31,7 @@ export const combineAllMembershipWithTipeMembership = (
   allTipeMembership: Array<TipeMembershipType> | null
 ) => {
   if (!allTipeMembership || !allMembership) return null
-  return allMembership!.map(
+  return allMembership.map(
     (membership): MembershipWithTipeMembershipType => {
       const { tipe_membership } = membership
       const findMatch = allTipeMembership.find(
@@ -49,7 +49,7 @@ export const combineAllMembershipWithMember = (
 ) => {
   if (!allMembership || !allMember) return null
 
-  return allMembership!.map(
+  return allMembership.map(
     (membership): MembershipWithMemberType => {
       const { id_member } = membership
       const findMatch = allMember.find((member) => id_member === member.id)
